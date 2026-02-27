@@ -3,6 +3,7 @@
   "outputDirectory": "public",
   "routes": [
     { "src": "/app", "dest": "/app.html" },
-    { "src": "/", "dest": "/Onplan.html" }
+    { "src": "/onplan", "dest": "/onplan.html" },
+    { "src": "/", "dest": "/onplan.html" }
   ]
 }
