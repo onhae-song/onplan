@@ -1,439 +1,200 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OnPlan — 기획자 없이, 기획서를.</title>
-<meta name="description" content="팀의 의견을 모으면 AI 기획자가 판단하고, 정리하고, 역할별 문서까지. 기획자 채용 없이 프로덕트 기획을 시작하세요.">
+<title>OnPlan — No planner? No problem.</title>
+<meta name="description" content="Your team shares opinions. AI planner judges, synthesizes, and generates a PRD.">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --lime:#d4f53c;--lime-dim:#a8cc00;--lime-bg:rgba(212,245,60,.06);--lime-border:rgba(212,245,60,.15);
-  --black:#0a0a0a;--dark:#111;--dark2:#161616;--dark3:#1a1a1a;--dark4:#222;
-  --white:#f0f0f0;--g100:#e0e0e0;--g200:#bbb;--g300:#999;--g400:#777;--g500:#555;--g600:#333;
-  --en:'Outfit',sans-serif;--kr:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--kr);background:var(--black);color:var(--g200);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-::selection{background:var(--lime);color:var(--black);}
-
-/* NAV */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.05);}
-.nav-logo svg{height:24px;}
-.nav-links{display:flex;align-items:center;gap:32px;}
-.nav-links a{font-size:13px;color:var(--g300);text-decoration:none;letter-spacing:.3px;transition:color .2s;}
-.nav-links a:hover{color:var(--white);}
-.nav-cta{padding:9px 22px;background:var(--lime);color:var(--black);font-family:var(--en);font-weight:700;font-size:13px;text-decoration:none;border-radius:6px;transition:all .2s;}
-.nav-cta:hover{background:#e8ff5e;color:var(--black);}
-
-/* HERO */
-.hero{padding:160px 48px 100px;max-width:1200px;margin:0 auto;position:relative;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--lime-bg);border:1px solid var(--lime-border);border-radius:40px;font-size:12px;color:var(--lime);margin-bottom:28px;letter-spacing:.5px;}
-.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-.hero h1{font-family:var(--en);font-size:clamp(48px,6vw,80px);font-weight:900;line-height:1.05;letter-spacing:-3px;color:var(--white);margin-bottom:24px;}
-.hero h1 em{font-style:normal;color:var(--lime);}
-.hero-sub{font-size:18px;line-height:1.7;color:var(--g300);max-width:540px;margin-bottom:40px;}
-.hero-actions{display:flex;gap:14px;align-items:center;margin-bottom:80px;}
-.btn-primary{padding:16px 36px;background:var(--lime);color:var(--black);font-family:var(--en);font-weight:800;font-size:15px;text-decoration:none;border-radius:8px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
-.btn-primary:hover{background:#e8ff5e;transform:translateY(-1px);box-shadow:0 8px 30px rgba(212,245,60,.2);}
-.btn-ghost{padding:16px 28px;background:transparent;color:var(--g200);font-family:var(--en);font-weight:600;font-size:14px;text-decoration:none;border:1px solid var(--g500);border-radius:8px;transition:all .2s;}
-.btn-ghost:hover{border-color:var(--g300);color:var(--white);}
-
-/* Hero visual */
-.hero-visual{position:relative;background:var(--dark2);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.5);}
-.hero-visual-bar{height:40px;background:var(--dark3);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 16px;gap:8px;}
-.hero-visual-dot{width:10px;height:10px;border-radius:50%;background:var(--g600);}
-.hero-visual-content{padding:32px;min-height:400px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-.hv-card{background:var(--dark3);border:1px solid rgba(255,255,255,.06);padding:24px;border-radius:8px;}
-.hv-card-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;}
-.hv-card-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px;}
-.hv-card-body{font-size:13px;line-height:1.7;color:var(--g400);}
-.hv-opinion{background:rgba(232,116,10,.08);border:1px solid rgba(232,116,10,.2);padding:20px;border-radius:8px;}
-.hv-opinion-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8740a;margin-bottom:10px;}
-.hv-opinion-body{font-size:13px;line-height:1.7;color:var(--g200);}
-.hv-opinion-body strong{color:var(--white);}
-.hv-issue{background:rgba(214,48,49,.06);border:1px solid rgba(214,48,49,.15);padding:20px;border-radius:8px;}
-.hv-issue-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#d63031;margin-bottom:10px;}
-.hv-issue-body{font-size:13px;line-height:1.7;color:var(--g300);}
-
-/* SECTIONS */
-section{padding:120px 48px;max-width:1200px;margin:0 auto;}
-.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--lime);margin-bottom:16px;}
-.sec-title{font-family:var(--en);font-size:clamp(32px,4vw,48px);font-weight:800;letter-spacing:-2px;color:var(--white);line-height:1.1;margin-bottom:16px;}
-.sec-desc{font-size:16px;line-height:1.7;color:var(--g300);max-width:560px;margin-bottom:56px;}
-
-/* HOW IT WORKS */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
-.step{background:var(--dark2);padding:36px 28px;position:relative;border:1px solid rgba(255,255,255,.04);transition:all .3s;}
-.step:hover{background:var(--dark3);border-color:rgba(255,255,255,.08);}
-.step-num{font-family:var(--en);font-size:48px;font-weight:900;color:rgba(212,245,60,.1);position:absolute;top:20px;right:20px;line-height:1;}
-.step-phase{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--lime-dim);margin-bottom:12px;}
-.step-title{font-size:17px;font-weight:700;color:var(--white);margin-bottom:8px;}
-.step-body{font-size:13px;line-height:1.7;color:var(--g400);}
-.step-time{display:inline-block;margin-top:14px;padding:4px 10px;background:var(--lime-bg);border:1px solid var(--lime-border);border-radius:20px;font-size:11px;color:var(--lime);font-weight:500;}
-
-/* AI PLANNER */
-.planner-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
-.planner-list{display:flex;flex-direction:column;gap:16px;}
-.planner-item{padding:20px 24px;background:var(--dark2);border:1px solid rgba(255,255,255,.04);border-radius:8px;transition:all .3s;cursor:default;}
-.planner-item:hover{border-color:var(--lime-border);background:var(--dark3);}
-.planner-item-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px;}
-.planner-item-desc{font-size:13px;color:var(--g400);line-height:1.5;}
-.planner-item-vs{font-size:11px;color:var(--g500);margin-top:6px;font-style:italic;}
-.planner-demo{background:var(--dark2);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:32px;position:relative;overflow:hidden;}
-.planner-demo::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--lime),transparent);}
-.pd-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8740a;margin-bottom:16px;}
-.pd-body{font-size:14px;line-height:1.8;color:var(--g200);}
-.pd-body strong{color:var(--white);}
-
-/* ROLE DOCS */
-.roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-.role-doc{background:var(--dark2);border:1px solid rgba(255,255,255,.04);padding:28px;border-radius:8px;transition:all .3s;position:relative;overflow:hidden;}
-.role-doc:hover{border-color:var(--lime-border);transform:translateY(-2px);}
-.role-doc::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime);opacity:0;transition:opacity .3s;}
-.role-doc:hover::before{opacity:1;}
-.role-doc-for{font-family:var(--en);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--lime-dim);margin-bottom:14px;}
-.role-doc-title{font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;}
-.role-doc-items{font-size:13px;line-height:1.8;color:var(--g400);}
-
-/* STATS */
-.stats-bar{display:flex;justify-content:center;gap:80px;padding:80px 48px;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);}
-.stat{text-align:center;}
-.stat-num{font-family:var(--en);font-size:48px;font-weight:900;color:var(--lime);line-height:1;}
-.stat-label{font-size:13px;color:var(--g400);margin-top:8px;}
-
-/* PRICING */
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.price-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);padding:36px;border-radius:12px;position:relative;transition:all .3s;}
-.price-card:hover{border-color:rgba(255,255,255,.1);}
-.price-card.featured{border-color:var(--lime-border);background:var(--dark3);}
-.price-card.featured::before{content:'POPULAR';position:absolute;top:16px;right:16px;font-size:9px;letter-spacing:2px;padding:4px 10px;background:var(--lime);color:var(--black);font-weight:700;border-radius:4px;}
-.price-name{font-family:var(--en);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--g300);margin-bottom:16px;}
-.price-amount{font-family:var(--en);font-size:42px;font-weight:900;color:var(--white);line-height:1;}
-.price-amount span{font-size:14px;font-weight:400;color:var(--g400);}
-.price-desc{font-size:13px;color:var(--g400);margin:16px 0 24px;line-height:1.5;}
-.price-features{list-style:none;margin-bottom:28px;}
-.price-features li{font-size:13px;color:var(--g300);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:8px;}
-.price-features li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--lime);flex-shrink:0;}
-.price-btn{display:block;width:100%;padding:14px;text-align:center;font-family:var(--en);font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;transition:all .2s;border:none;cursor:pointer;}
-.price-btn-lime{background:var(--lime);color:var(--black);}
-.price-btn-lime:hover{background:#e8ff5e;}
-.price-btn-outline{background:transparent;border:1px solid var(--g500);color:var(--g200);}
-.price-btn-outline:hover{border-color:var(--g300);color:var(--white);}
-
-/* FINAL CTA */
-.final-cta{text-align:center;padding:120px 48px;position:relative;}
-.final-cta h2{font-family:var(--en);font-size:clamp(36px,5vw,56px);font-weight:900;letter-spacing:-2px;color:var(--white);line-height:1.1;margin-bottom:16px;}
-.final-cta h2 em{font-style:normal;color:var(--lime);}
-.final-cta p{font-size:16px;color:var(--g300);margin-bottom:36px;}
-.final-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(212,245,60,.06),transparent 70%);pointer-events:none;}
-
-/* FOOTER */
-.footer{border-top:1px solid rgba(255,255,255,.06);padding:48px;display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;}
-.footer-logo svg{height:20px;opacity:.5;}
-.footer-links{display:flex;gap:24px;}
-.footer-links a{font-size:12px;color:var(--g500);text-decoration:none;}
-.footer-links a:hover{color:var(--g300);}
-.footer-copy{font-size:11px;color:var(--g600);}
-
-/* ANIMATIONS */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
-.reveal-d1{transition-delay:.1s;}
-.reveal-d2{transition-delay:.2s;}
-.reveal-d3{transition-delay:.3s;}
-.reveal-d4{transition-delay:.4s;}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .nav{padding:0 20px;}
-  .nav-links a:not(.nav-cta){display:none;}
-  .hero,.section{padding-left:20px;padding-right:20px;}
-  section{padding:80px 20px;}
-  .steps{grid-template-columns:1fr 1fr;}
-  .planner-grid{grid-template-columns:1fr;}
-  .roles-grid{grid-template-columns:1fr 1fr;}
-  .pricing-grid{grid-template-columns:1fr;}
-  .stats-bar{gap:40px;padding:60px 20px;flex-wrap:wrap;}
-  .hero-visual-content{grid-template-columns:1fr;}
-  .footer{flex-direction:column;gap:20px;text-align:center;}
-}
-@media(max-width:600px){
-  .steps{grid-template-columns:1fr;}
-  .roles-grid{grid-template-columns:1fr;}
-  .hero{padding:120px 20px 60px;}
-  .hero-actions{flex-direction:column;align-items:flex-start;}
-}
+:root{--lime:#d4f53c;--lime-dim:#a8cc00;--lime-bg:rgba(212,245,60,.06);--lime-border:rgba(212,245,60,.15);--black:#0a0a0a;--dark:#111;--dark2:#161616;--dark3:#1a1a1a;--dark4:#222;--white:#f0f0f0;--g100:#e0e0e0;--g200:#bbb;--g300:#999;--g400:#777;--g500:#555;--g600:#333;--en:'Outfit',sans-serif;--kr:'Pretendard Variable','Pretendard',-apple-system,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}body{font-family:var(--kr);background:var(--black);color:var(--g200);-webkit-font-smoothing:antialiased;overflow-x:hidden;}::selection{background:var(--lime);color:var(--black);}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.05);}.nav-logo svg{height:24px;}.nav-right{display:flex;align-items:center;gap:24px;}.nav-links{display:flex;align-items:center;gap:32px;}.nav-links a{font-size:13px;color:var(--g300);text-decoration:none;letter-spacing:.3px;transition:color .2s;}.nav-links a:hover{color:var(--white);}.nav-cta{padding:9px 22px;background:var(--lime);color:var(--black);font-family:var(--en);font-weight:700;font-size:13px;text-decoration:none;border-radius:6px;transition:all .2s;}.nav-cta:hover{background:#e8ff5e;color:var(--black);}
+.lang-toggle{display:flex;align-items:center;background:var(--dark3);border:1px solid rgba(255,255,255,.08);border-radius:6px;overflow:hidden;height:32px;}.lang-btn{padding:0 12px;height:100%;font-family:var(--en);font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--g400);background:transparent;border:none;cursor:pointer;transition:all .2s;}.lang-btn.active{background:var(--lime);color:var(--black);}
+.hero{padding:160px 48px 100px;max-width:1200px;margin:0 auto;position:relative;}.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--lime-bg);border:1px solid var(--lime-border);border-radius:40px;font-size:12px;color:var(--lime);margin-bottom:28px;letter-spacing:.5px;}.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite;}@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}.hero h1{font-family:var(--en);font-size:clamp(48px,6vw,80px);font-weight:900;line-height:1.05;letter-spacing:-3px;color:var(--white);margin-bottom:24px;}.hero h1 em{font-style:normal;color:var(--lime);}.hero-sub{font-size:18px;line-height:1.7;color:var(--g300);max-width:540px;margin-bottom:40px;}.hero-actions{display:flex;gap:14px;align-items:center;margin-bottom:80px;}.btn-primary{padding:16px 36px;background:var(--lime);color:var(--black);font-family:var(--en);font-weight:800;font-size:15px;text-decoration:none;border-radius:8px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}.btn-primary:hover{background:#e8ff5e;transform:translateY(-1px);box-shadow:0 8px 30px rgba(212,245,60,.2);}.btn-ghost{padding:16px 28px;background:transparent;color:var(--g200);font-family:var(--en);font-weight:600;font-size:14px;text-decoration:none;border:1px solid var(--g500);border-radius:8px;transition:all .2s;}.btn-ghost:hover{border-color:var(--g300);color:var(--white);}
+.hero-visual{position:relative;background:var(--dark2);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.5);}.hero-visual-bar{height:40px;background:var(--dark3);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 16px;gap:8px;}.hero-visual-dot{width:10px;height:10px;border-radius:50%;background:var(--g600);}.hero-visual-content{padding:32px;min-height:400px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}.hv-card{background:var(--dark3);border:1px solid rgba(255,255,255,.06);padding:24px;border-radius:8px;}.hv-card-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--g400);margin-bottom:12px;}.hv-card-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px;}.hv-card-body{font-size:13px;line-height:1.7;color:var(--g400);}.hv-opinion{background:rgba(232,116,10,.08);border:1px solid rgba(232,116,10,.2);padding:20px;border-radius:8px;}.hv-opinion-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8740a;margin-bottom:10px;}.hv-opinion-body{font-size:13px;line-height:1.7;color:var(--g200);}.hv-opinion-body strong{color:var(--white);}.hv-issue{background:rgba(214,48,49,.06);border:1px solid rgba(214,48,49,.15);padding:20px;border-radius:8px;}.hv-issue-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#d63031;margin-bottom:10px;}.hv-issue-body{font-size:13px;line-height:1.7;color:var(--g300);}
+section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--lime);margin-bottom:16px;}.sec-title{font-family:var(--en);font-size:clamp(32px,4vw,48px);font-weight:800;letter-spacing:-2px;color:var(--white);line-height:1.1;margin-bottom:16px;}.sec-desc{font-size:16px;line-height:1.7;color:var(--g300);max-width:560px;margin-bottom:56px;}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}.step{background:var(--dark2);padding:36px 28px;position:relative;border:1px solid rgba(255,255,255,.04);transition:all .3s;}.step:hover{background:var(--dark3);border-color:rgba(255,255,255,.08);}.step-num{font-family:var(--en);font-size:48px;font-weight:900;color:rgba(212,245,60,.1);position:absolute;top:20px;right:20px;line-height:1;}.step-phase{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--lime-dim);margin-bottom:12px;}.step-title{font-size:17px;font-weight:700;color:var(--white);margin-bottom:8px;}.step-body{font-size:13px;line-height:1.7;color:var(--g400);}.step-time{display:inline-block;margin-top:14px;padding:4px 10px;background:var(--lime-bg);border:1px solid var(--lime-border);border-radius:20px;font-size:11px;color:var(--lime);font-weight:500;}
+.planner-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}.planner-list{display:flex;flex-direction:column;gap:16px;}.planner-item{padding:20px 24px;background:var(--dark2);border:1px solid rgba(255,255,255,.04);border-radius:8px;transition:all .3s;cursor:default;}.planner-item:hover{border-color:var(--lime-border);background:var(--dark3);}.planner-item-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px;}.planner-item-desc{font-size:13px;color:var(--g400);line-height:1.5;}.planner-item-vs{font-size:11px;color:var(--g500);margin-top:6px;font-style:italic;}.planner-demo{background:var(--dark2);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:32px;position:relative;overflow:hidden;}.planner-demo::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--lime),transparent);}.pd-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8740a;margin-bottom:16px;}.pd-body{font-size:14px;line-height:1.8;color:var(--g200);}.pd-body strong{color:var(--white);}
+.roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}.role-doc{background:var(--dark2);border:1px solid rgba(255,255,255,.04);padding:28px;border-radius:8px;transition:all .3s;position:relative;overflow:hidden;}.role-doc:hover{border-color:var(--lime-border);transform:translateY(-2px);}.role-doc::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime);opacity:0;transition:opacity .3s;}.role-doc:hover::before{opacity:1;}.role-doc-for{font-family:var(--en);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--lime-dim);margin-bottom:14px;}.role-doc-title{font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;}.role-doc-items{font-size:13px;line-height:1.8;color:var(--g400);}
+.stats-bar{display:flex;justify-content:center;gap:80px;padding:80px 48px;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);}.stat{text-align:center;}.stat-num{font-family:var(--en);font-size:48px;font-weight:900;color:var(--lime);line-height:1;}.stat-label{font-size:13px;color:var(--g400);margin-top:8px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}.price-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);padding:36px;border-radius:12px;position:relative;transition:all .3s;}.price-card:hover{border-color:rgba(255,255,255,.1);}.price-card.featured{border-color:var(--lime-border);background:var(--dark3);}.price-card.featured::before{content:'POPULAR';position:absolute;top:16px;right:16px;font-size:9px;letter-spacing:2px;padding:4px 10px;background:var(--lime);color:var(--black);font-weight:700;border-radius:4px;}.price-name{font-family:var(--en);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--g300);margin-bottom:16px;}.price-amount{font-family:var(--en);font-size:42px;font-weight:900;color:var(--white);line-height:1;}.price-amount span{font-size:14px;font-weight:400;color:var(--g400);}.price-desc{font-size:13px;color:var(--g400);margin:16px 0 24px;line-height:1.5;}.price-features{list-style:none;margin-bottom:28px;}.price-features li{font-size:13px;color:var(--g300);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:8px;}.price-features li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--lime);flex-shrink:0;}.price-btn{display:block;width:100%;padding:14px;text-align:center;font-family:var(--en);font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;transition:all .2s;border:none;cursor:pointer;}.price-btn-lime{background:var(--lime);color:var(--black);}.price-btn-lime:hover{background:#e8ff5e;}.price-btn-outline{background:transparent;border:1px solid var(--g500);color:var(--g200);}.price-btn-outline:hover{border-color:var(--g300);color:var(--white);}
+.final-cta{text-align:center;padding:120px 48px;position:relative;}.final-cta h2{font-family:var(--en);font-size:clamp(36px,5vw,56px);font-weight:900;letter-spacing:-2px;color:var(--white);line-height:1.1;margin-bottom:16px;}.final-cta h2 em{font-style:normal;color:var(--lime);}.final-cta p{font-size:16px;color:var(--g300);margin-bottom:36px;}.final-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(212,245,60,.06),transparent 70%);pointer-events:none;}
+.footer{border-top:1px solid rgba(255,255,255,.06);padding:48px;display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;}.footer-logo svg{height:20px;opacity:.5;}.footer-links{display:flex;gap:24px;}.footer-links a{font-size:12px;color:var(--g500);text-decoration:none;}.footer-links a:hover{color:var(--g300);}.footer-copy{font-size:11px;color:var(--g600);}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}.reveal.visible{opacity:1;transform:translateY(0);}.reveal-d1{transition-delay:.1s;}.reveal-d2{transition-delay:.2s;}.reveal-d3{transition-delay:.3s;}.reveal-d4{transition-delay:.4s;}
+@media(max-width:900px){.nav{padding:0 20px;}.nav-links a:not(.nav-cta){display:none;}section{padding:80px 20px;}.steps{grid-template-columns:1fr 1fr;}.planner-grid{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr 1fr;}.pricing-grid{grid-template-columns:1fr;}.stats-bar{gap:40px;padding:60px 20px;flex-wrap:wrap;}.hero-visual-content{grid-template-columns:1fr;}.footer{flex-direction:column;gap:20px;text-align:center;}}
+@media(max-width:600px){.steps{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr;}.hero{padding:120px 20px 60px;}.hero-actions{flex-direction:column;align-items:flex-start;}}
 </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav class="nav">
-  <div class="nav-logo">
-    <svg viewBox="0 0 232.56 84.15" xmlns="http://www.w3.org/2000/svg">
-      <text font-size="66.39" transform="translate(0 56.73)">
-        <tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan>
-        <tspan x="103.57" y="0" fill="#ffffff" font-family="Outfit" font-weight="500">plan</tspan>
-      </text>
-    </svg>
-  </div>
-  <div class="nav-links">
-    <a href="#how">작동 방식</a>
-    <a href="#planner">AI 기획자</a>
-    <a href="#pricing">가격</a>
-    <a href="app.html" class="nav-cta">무료로 시작하기</a>
+  <div class="nav-logo"><svg viewBox="0 0 232.56 84.15" xmlns="http://www.w3.org/2000/svg"><text font-size="66.39" transform="translate(0 56.73)"><tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan><tspan x="103.57" y="0" fill="#ffffff" font-family="Outfit" font-weight="500">plan</tspan></text></svg></div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#how" data-ko="작동 방식" data-en="How it works">작동 방식</a>
+      <a href="#planner" data-ko="AI 기획자" data-en="AI Planner">AI 기획자</a>
+      <a href="#pricing" data-ko="가격" data-en="Pricing">가격</a>
+      <a href="app.html" class="nav-cta" data-ko="무료로 시작하기" data-en="Get Started Free">무료로 시작하기</a>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn" id="btn-ko" onclick="setLang('ko')">KO</button>
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 </nav>
 
-<!-- HERO -->
 <header class="hero">
-  <div class="hero-badge reveal"><div class="hero-badge-dot"></div>AI-Powered Product Planning</div>
-  <h1 class="reveal reveal-d1">기획자 없이,<br><em>기획서를.</em></h1>
-  <p class="hero-sub reveal reveal-d2">팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지.</p>
+  <div class="hero-badge reveal"><div class="hero-badge-dot"></div><span>AI-Powered Product Planning</span></div>
+  <h1 class="reveal reveal-d1" data-ko="기획자 없이,<br><em>기획서를.</em>" data-en="No planner?<br><em>No problem.</em>">기획자 없이,<br><em>기획서를.</em></h1>
+  <p class="hero-sub reveal reveal-d2" data-ko="팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지." data-en="Your team shares opinions. AI planner judges, synthesizes, and delivers a PRD — with role-specific documents for everyone.">팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지.</p>
   <div class="hero-actions reveal reveal-d3">
-    <a href="app.html" class="btn-primary">무료로 시작하기 →</a>
-    <a href="#how" class="btn-ghost">어떻게 작동하나요?</a>
+    <a href="app.html" class="btn-primary" data-ko="무료로 시작하기 →" data-en="Get Started Free →">무료로 시작하기 →</a>
+    <a href="#how" class="btn-ghost" data-ko="어떻게 작동하나요?" data-en="How does it work?">어떻게 작동하나요?</a>
   </div>
-
   <div class="hero-visual reveal reveal-d4">
-    <div class="hero-visual-bar">
-      <div class="hero-visual-dot"></div>
-      <div class="hero-visual-dot"></div>
-      <div class="hero-visual-dot"></div>
-    </div>
+    <div class="hero-visual-bar"><div class="hero-visual-dot"></div><div class="hero-visual-dot"></div><div class="hero-visual-dot"></div></div>
     <div class="hero-visual-content">
       <div>
-        <div class="hv-card" style="margin-bottom:16px;">
-          <div class="hv-card-label">04 &middot; 기능적 요구사항</div>
-          <div class="hv-card-title">P0 — Must Have</div>
-          <div class="hv-card-body">발주서 생성/발송, 거래처 확인 알림, 현황 대시보드</div>
-        </div>
-        <div class="hv-issue">
-          <div class="hv-issue-label">OPEN ISSUE</div>
-          <div class="hv-issue-body">P0 기능 범위를 어디까지 잡을 것인가 — 경영 관점 5개 vs 기술 관점 3개</div>
-        </div>
+        <div class="hv-card" style="margin-bottom:16px"><div class="hv-card-label" data-ko="04 · 기능적 요구사항" data-en="04 · FUNCTIONAL REQUIREMENTS">04 · 기능적 요구사항</div><div class="hv-card-title">P0 — Must Have</div><div class="hv-card-body" data-ko="발주서 생성/발송, 거래처 확인 알림, 현황 대시보드" data-en="Order creation, vendor alerts, status dashboard">발주서 생성/발송, 거래처 확인 알림, 현황 대시보드</div></div>
+        <div class="hv-issue"><div class="hv-issue-label">OPEN ISSUE</div><div class="hv-issue-body" data-ko="P0 기능 범위를 어디까지 잡을 것인가 — 경영 관점 5개 vs 기술 관점 3개" data-en="How many P0 features? Business wants 5 vs Engineering says 3">P0 기능 범위를 어디까지 잡을 것인가 — 경영 관점 5개 vs 기술 관점 3개</div></div>
       </div>
       <div>
-        <div class="hv-opinion">
-          <div class="hv-opinion-label">PLANNER OPINION</div>
-          <div class="hv-opinion-body"><strong>P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다. 자동 리포트와 거래처 포털은 P2로 내렸습니다.</div>
-        </div>
-        <div class="hv-card" style="margin-top:16px;">
-          <div class="hv-card-label">FOR CEO</div>
-          <div class="hv-card-title">사업 타당성 요약</div>
-          <div class="hv-card-body">월 500만원 손실 제거, ERP 대비 1/6 비용, 4개월 내 구축</div>
-        </div>
+        <div class="hv-opinion"><div class="hv-opinion-label">PLANNER OPINION</div><div class="hv-opinion-body" data-ko="<strong>P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다. 자동 리포트와 거래처 포털은 P2로 내렸습니다." data-en="<strong>P0 is limited to 3.</strong> With $50K and 3 months, 5 P0s are not feasible. Auto-reports and vendor portal moved to P2."><strong>P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다. 자동 리포트와 거래처 포털은 P2로 내렸습니다.</div></div>
+        <div class="hv-card" style="margin-top:16px"><div class="hv-card-label">FOR CEO</div><div class="hv-card-title" data-ko="사업 타당성 요약" data-en="Business Case Summary">사업 타당성 요약</div><div class="hv-card-body" data-ko="월 500만원 손실 제거, ERP 대비 1/6 비용, 4개월 내 구축" data-en="Eliminates $5K/mo losses, 1/6 cost of ERP, built in 4 months">월 500만원 손실 제거, ERP 대비 1/6 비용, 4개월 내 구축</div></div>
       </div>
     </div>
   </div>
 </header>
 
-<!-- STATS -->
 <div class="stats-bar">
-  <div class="stat reveal"><div class="stat-num">64%</div><div class="stat-label">기획 효율 향상</div></div>
-  <div class="stat reveal reveal-d1"><div class="stat-num">3~5min</div><div class="stat-label">인터뷰 소요 시간</div></div>
-  <div class="stat reveal reveal-d2"><div class="stat-num">8</div><div class="stat-label">섹션 PRD 자동 생성</div></div>
-  <div class="stat reveal reveal-d3"><div class="stat-num">4</div><div class="stat-label">역할별 문서 변환</div></div>
+  <div class="stat reveal"><div class="stat-num">64%</div><div class="stat-label" data-ko="기획 효율 향상" data-en="Planning efficiency gain">기획 효율 향상</div></div>
+  <div class="stat reveal reveal-d1"><div class="stat-num">3~5min</div><div class="stat-label" data-ko="인터뷰 소요 시간" data-en="Per-person interview time">인터뷰 소요 시간</div></div>
+  <div class="stat reveal reveal-d2"><div class="stat-num">8</div><div class="stat-label" data-ko="섹션 PRD 자동 생성" data-en="PRD sections generated">섹션 PRD 자동 생성</div></div>
+  <div class="stat reveal reveal-d3"><div class="stat-num">4</div><div class="stat-label" data-ko="역할별 문서 변환" data-en="Role-based docs">역할별 문서 변환</div></div>
 </div>
 
-<!-- HOW IT WORKS -->
 <section id="how">
   <div class="sec-label reveal">How it works</div>
-  <h2 class="sec-title reveal">의견을 모으면,<br>기획서가 나옵니다.</h2>
-  <p class="sec-desc reveal">기획 지식이 없어도 됩니다. 자기 입장만 말하면 AI 기획자가 알아서 판단합니다.</p>
+  <h2 class="sec-title reveal" data-ko="의견을 모으면,<br>기획서가 나옵니다." data-en="Collect opinions.<br>Get a PRD.">의견을 모으면,<br>기획서가 나옵니다.</h2>
+  <p class="sec-desc reveal" data-ko="기획 지식이 없어도 됩니다. 자기 입장만 말하면 AI 기획자가 알아서 판단합니다." data-en="No planning expertise needed. Just share your perspective — the AI planner handles judgment calls.">기획 지식이 없어도 됩니다. 자기 입장만 말하면 AI 기획자가 알아서 판단합니다.</p>
   <div class="steps">
-    <div class="step reveal">
-      <div class="step-num">01</div>
-      <div class="step-phase">Phase 0</div>
-      <div class="step-title">프로젝트 생성</div>
-      <div class="step-body">제품명과 한 줄 설명만 입력하세요. 참여 링크가 자동 생성됩니다. 카톡, 슬랙 어디든 공유하면 됩니다.</div>
-      <div class="step-time">30초</div>
-    </div>
-    <div class="step reveal reveal-d1">
-      <div class="step-num">02</div>
-      <div class="step-phase">Phase 1</div>
-      <div class="step-title">각자 인터뷰</div>
-      <div class="step-body">링크를 받은 팀원들이 각자 AI와 1:1 인터뷰. 역할에 맞는 질문이 자동으로 나옵니다. 로그인 불필요.</div>
-      <div class="step-time">3~5분</div>
-    </div>
-    <div class="step reveal reveal-d2">
-      <div class="step-num">03</div>
-      <div class="step-phase">Phase 2</div>
-      <div class="step-title">AI가 판단하고 정리</div>
-      <div class="step-body">모든 인터뷰를 교차 분석. 일치하는 의견은 확정, 충돌하는 의견은 조정안 제시, 빠진 관점은 직접 지적합니다.</div>
-      <div class="step-time">자동</div>
-    </div>
-    <div class="step reveal reveal-d3">
-      <div class="step-num">04</div>
-      <div class="step-phase">Phase 3</div>
-      <div class="step-title">함께 완성</div>
-      <div class="step-body">PRD를 띄워놓고 회의하세요. 섹션별 피드백을 주면 AI가 영향도 분석 후 수정안을 제시합니다. 반복할수록 완성도가 올라갑니다.</div>
-      <div class="step-time">반복</div>
-    </div>
+    <div class="step reveal"><div class="step-num">01</div><div class="step-phase">Phase 0</div><div class="step-title" data-ko="프로젝트 생성" data-en="Create Project">프로젝트 생성</div><div class="step-body" data-ko="제품명과 한 줄 설명만 입력하세요. 참여 링크가 자동 생성됩니다. 카톡, 슬랙 어디든 공유하면 됩니다." data-en="Enter a product name and one-liner. A shareable link is generated. Send it via Slack, Teams, or any messenger.">제품명과 한 줄 설명만 입력하세요. 참여 링크가 자동 생성됩니다. 카톡, 슬랙 어디든 공유하면 됩니다.</div><div class="step-time">30s</div></div>
+    <div class="step reveal reveal-d1"><div class="step-num">02</div><div class="step-phase">Phase 1</div><div class="step-title" data-ko="각자 인터뷰" data-en="1:1 AI Interviews">각자 인터뷰</div><div class="step-body" data-ko="링크를 받은 팀원들이 각자 AI와 1:1 인터뷰. 역할에 맞는 질문이 자동으로 나옵니다. 로그인 불필요." data-en="Each team member has a private 1:1 interview with AI. Questions adapt to their role. No login required.">링크를 받은 팀원들이 각자 AI와 1:1 인터뷰. 역할에 맞는 질문이 자동으로 나옵니다. 로그인 불필요.</div><div class="step-time">3~5min</div></div>
+    <div class="step reveal reveal-d2"><div class="step-num">03</div><div class="step-phase">Phase 2</div><div class="step-title" data-ko="AI가 판단하고 정리" data-en="AI Judges & Synthesizes">AI가 판단하고 정리</div><div class="step-body" data-ko="모든 인터뷰를 교차 분석. 일치하는 의견은 확정, 충돌하는 의견은 조정안 제시, 빠진 관점은 직접 지적합니다." data-en="Cross-analyzes all interviews. Confirms agreements, resolves conflicts with trade-offs, and flags blind spots.">모든 인터뷰를 교차 분석. 일치하는 의견은 확정, 충돌하는 의견은 조정안 제시, 빠진 관점은 직접 지적합니다.</div><div class="step-time" data-ko="자동" data-en="Auto">자동</div></div>
+    <div class="step reveal reveal-d3"><div class="step-num">04</div><div class="step-phase">Phase 3</div><div class="step-title" data-ko="함께 완성" data-en="Refine Together">함께 완성</div><div class="step-body" data-ko="PRD를 띄워놓고 회의하세요. 섹션별 피드백을 주면 AI가 영향도 분석 후 수정안을 제시합니다." data-en="Open the PRD in a meeting. Give section-level feedback — AI analyzes impact and suggests revisions in real time.">PRD를 띄워놓고 회의하세요. 섹션별 피드백을 주면 AI가 영향도 분석 후 수정안을 제시합니다.</div><div class="step-time" data-ko="반복" data-en="Iterate">반복</div></div>
   </div>
 </section>
 
-<!-- AI PLANNER -->
 <section id="planner">
   <div class="sec-label reveal">AI Planner</div>
-  <h2 class="sec-title reveal">정리만 하는 서기가 아닌,<br>판단하는 <em style="font-style:normal;color:var(--lime)">기획자</em>.</h2>
-  <p class="sec-desc reveal">OnPlan의 AI는 의견을 모아 정리만 하지 않습니다. 우선순위를 판단하고, 트레이드오프를 제시하고, 빠진 관점을 짚어냅니다.</p>
+  <h2 class="sec-title reveal" data-ko="정리만 하는 서기가 아닌,<br>판단하는 <em style='font-style:normal;color:var(--lime)'>기획자</em>." data-en="Not a note-taker.<br>A <em style='font-style:normal;color:var(--lime)'>decision-maker</em>.">정리만 하는 서기가 아닌,<br>판단하는 <em style="font-style:normal;color:var(--lime)">기획자</em>.</h2>
+  <p class="sec-desc reveal" data-ko="OnPlan의 AI는 의견을 모아 정리만 하지 않습니다. 우선순위를 판단하고, 트레이드오프를 제시하고, 빠진 관점을 짚어냅니다." data-en="OnPlan's AI doesn't just organize opinions. It prioritizes, presents trade-offs, and catches what your team missed.">OnPlan의 AI는 의견을 모아 정리만 하지 않습니다. 우선순위를 판단하고, 트레이드오프를 제시하고, 빠진 관점을 짚어냅니다.</p>
   <div class="planner-grid">
     <div class="planner-list">
-      <div class="planner-item reveal">
-        <div class="planner-item-title">우선순위 판단</div>
-        <div class="planner-item-desc">"이 기능은 P0이 아니라 P2입니다. 예산과 일정 기준으로 불가능합니다."</div>
-        <div class="planner-item-vs">서기: "대표님이 P0이라고 하셨습니다"</div>
-      </div>
-      <div class="planner-item reveal reveal-d1">
-        <div class="planner-item-title">충돌 조정</div>
-        <div class="planner-item-desc">"일정 의견이 다릅니다. 기능 범위 기준으로 4개월이 현실적입니다."</div>
-        <div class="planner-item-vs">서기: "의견이 다릅니다"</div>
-      </div>
-      <div class="planner-item reveal reveal-d2">
-        <div class="planner-item-title">누락 지적</div>
-        <div class="planner-item-desc">"접근 권한에 대한 의견이 아무도 없었습니다. 결정이 필요합니다."</div>
-        <div class="planner-item-vs">서기: (아예 못 짚음)</div>
-      </div>
-      <div class="planner-item reveal reveal-d3">
-        <div class="planner-item-title">트레이드오프 제시</div>
-        <div class="planner-item-desc">"넣으면 일정이 1개월 늘어납니다. 대신 이걸 빼면 현행 유지 가능합니다."</div>
-        <div class="planner-item-vs">서기: "넣겠습니다"</div>
-      </div>
+      <div class="planner-item reveal"><div class="planner-item-title" data-ko="우선순위 판단" data-en="Priority Judgment">우선순위 판단</div><div class="planner-item-desc" data-ko="&quot;이 기능은 P0이 아니라 P2입니다. 예산과 일정 기준으로 불가능합니다.&quot;" data-en="&quot;This feature is P2, not P0. Budget and timeline make it infeasible.&quot;">"이 기능은 P0이 아니라 P2입니다. 예산과 일정 기준으로 불가능합니다."</div><div class="planner-item-vs" data-ko="서기: &quot;대표님이 P0이라고 하셨습니다&quot;" data-en="Note-taker: &quot;The CEO said it's P0&quot;">서기: "대표님이 P0이라고 하셨습니다"</div></div>
+      <div class="planner-item reveal reveal-d1"><div class="planner-item-title" data-ko="충돌 조정" data-en="Conflict Resolution">충돌 조정</div><div class="planner-item-desc" data-ko="&quot;일정 의견이 다릅니다. 기능 범위 기준으로 4개월이 현실적입니다.&quot;" data-en="&quot;Timeline opinions differ. Based on scope, 4 months is realistic.&quot;">"일정 의견이 다릅니다. 기능 범위 기준으로 4개월이 현실적입니다."</div><div class="planner-item-vs" data-ko="서기: &quot;의견이 다릅니다&quot;" data-en="Note-taker: &quot;Opinions differ&quot;">서기: "의견이 다릅니다"</div></div>
+      <div class="planner-item reveal reveal-d2"><div class="planner-item-title" data-ko="누락 지적" data-en="Gap Detection">누락 지적</div><div class="planner-item-desc" data-ko="&quot;접근 권한에 대한 의견이 아무도 없었습니다. 결정이 필요합니다.&quot;" data-en="&quot;No one mentioned access permissions. A decision is needed.&quot;">"접근 권한에 대한 의견이 아무도 없었습니다. 결정이 필요합니다."</div><div class="planner-item-vs" data-ko="서기: (아예 못 짚음)" data-en="Note-taker: (missed entirely)">서기: (아예 못 짚음)</div></div>
+      <div class="planner-item reveal reveal-d3"><div class="planner-item-title" data-ko="트레이드오프 제시" data-en="Trade-off Analysis">트레이드오프 제시</div><div class="planner-item-desc" data-ko="&quot;넣으면 일정이 1개월 늘어납니다. 대신 이걸 빼면 현행 유지 가능합니다.&quot;" data-en="&quot;Adding this extends timeline by 1 month. Removing X keeps it on track.&quot;">"넣으면 일정이 1개월 늘어납니다. 대신 이걸 빼면 현행 유지 가능합니다."</div><div class="planner-item-vs" data-ko="서기: &quot;넣겠습니다&quot;" data-en="Note-taker: &quot;We'll add it&quot;">서기: "넣겠습니다"</div></div>
     </div>
     <div class="planner-demo reveal">
-      <div class="pd-label">PLANNER OPINION — 04. 기능적 요구사항</div>
-      <div class="pd-body">
-        <strong>대표 요청 5개 중 P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다. P0 5개를 원하시면 예산 800만원 또는 일정 5개월이 필요합니다.<br><br>
-        자동 리포트와 거래처 포털은 P2로 내렸습니다. 둘 다 "있으면 좋겠다"이지 <strong>"없으면 안 된다"가 아닙니다.</strong>
-      </div>
+      <div class="pd-label" data-ko="PLANNER OPINION — 04. 기능적 요구사항" data-en="PLANNER OPINION — 04. FUNCTIONAL REQUIREMENTS">PLANNER OPINION — 04. 기능적 요구사항</div>
+      <div class="pd-body" data-ko="<strong>대표 요청 5개 중 P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다.<br><br>자동 리포트와 거래처 포털은 P2로 내렸습니다. 둘 다 &quot;있으면 좋겠다&quot;이지 <strong>&quot;없으면 안 된다&quot;가 아닙니다.</strong>" data-en="<strong>Out of 5 CEO requests, P0 is limited to 3.</strong> With $50K and 3 months, 5 P0s are not possible.<br><br>Auto-reports and vendor portal moved to P2. Both are &quot;nice to have,&quot; not <strong>&quot;must have.&quot;</strong>"><strong>대표 요청 5개 중 P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다.<br><br>자동 리포트와 거래처 포털은 P2로 내렸습니다. 둘 다 "있으면 좋겠다"이지 <strong>"없으면 안 된다"가 아닙니다.</strong></div>
     </div>
   </div>
 </section>
 
-<!-- ROLE DOCUMENTS -->
 <section id="roles">
   <div class="sec-label reveal">Role-Based Documents</div>
-  <h2 class="sec-title reveal">PRD 하나로 끝이 아닙니다.<br>각자가 쓸 수 있는 문서로.</h2>
-  <p class="sec-desc reveal">PRD는 기획자의 언어입니다. OnPlan은 기획서를 각 역할이 바로 쓸 수 있는 형태로 변환합니다.</p>
+  <h2 class="sec-title reveal" data-ko="PRD 하나로 끝이 아닙니다.<br>각자가 쓸 수 있는 문서로." data-en="One PRD isn't enough.<br>Everyone gets their own doc.">PRD 하나로 끝이 아닙니다.<br>각자가 쓸 수 있는 문서로.</h2>
+  <p class="sec-desc reveal" data-ko="PRD는 기획자의 언어입니다. OnPlan은 기획서를 각 역할이 바로 쓸 수 있는 형태로 변환합니다." data-en="A PRD speaks the planner's language. OnPlan translates it into docs each role can actually use.">PRD는 기획자의 언어입니다. OnPlan은 기획서를 각 역할이 바로 쓸 수 있는 형태로 변환합니다.</p>
   <div class="roles-grid">
-    <div class="role-doc reveal">
-      <div class="role-doc-for">For CEO</div>
-      <div class="role-doc-title">사업 타당성 요약</div>
-      <div class="role-doc-items">투자 대비 효과, 리스크, 의사결정 필요 사항. 대표가 "이거 해야 돼?"를 판단할 수 있는 문서.</div>
-    </div>
-    <div class="role-doc reveal reveal-d1">
-      <div class="role-doc-for">For Dev</div>
-      <div class="role-doc-title">기술 요구사항</div>
-      <div class="role-doc-items">P0 기능 명세, IA 구조, 기술 제약, 일정. 개발자가 바로 착수할 수 있는 문서.</div>
-    </div>
-    <div class="role-doc reveal reveal-d2">
-      <div class="role-doc-for">For Design</div>
-      <div class="role-doc-title">UX 요구사항</div>
-      <div class="role-doc-items">페르소나, 사용자 여정, 핵심 플로우, UX 원칙. 디자이너가 방향 잡을 수 있는 문서.</div>
-    </div>
-    <div class="role-doc reveal reveal-d3">
-      <div class="role-doc-for">For Sales</div>
-      <div class="role-doc-title">제품 소개 요약</div>
-      <div class="role-doc-items">해결하는 문제, 핵심 기능, 차별점. 영업이 고객에게 설명할 수 있는 문서.</div>
-    </div>
+    <div class="role-doc reveal"><div class="role-doc-for">For CEO</div><div class="role-doc-title" data-ko="사업 타당성 요약" data-en="Business Case">사업 타당성 요약</div><div class="role-doc-items" data-ko="투자 대비 효과, 리스크, 의사결정 필요 사항." data-en="ROI, risks, and decisions needed. The doc to say go or no-go.">투자 대비 효과, 리스크, 의사결정 필요 사항.</div></div>
+    <div class="role-doc reveal reveal-d1"><div class="role-doc-for">For Dev</div><div class="role-doc-title" data-ko="기술 요구사항" data-en="Technical Spec">기술 요구사항</div><div class="role-doc-items" data-ko="P0 기능 명세, IA 구조, 기술 제약, 일정." data-en="P0 specs, IA, constraints, timeline. Ready to build.">P0 기능 명세, IA 구조, 기술 제약, 일정.</div></div>
+    <div class="role-doc reveal reveal-d2"><div class="role-doc-for">For Design</div><div class="role-doc-title" data-ko="UX 요구사항" data-en="UX Requirements">UX 요구사항</div><div class="role-doc-items" data-ko="페르소나, 사용자 여정, 핵심 플로우, UX 원칙." data-en="Personas, journeys, key flows, UX principles.">페르소나, 사용자 여정, 핵심 플로우, UX 원칙.</div></div>
+    <div class="role-doc reveal reveal-d3"><div class="role-doc-for">For Sales</div><div class="role-doc-title" data-ko="제품 소개 요약" data-en="Product Brief">제품 소개 요약</div><div class="role-doc-items" data-ko="해결하는 문제, 핵심 기능, 차별점." data-en="Problem, features, differentiators. Ready to pitch.">해결하는 문제, 핵심 기능, 차별점.</div></div>
   </div>
 </section>
 
-<!-- PRICING -->
 <section id="pricing">
   <div class="sec-label reveal">Pricing</div>
-  <h2 class="sec-title reveal">기획자 월급 대신,<br>OnPlan.</h2>
-  <p class="sec-desc reveal">기획자 1명 채용 비용의 1/100로 시작하세요.</p>
+  <h2 class="sec-title reveal" data-ko="기획자 월급 대신,<br>OnPlan." data-en="Instead of hiring a planner,<br>OnPlan.">기획자 월급 대신,<br>OnPlan.</h2>
+  <p class="sec-desc reveal" data-ko="기획자 1명 채용 비용의 1/100로 시작하세요." data-en="Start at 1/100th the cost of hiring a product planner.">기획자 1명 채용 비용의 1/100로 시작하세요.</p>
   <div class="pricing-grid">
     <div class="price-card reveal">
       <div class="price-name">Trial</div>
-      <div class="price-amount">₩0</div>
-      <div class="price-desc">기획서가 진짜 나오는지 직접 확인하세요.</div>
+      <div class="price-amount" data-ko="₩0" data-en="$0">₩0</div>
+      <div class="price-desc" data-ko="기획서가 진짜 나오는지 직접 확인하세요." data-en="See if it actually works. No credit card.">기획서가 진짜 나오는지 직접 확인하세요.</div>
       <ul class="price-features">
-        <li>프로젝트 1건</li>
-        <li>참여자 3명</li>
-        <li>PRD 1회 생성</li>
-        <li>기획자 의견 2개 섹션</li>
-        <li>역할별 문서 미리보기</li>
+        <li data-ko="프로젝트 1건" data-en="1 project">프로젝트 1건</li>
+        <li data-ko="참여자 3명" data-en="Up to 3 participants">참여자 3명</li>
+        <li data-ko="PRD 1회 생성" data-en="1 PRD generation">PRD 1회 생성</li>
+        <li data-ko="기획자 의견 2개 섹션" data-en="Planner opinions — 2 sections">기획자 의견 2개 섹션</li>
+        <li data-ko="역할별 문서 미리보기" data-en="Role docs preview">역할별 문서 미리보기</li>
       </ul>
-      <a href="app.html" class="price-btn price-btn-outline">체험하기</a>
+      <a href="app.html" class="price-btn price-btn-outline" data-ko="체험하기" data-en="Try Free">체험하기</a>
     </div>
     <div class="price-card featured reveal reveal-d1">
       <div class="price-name">Team</div>
-      <div class="price-amount">₩49,000<span> /월</span></div>
-      <div class="price-desc">팀과 함께 기획을 완성하세요.</div>
+      <div class="price-amount" data-ko="₩49,000<span> /월</span>" data-en="$39<span> /mo</span>">₩49,000<span> /월</span></div>
+      <div class="price-desc" data-ko="팀과 함께 기획을 완성하세요." data-en="Complete planning with your team.">팀과 함께 기획을 완성하세요.</div>
       <ul class="price-features">
-        <li>무제한 프로젝트</li>
-        <li>참여자 10명</li>
-        <li>무제한 PRD 수정</li>
-        <li>기획자 의견 전체</li>
-        <li>역할별 문서 4종</li>
-        <li>팀 코멘트 + AI 반영</li>
+        <li data-ko="무제한 프로젝트" data-en="Unlimited projects">무제한 프로젝트</li>
+        <li data-ko="참여자 10명" data-en="Up to 10 participants">참여자 10명</li>
+        <li data-ko="무제한 PRD 수정" data-en="Unlimited revisions">무제한 PRD 수정</li>
+        <li data-ko="기획자 의견 전체" data-en="Full planner opinions">기획자 의견 전체</li>
+        <li data-ko="역할별 문서 4종" data-en="4 role-based documents">역할별 문서 4종</li>
+        <li data-ko="팀 코멘트 + AI 반영" data-en="Team comments + AI revisions">팀 코멘트 + AI 반영</li>
       </ul>
-      <a href="app.html" class="price-btn price-btn-lime">시작하기</a>
+      <a href="app.html" class="price-btn price-btn-lime" data-ko="시작하기" data-en="Get Started">시작하기</a>
     </div>
     <div class="price-card reveal reveal-d2">
       <div class="price-name">Pro</div>
-      <div class="price-amount">₩99,000<span> /월</span></div>
-      <div class="price-desc">조직 전체의 기획 인프라.</div>
+      <div class="price-amount" data-ko="₩99,000<span> /월</span>" data-en="$79<span> /mo</span>">₩99,000<span> /월</span></div>
+      <div class="price-desc" data-ko="조직 전체의 기획 인프라." data-en="Planning infrastructure for your org.">조직 전체의 기획 인프라.</div>
       <ul class="price-features">
-        <li>무제한 프로젝트</li>
-        <li>무제한 참여자</li>
-        <li>무제한 PRD 수정</li>
-        <li>기획자 의견 전체</li>
-        <li>역할별 문서 4종</li>
-        <li>HTML 데모 자동 생성</li>
+        <li data-ko="무제한 프로젝트" data-en="Unlimited projects">무제한 프로젝트</li>
+        <li data-ko="무제한 참여자" data-en="Unlimited participants">무제한 참여자</li>
+        <li data-ko="무제한 PRD 수정" data-en="Unlimited revisions">무제한 PRD 수정</li>
+        <li data-ko="기획자 의견 전체" data-en="Full planner opinions">기획자 의견 전체</li>
+        <li data-ko="역할별 문서 4종" data-en="4 role-based documents">역할별 문서 4종</li>
+        <li data-ko="HTML 데모 자동 생성" data-en="Auto HTML prototype generation">HTML 데모 자동 생성</li>
       </ul>
-      <a href="#start" class="price-btn price-btn-outline">문의하기</a>
+      <a href="#" class="price-btn price-btn-outline" data-ko="문의하기" data-en="Contact Us">문의하기</a>
     </div>
   </div>
 </section>
 
-<!-- FINAL CTA -->
 <div class="final-cta" id="start">
   <div class="final-glow"></div>
-  <h2 class="reveal">기획서, <em>의견만 모으면</em><br>나머지는 AI가.</h2>
-  <p class="reveal reveal-d1">지금 바로 프로젝트를 만들고 팀에 공유하세요.</p>
-  <a href="app.html" class="btn-primary reveal reveal-d2">무료로 시작하기 →</a>
+  <h2 class="reveal" data-ko="기획서, <em>의견만 모으면</em><br>나머지는 AI가." data-en="Just collect opinions.<br><em>AI handles the rest.</em>">기획서, <em>의견만 모으면</em><br>나머지는 AI가.</h2>
+  <p class="reveal reveal-d1" data-ko="지금 바로 프로젝트를 만들고 팀에 공유하세요." data-en="Create a project now and share with your team.">지금 바로 프로젝트를 만들고 팀에 공유하세요.</p>
+  <a href="app.html" class="btn-primary reveal reveal-d2" data-ko="무료로 시작하기 →" data-en="Get Started Free →">무료로 시작하기 →</a>
 </div>
 
-<!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-logo">
-    <svg viewBox="0 0 165 60" xmlns="http://www.w3.org/2000/svg">
-      <text font-size="47" transform="translate(0 40)">
-        <tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan>
-        <tspan fill="#555" font-family="Outfit" font-weight="500">hae</tspan>
-      </text>
-    </svg>
-  </div>
-  <div class="footer-links">
-    <a href="#">이용약관</a>
-    <a href="#">개인정보처리방침</a>
-    <a href="#">고객지원</a>
-  </div>
+  <div class="footer-logo"><svg viewBox="0 0 165 60" xmlns="http://www.w3.org/2000/svg"><text font-size="47" transform="translate(0 40)"><tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan><tspan fill="#555" font-family="Outfit" font-weight="500">hae</tspan></text></svg></div>
+  <div class="footer-links"><a href="#" data-ko="이용약관" data-en="Terms">이용약관</a><a href="#" data-ko="개인정보처리방침" data-en="Privacy">개인정보처리방침</a><a href="#" data-ko="고객지원" data-en="Support">고객지원</a></div>
   <div class="footer-copy">&copy; 2026 ONhae. All rights reserved.</div>
 </footer>
 
 <script>
-// Scroll reveal
-const obs=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
-},{threshold:.15});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    e.preventDefault();
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t)t.scrollIntoView({behavior:'smooth'});
+let currentLang='en';
+function setLang(lang){
+  currentLang=lang;
+  document.getElementById('btn-ko').classList.toggle('active',lang==='ko');
+  document.getElementById('btn-en').classList.toggle('active',lang==='en');
+  document.querySelectorAll('[data-'+lang+']').forEach(el=>{
+    const val=el.getAttribute('data-'+lang);
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA')el.placeholder=val;
+    else el.innerHTML=val;
   });
-});
+  document.documentElement.lang=lang;
+  document.title=lang==='ko'?'OnPlan — 기획자 없이, 기획서를.':'OnPlan — No planner? No problem.';
+}
+setLang('en');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});});
 </script>
 </body>
 </html>
