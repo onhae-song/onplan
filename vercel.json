@@ -1,0 +1,8 @@
+{
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "routes": [
+    { "src": "/app", "dest": "/app.html" },
+    { "src": "/", "dest": "/index.html" }
+  ]
+}
