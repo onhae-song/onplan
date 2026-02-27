@@ -937,7 +937,7 @@ function submitEarlyAccess(){
   const email=document.getElementById('ea-email').value.trim();
   if(!email||!email.includes('@')){document.getElementById('ea-email').style.borderColor='#d63031';return;}
   // Google Sheets webhook placeholder — replace URL with actual Apps Script web app URL
-  const WEBHOOK_URL='';
+  const WEBHOOK_URL='https://script.google.com/macros/s/AKfycbzxA8AAw-V_AnEJ-9WPdgGjEnmNXVQDHNNFq47HutGNT5h3Td-vD97E-tBxs5H_GgfA8Q/exec';
   if(WEBHOOK_URL){
     fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,timestamp:new Date().toISOString(),source:'onplan-demo'})});
   }
