@@ -743,8 +743,41 @@ function toggleRoleDoc(id){
 }
 
 // Watch for PRD page activation
-const obs=new MutationObserver(()=>{if(document.getElementById('p-prd').classList.contains('active'))renderPRD();});
+const obs=new MutationObserver(()=>{if(document.getElementById('p-prd').classList.contains('active')){renderPRD();setTimeout(()=>document.getElementById('early-access-bar').classList.add('visible'),3000);}});
 obs.observe(document.getElementById('p-prd'),{attributes:true,attributeFilter:['class']});
+</script>
+
+<!-- Early Access Bar -->
+<style>
+.ea-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(212,245,60,.2);padding:16px 32px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:200;transform:translateY(100%);transition:transform .4s ease;}.ea-bar.visible{transform:translateY(0);}
+.ea-bar-text{font-size:14px;color:var(--g200);font-weight:500;}.ea-bar-text strong{color:var(--lime);}
+.ea-bar-form{display:flex;gap:8px;}
+.ea-bar-input{padding:10px 16px;background:var(--dark3);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:var(--white);font-size:13px;font-family:var(--kr);outline:none;width:240px;}.ea-bar-input:focus{border-color:var(--lime);}
+.ea-bar-btn{padding:10px 24px;background:var(--lime);color:var(--black);font-family:var(--en);font-weight:700;font-size:13px;border:none;border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap;}.ea-bar-btn:hover{background:#e8ff5e;}
+.ea-bar-close{background:none;border:none;color:var(--g500);font-size:18px;cursor:pointer;padding:0 0 0 8px;}.ea-bar-close:hover{color:var(--g300);}
+.ea-bar-success{color:var(--lime);font-size:14px;font-weight:600;}
+@media(max-width:700px){.ea-bar{flex-wrap:wrap;padding:14px 16px;gap:10px;}.ea-bar-input{width:160px;}}
+</style>
+<div id="early-access-bar" class="ea-bar">
+  <span class="ea-bar-text"><strong>Want this for your team?</strong> Get early access.</span>
+  <div class="ea-bar-form" id="ea-form">
+    <input type="email" class="ea-bar-input" id="ea-email" placeholder="you@company.com">
+    <button class="ea-bar-btn" onclick="submitEarlyAccess()">Request Access</button>
+  </div>
+  <button class="ea-bar-close" onclick="document.getElementById('early-access-bar').classList.remove('visible')">&times;</button>
+</div>
+<script>
+function submitEarlyAccess(){
+  const email=document.getElementById('ea-email').value.trim();
+  if(!email||!email.includes('@')){document.getElementById('ea-email').style.borderColor='#d63031';return;}
+  // Google Sheets webhook placeholder — replace URL with actual Apps Script web app URL
+  const WEBHOOK_URL='';
+  if(WEBHOOK_URL){
+    fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,timestamp:new Date().toISOString(),source:'onplan-demo'})});
+  }
+  document.getElementById('ea-form').innerHTML='<span class="ea-bar-success">✓ You\'re on the list. We\'ll be in touch.</span>';
+  console.log('Early access request:',email);
+}
 </script>
 </body>
 </html>
