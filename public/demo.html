@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a0a0a'/><text x='3' y='23' font-family='Arial' font-weight='bold' font-size='18' fill='%23d4f53c'>On</text></svg>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OnPlan — AI 프로덕 기획자</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -603,7 +604,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
         <div class="footer-contact">
           <div class="footer-contact-item">
             <span class="footer-label">Email</span>
-            <a href="mailto:onhaesong@gmail.com">onhaesong@gmail.com</a>
+            <a href="/cdn-cgi/l/email-protection#6b0405030a0e1804050c2b0c060a020745080406"><span class="__cf_email__" data-cfemail="7e1110161f1b0d1110193e19131f1712501d1113">[email&#160;protected]</span></a>
           </div>
           <div class="footer-contact-item">
             <span class="footer-label">Tel</span>
@@ -619,7 +620,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ===== DATA =====
 let appLang=(new URLSearchParams(window.location.search).get('lang'))||'ko';
 
@@ -987,12 +988,4 @@ function submitEarlyAccess(){
   if(!email||!email.includes('@')){document.getElementById('ea-email').style.borderColor='#ff6b6b';return;}
   const WEBHOOK_URL='https://script.google.com/macros/s/AKfycbzxA8AAw-V_AnEJ-9WPdgGjEnmNXVQDHNNFq47HutGNT5h3Td-vD97E-tBxs5H_GgfA8Q/exec';
   if(WEBHOOK_URL){
-    fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,timestamp:new Date().toISOString(),source:'onplan-demo'})});
-  }
-  document.getElementById('ea-form').classList.add('hidden');
-  document.getElementById('ea-success').classList.remove('hidden');
-  console.log('Early access request:',email);
-}
-</script>
-</body>
-</html>
+    fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,timestamp:new Date().toISO
