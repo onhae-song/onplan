@@ -6,6 +6,8 @@
 <title>OnPlan — AI 프로덕 기획자</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+.lang-en{display:none;}.lang-ko{display:block;}
+body.en .lang-en{display:block;}body.en .lang-ko{display:none;}
 :root{
   --bg:#f5f5f7;--white:#fff;--black:#111;
   --accent:#a8cc00;--accent-bright:#d4f53c;
@@ -245,13 +247,13 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 <div id="p-create" class="page active">
   <div class="center-sm">
     <div class="tag">New Project</div>
-    <h1 class="title">팀의 의견을<br><em>기획서로.</em></h1>
-    <p class="desc">프로젝트를 만들고 팀에 공유하세요.<br>각자 의견을 말하면 AI 기획자가 판단하고 정리합니다.</p>
+    <h1 class="title" data-ko="팀의 의견을<br><em>기획서로.</em>" data-en="Turn opinions<br>into a <em>PRD.</em>">팀의 의견을<br><em>기획서로.</em></h1>
+    <p class="desc" data-ko="프로젝트를 만들고 팀에 공유하세요.<br>각자 의견을 말하면 AI 기획자가 판단하고 정리합니다." data-en="Create a project and share with your team.<br>Each person shares their view — AI planner judges and synthesizes.">프로젝트를 만들고 팀에 공유하세요.<br>각자 의견을 말하면 AI 기획자가 판단하고 정리합니다.</p>
     <div class="card">
-      <div class="card-title">프로젝트 생성</div>
-      <div class="ff"><label class="fl">제품 이름 <span class="req">*</span></label><input id="pj-name" class="fi" placeholder="예: 발주 관리 시스템"></div>
-      <div class="ff" style="margin-bottom:24px"><label class="fl">한 줄 설명</label><input id="pj-desc" class="fi" placeholder="예: 거래처 발주를 한곳에서 관리하는 시스템"></div>
-      <button class="btn" onclick="createProject()">프로젝트 생성</button>
+      <div class="card-title" data-ko="프로젝트 생성" data-en="Create Project">프로젝트 생성</div>
+      <div class="ff"><label class="fl" data-ko="제품 이름 <span class='req'>*</span>" data-en="Product Name <span class='req'>*</span>">제품 이름 <span class="req">*</span></label><input id="pj-name" class="fi" data-ko-ph="예: 발주 관리 시스템" data-en-ph="e.g. Order Management System" placeholder="예: 발주 관리 시스템"></div>
+      <div class="ff" style="margin-bottom:24px"><label class="fl" data-ko="한 줄 설명" data-en="One-liner">한 줄 설명</label><input id="pj-desc" class="fi" data-ko-ph="예: 거래처 발주를 한곳에서 관리하는 시스템" data-en-ph="e.g. Manage vendor orders in one place" placeholder="예: 거래처 발주를 한곳에서 관리하는 시스템"></div>
+      <button class="btn" onclick="createProject()" data-ko="프로젝트 생성" data-en="Create Project">프로젝트 생성</button>
     </div>
   </div>
 </div>
@@ -260,15 +262,15 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 <div id="p-link" class="page">
   <div class="center-sm">
     <div class="complete-check">V</div>
-    <div class="complete-title">프로젝트가 생성되었습니다</div>
-    <div class="complete-desc">아래 링크를 팀원들에게 공유하세요.<br>각자 자기 입장에서 AI와 인터뷰하면 됩니다.</div>
+    <div class="complete-title" data-ko="프로젝트가 생성되었습니다" data-en="Project created">프로젝트가 생성되었습니다</div>
+    <div class="complete-desc" data-ko="아래 링크를 팀원들에게 공유하세요.<br>각자 자기 입장에서 AI와 인터뷰하면 됩니다." data-en="Share this link with your team.<br>Each member interviews with AI from their own perspective.">아래 링크를 팀원들에게 공유하세요.<br>각자 자기 입장에서 AI와 인터뷰하면 됩니다.</div>
     <div class="link-box">
-      <div class="link-url">onplan.onhae.com/join/a7f3k2</div>
-      <button class="link-copy" onclick="this.textContent='Copied'">복사</button>
+      <div class="link-url">onplan.onhae.studio/join/a7f3k2</div>
+      <button class="link-copy" onclick="this.textContent='Copied'" data-ko="복사" data-en="Copy">복사</button>
     </div>
-    <p style="font-size:12px;color:var(--g500);margin-bottom:24px;line-height:1.6">카카오톡, 슬랙 등 어디든 링크를 붙여넣으면 됩니다.<br>참여자는 로그인 없이 바로 시작할 수 있습니다.</p>
-    <button class="btn" onclick="go('p-landing')">참여자 화면 미리보기</button>
-    <button class="btn" style="background:var(--white);color:var(--black);border:1px solid var(--border);margin-top:8px" onclick="go('p-dash')">오너 대시보드</button>
+    <p style="font-size:12px;color:var(--g500);margin-bottom:24px;line-height:1.6" data-ko="카카오톡, 슬랙 등 어디든 링크를 붙여넣으면 됩니다.<br>참여자는 로그인 없이 바로 시작할 수 있습니다." data-en="Paste this link anywhere — Slack, Teams, email.<br>Participants can start immediately without logging in.">카카오톡, 슬랙 등 어디든 링크를 붙여넣으면 됩니다.<br>참여자는 로그인 없이 바로 시작할 수 있습니다.</p>
+    <button class="btn" onclick="go('p-landing')" data-ko="참여자 화면 미리보기" data-en="Preview participant view">참여자 화면 미리보기</button>
+    <button class="btn" style="background:var(--white);color:var(--black);border:1px solid var(--border);margin-top:8px" onclick="go('p-dash')" data-ko="오너 대시보드" data-en="Owner Dashboard">오너 대시보드</button>
   </div>
 </div>
 
@@ -276,21 +278,21 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 <div id="p-landing" class="page">
   <div class="center-sm">
     <div class="tag" id="pj-name-display">발주 관리 시스템</div>
-    <h1 class="title" style="font-size:28px">의견을<br>들려주세요.</h1>
-    <p class="desc" style="font-size:14px">AI 기획자가 질문합니다. 3~5분이면 끝나요.<br>기획 지식 없이 자기 입장만 말하면 됩니다.</p>
+    <h1 class="title" style="font-size:28px" data-ko="의견을<br>들려주세요." data-en="Share your<br>perspective.">의견을<br>들려주세요.</h1>
+    <p class="desc" style="font-size:14px" data-ko="AI 기획자가 질문합니다. 3~5분이면 끝나요.<br>기획 지식 없이 자기 입장만 말하면 됩니다." data-en="AI planner will ask questions. Takes 3–5 minutes.<br>No planning expertise needed — just share your view.">AI 기획자가 질문합니다. 3~5분이면 끝나요.<br>기획 지식 없이 자기 입장만 말하면 됩니다.</p>
     <div class="card">
-      <div class="card-title">참여 정보</div>
-      <div class="ff"><label class="fl">이름 <span class="req">*</span></label><input id="pt-name" class="fi" placeholder="홍길동"></div>
-      <div class="ff" style="margin-bottom:4px"><label class="fl">역할 <span class="req">*</span></label></div>
+      <div class="card-title" data-ko="참여 정보" data-en="Participant Info">참여 정보</div>
+      <div class="ff"><label class="fl" data-ko="이름 <span class='req'>*</span>" data-en="Name <span class='req'>*</span>">이름 <span class="req">*</span></label><input id="pt-name" class="fi" data-ko-ph="홍길동" data-en-ph="John Doe" placeholder="홍길동"></div>
+      <div class="ff" style="margin-bottom:4px"><label class="fl" data-ko="역할 <span class='req'>*</span>" data-en="Role <span class='req'>*</span>">역할 <span class="req">*</span></label></div>
       <div class="roles" id="role-grid">
-        <div class="role-card" data-role="ceo" onclick="selectRole(this)"><div class="role-card-name">대표 / PM</div><div class="role-card-desc">사업 방향, 예산, 일정</div></div>
-        <div class="role-card" data-role="dev" onclick="selectRole(this)"><div class="role-card-name">개발</div><div class="role-card-desc">기술 스택, 제약, 일정</div></div>
-        <div class="role-card" data-role="design" onclick="selectRole(this)"><div class="role-card-name">디자인</div><div class="role-card-desc">UX 원칙, 참고 서비스</div></div>
-        <div class="role-card" data-role="sales" onclick="selectRole(this)"><div class="role-card-name">영업 / CS</div><div class="role-card-desc">고객 불평, 경쟁사</div></div>
-        <div class="role-card" data-role="user" onclick="selectRole(this)"><div class="role-card-name">실사용자</div><div class="role-card-desc">현재 업무, 불편한 점</div></div>
-        <div class="role-card" data-role="other" onclick="selectRole(this)"><div class="role-card-name">기타</div><div class="role-card-desc">자유 의견</div></div>
+        <div class="role-card" data-role="ceo" onclick="selectRole(this)"><div class="role-card-name" data-ko="대표 / PM" data-en="CEO / PM">대표 / PM</div><div class="role-card-desc" data-ko="사업 방향, 예산, 일정" data-en="Vision, budget, timeline">사업 방향, 예산, 일정</div></div>
+        <div class="role-card" data-role="dev" onclick="selectRole(this)"><div class="role-card-name" data-ko="개발" data-en="Engineering">개발</div><div class="role-card-desc" data-ko="기술 스택, 제약, 일정" data-en="Tech stack, constraints">기술 스택, 제약, 일정</div></div>
+        <div class="role-card" data-role="design" onclick="selectRole(this)"><div class="role-card-name" data-ko="디자인" data-en="Design">디자인</div><div class="role-card-desc" data-ko="UX 원칙, 참고 서비스" data-en="UX principles, references">UX 원칙, 참고 서비스</div></div>
+        <div class="role-card" data-role="sales" onclick="selectRole(this)"><div class="role-card-name" data-ko="영업 / CS" data-en="Sales / CS">영업 / CS</div><div class="role-card-desc" data-ko="고객 불평, 경쟁사" data-en="Customer pain, competitors">고객 불평, 경쟁사</div></div>
+        <div class="role-card" data-role="user" onclick="selectRole(this)"><div class="role-card-name" data-ko="실사용자" data-en="End User">실사용자</div><div class="role-card-desc" data-ko="현재 업무, 불편한 점" data-en="Current workflow, pain points">현재 업무, 불편한 점</div></div>
+        <div class="role-card" data-role="other" onclick="selectRole(this)"><div class="role-card-name" data-ko="기타" data-en="Other">기타</div><div class="role-card-desc" data-ko="자유 의견" data-en="Open feedback">자유 의견</div></div>
       </div>
-      <button class="btn" id="btn-join" onclick="startInterview()" style="opacity:.5;pointer-events:none">AI 인터뷰 시작하기</button>
+      <button class="btn" id="btn-join" onclick="startInterview()" style="opacity:.5;pointer-events:none" data-ko="AI 인터뷰 시작하기" data-en="Start AI Interview">AI 인터뷰 시작하기</button>
     </div>
   </div>
 </div>
@@ -302,7 +304,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
       <div class="chat-hd">
         <div class="chat-ai">
           <div class="chat-av">ON</div>
-          <div><div class="chat-name">OnPlan AI</div><div class="chat-role-label">AI 프로덕 기획자</div></div>
+          <div><div class="chat-name">OnPlan AI</div><div class="chat-role-label" data-ko="AI 프로덕 기획자" data-en="AI Product Planner">AI 프로덕 기획자</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:9px;letter-spacing:1px;color:var(--g500)">CONTEXT</span>
@@ -311,11 +313,11 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
       </div>
       <div class="chat-body" id="cb"></div>
       <div id="finish-bar" class="hidden" style="padding:10px 16px;border-top:1px solid var(--accent-border);background:var(--accent-bg);flex-shrink:0;">
-        <button class="btn btn-accent" style="width:100%;margin:0;" onclick="go('p-complete')">인터뷰 완료 — 의견 등록하기</button>
-        <p style="font-size:11px;color:var(--g500);text-align:center;margin-top:6px;">더 말할 내용이 있으면 아래에서 계속 입력 가능합니다</p>
+        <button class="btn btn-accent" style="width:100%;margin:0;" onclick="go('p-complete')" data-ko="인터뷰 완료 — 의견 등록하기" data-en="Complete Interview — Submit Opinion">인터뷰 완료 — 의견 등록하기</button>
+        <p style="font-size:11px;color:var(--g500);text-align:center;margin-top:6px;" data-ko="더 말할 내용이 있으면 아래에서 계속 입력 가능합니다" data-en="You can continue adding more below if needed">더 말할 내용이 있으면 아래에서 계속 입력 가능합니다</p>
       </div>
       <div class="chat-in" id="chat-in">
-        <input class="chat-fi" id="ci" placeholder="답변을 입력하세요..." onkeydown="if(event.key==='Enter')send()">
+        <input class="chat-fi" id="ci" data-ko-ph="답변을 입력하세요..." data-en-ph="Type your answer..." placeholder="답변을 입력하세요..." onkeydown="if(event.key==='Enter')send()">
         <button class="chat-send" onclick="send()">↑</button>
       </div>
     </div>
@@ -326,13 +328,13 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 <div id="p-complete" class="page">
   <div class="center-sm" style="text-align:center;padding-top:120px;">
     <div class="complete-check">V</div>
-    <div class="complete-title">의견이 등록되었습니다</div>
-    <div class="complete-desc">다른 참여자들의 인터뷰가 완료되면<br>AI 기획자가 종합 판단하여 PRD를 생성합니다.</div>
+    <div class="complete-title" data-ko="의견이 등록되었습니다" data-en="Opinion submitted">의견이 등록되었습니다</div>
+    <div class="complete-desc" data-ko="다른 참여자들의 인터뷰가 완료되면<br>AI 기획자가 종합 판단하여 PRD를 생성합니다." data-en="Once all interviews are complete,<br>AI planner will synthesize and generate the PRD.">다른 참여자들의 인터뷰가 완료되면<br>AI 기획자가 종합 판단하여 PRD를 생성합니다.</div>
     <div style="background:var(--white);border:1px solid var(--border);padding:20px;margin-bottom:24px;">
-      <div style="font-size:11px;color:var(--g500);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase">참여 현황</div>
-      <div style="font-family:var(--en);font-size:28px;font-weight:800">3<span style="font-size:14px;font-weight:400;color:var(--g500)"> / 4명 완료</span></div>
+      <div style="font-size:11px;color:var(--g500);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase" data-ko="참여 현황" data-en="Participation Status">참여 현황</div>
+      <div style="font-family:var(--en);font-size:28px;font-weight:800">3<span style="font-size:14px;font-weight:400;color:var(--g500)" data-ko=" / 4명 완료" data-en=" / 4 completed"> / 4명 완료</span></div>
     </div>
-    <button class="btn" onclick="go('p-dash')">오너 대시보드 보기</button>
+    <button class="btn" onclick="go('p-dash')" data-ko="오너 대시보드 보기" data-en="View Owner Dashboard">오너 대시보드 보기</button>
   </div>
 </div>
 
@@ -340,21 +342,21 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 <div id="p-dash" class="page">
   <div class="center-wide">
     <div class="prd-tag">Owner Dashboard</div>
-    <h2 class="prd-title" style="margin-bottom:4px" id="dash-pj-name">발주 관리 시스템</h2>
-    <div class="prd-meta" style="margin-bottom:28px">생성일 2026.02.27</div>
+    <h2 class="prd-title" style="margin-bottom:4px" id="dash-pj-name" data-ko="발주 관리 시스템" data-en="Order Management System">발주 관리 시스템</h2>
+    <div class="prd-meta" style="margin-bottom:28px" data-ko="생성일 2026.02.27" data-en="Created 2026.02.27">생성일 2026.02.27</div>
     <div class="dash-stat">
-      <div class="dash-stat-card"><div class="dash-stat-num">4</div><div class="dash-stat-label">참여자</div></div>
-      <div class="dash-stat-card"><div class="dash-stat-num" style="color:var(--accent)">3</div><div class="dash-stat-label">인터뷰 완료</div></div>
-      <div class="dash-stat-card"><div class="dash-stat-num" style="color:var(--g400)">1</div><div class="dash-stat-label">대기 중</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-num">4</div><div class="dash-stat-label" data-ko="참여자" data-en="Participants">참여자</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-num" style="color:var(--accent)">3</div><div class="dash-stat-label" data-ko="인터뷰 완료" data-en="Completed">인터뷰 완료</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-num" style="color:var(--g400)">1</div><div class="dash-stat-label" data-ko="대기 중" data-en="Pending">대기 중</div></div>
     </div>
     <div class="participant-list">
-      <div class="participant-row"><div class="participant-info"><div class="participant-avatar">김</div><div><div class="participant-name">김대표</div><div class="participant-role-tag">대표 / PM</div></div></div><div class="status-done">완료</div></div>
-      <div class="participant-row"><div class="participant-info"><div class="participant-avatar">이</div><div><div class="participant-name">이개발</div><div class="participant-role-tag">개발</div></div></div><div class="status-done">완료</div></div>
-      <div class="participant-row"><div class="participant-info"><div class="participant-avatar">박</div><div><div class="participant-name">박영업</div><div class="participant-role-tag">영업 / CS</div></div></div><div class="status-done">완료</div></div>
-      <div class="participant-row"><div class="participant-info"><div class="participant-avatar">최</div><div><div class="participant-name">최디자인</div><div class="participant-role-tag">디자인</div></div></div><div class="status-wait">대기</div></div>
+      <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="김" data-en="J">김</div><div><div class="participant-name" data-ko="김대표" data-en="James Kim">김대표</div><div class="participant-role-tag" data-ko="대표 / PM" data-en="CEO / PM">대표 / PM</div></div></div><div class="status-done" data-ko="완료" data-en="Done">완료</div></div>
+      <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="이" data-en="A">이</div><div><div class="participant-name" data-ko="이개발" data-en="Alex Lee">이개발</div><div class="participant-role-tag" data-ko="개발" data-en="Engineering">개발</div></div></div><div class="status-done" data-ko="완료" data-en="Done">완료</div></div>
+      <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="박" data-en="S">박</div><div><div class="participant-name" data-ko="박영업" data-en="Sarah Park">박영업</div><div class="participant-role-tag" data-ko="영업 / CS" data-en="Sales / CS">영업 / CS</div></div></div><div class="status-done" data-ko="완료" data-en="Done">완료</div></div>
+      <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="최" data-en="D">최</div><div><div class="participant-name" data-ko="최디자인" data-en="Dana Choi">최디자인</div><div class="participant-role-tag" data-ko="디자인" data-en="Design">디자인</div></div></div><div class="status-wait" data-ko="대기" data-en="Pending">대기</div></div>
     </div>
-    <button class="btn btn-accent" onclick="go('p-prd')">PRD 생성하기</button>
-    <p style="font-size:11px;color:var(--g500);margin-top:8px;text-align:center">3명 이상 완료 시 생성 가능</p>
+    <button class="btn btn-accent" onclick="go('p-prd')" data-ko="PRD 생성하기" data-en="Generate PRD">PRD 생성하기</button>
+    <p style="font-size:11px;color:var(--g500);margin-top:8px;text-align:center" data-ko="3명 이상 완료 시 생성 가능" data-en="Available when 3+ interviews are complete">3명 이상 완료 시 생성 가능</p>
   </div>
 </div>
 
@@ -364,8 +366,8 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
     <div class="prd-hd">
       <div>
         <div class="prd-tag">Product Requirements Document</div>
-        <h2 class="prd-title" id="prd-name">발주 관리 시스템</h2>
-        <div class="prd-meta">생성일 2026.02.27 · OnPlan AI v1.0 · 참여자 3명의 인터뷰 기반</div>
+        <h2 class="prd-title" id="prd-name" data-ko="발주 관리 시스템" data-en="Order Management System">발주 관리 시스템</h2>
+        <div class="prd-meta" data-ko="생성일 2026.02.27 · OnPlan AI v1.0 · 참여자 3명의 인터뷰 기반" data-en="Created 2026.02.27 · OnPlan AI v1.0 · Based on 3 participant interviews">생성일 2026.02.27 · OnPlan AI v1.0 · 참여자 3명의 인터뷰 기반</div>
       </div>
       <div class="prd-actions">
         <button class="btn-ghost" onclick="alert('Team 플랜에서 사용 가능합니다.')">저장</button>
@@ -384,37 +386,38 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
     <div style="margin-top:40px;margin-bottom:40px;" class="prd-doc">
       <div style="margin-bottom:20px;">
         <div class="prd-tag">Role-Based Documents</div>
-        <h3 style="font-family:var(--en);font-size:18px;font-weight:700;margin-bottom:4px;">역할별 문서</h3>
-        <p style="font-size:13px;color:var(--g600);">PRD를 기반으로 각 역할에 맞게 변환된 문서입니다.</p>
+        <h3 style="font-family:var(--en);font-size:18px;font-weight:700;margin-bottom:4px;" data-ko="역할별 문서" data-en="Role-Based Documents">역할별 문서</h3>
+        <p style="font-size:13px;color:var(--g600);" data-ko="PRD를 기반으로 각 역할에 맞게 변환된 문서입니다." data-en="Documents converted from the PRD, tailored for each role.">PRD를 기반으로 각 역할에 맞게 변환된 문서입니다.</p>
       </div>
 
       <div id="role-docs" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
         <div class="sc done" onclick="toggleRoleDoc('rd-exec')" style="cursor:pointer;">
           <div class="sc-num">FOR CEO</div>
-          <div class="sc-title">사업 타당성 요약</div>
-          <div style="font-size:11px;color:var(--g500);margin-top:4px;">왜 만드는지, 비용 대비 효과, 리스크</div>
+          <div class="sc-title" data-ko="사업 타당성 요약" data-en="Business Case">사업 타당성 요약</div>
+          <div style="font-size:11px;color:var(--g500);margin-top:4px;" data-ko="왜 만드는지, 비용 대비 효과, 리스크" data-en="ROI, risks, decisions needed">왜 만드는지, 비용 대비 효과, 리스크</div>
         </div>
         <div class="sc done" onclick="toggleRoleDoc('rd-dev')" style="cursor:pointer;">
           <div class="sc-num">FOR DEV</div>
-          <div class="sc-title">기술 요구사항</div>
-          <div style="font-size:11px;color:var(--g500);margin-top:4px;">기능 명세, IA, 기술 제약 조건</div>
+          <div class="sc-title" data-ko="기술 요구사항" data-en="Technical Spec">기술 요구사항</div>
+          <div style="font-size:11px;color:var(--g500);margin-top:4px;" data-ko="기능 명세, IA, 기술 제약 조건" data-en="Feature specs, IA, tech constraints">기능 명세, IA, 기술 제약 조건</div>
         </div>
         <div class="sc done" onclick="toggleRoleDoc('rd-design')" style="cursor:pointer;">
           <div class="sc-num">FOR DESIGN</div>
-          <div class="sc-title">UX 요구사항</div>
-          <div style="font-size:11px;color:var(--g500);margin-top:4px;">페르소나, 사용자 여정, 핵심 플로우</div>
+          <div class="sc-title" data-ko="UX 요구사항" data-en="UX Requirements">UX 요구사항</div>
+          <div style="font-size:11px;color:var(--g500);margin-top:4px;" data-ko="페르소나, 사용자 여정, 핵심 플로우" data-en="Personas, user journeys, key flows">페르소나, 사용자 여정, 핵심 플로우</div>
         </div>
         <div class="sc done" onclick="toggleRoleDoc('rd-sales')" style="cursor:pointer;">
           <div class="sc-num">FOR SALES</div>
-          <div class="sc-title">제품 소개 요약</div>
-          <div style="font-size:11px;color:var(--g500);margin-top:4px;">해결하는 문제, 핵심 기능, 차별점</div>
+          <div class="sc-title" data-ko="제품 소개 요약" data-en="Product Brief">제품 소개 요약</div>
+          <div style="font-size:11px;color:var(--g500);margin-top:4px;" data-ko="해결하는 문제, 핵심 기능, 차별점" data-en="Problem, features, differentiators">해결하는 문제, 핵심 기능, 차별점</div>
         </div>
       </div>
 
       <!-- Role Doc: CEO -->
       <div id="rd-exec" class="prd-section hidden">
-        <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">CEO</span><span class="prd-sec-title">사업 타당성 요약</span></div><span class="prd-sec-cat">경영 판단용</span></div>
+        <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">CEO</span><span class="prd-sec-title" data-ko="사업 타당성 요약" data-en="Business Case Summary">사업 타당성 요약</span></div><span class="prd-sec-cat" data-ko="경영 판단용" data-en="For Executive Decision">경영 판단용</span></div>
         <div class="prd-sec-body"><div class="sec-content">
+          <div class="lang-ko">
           <h3>요약</h3>
           <p>발주 누락으로 인한 월 500만원 손실을 제거하기 위한 경량 발주 관리 시스템입니다. 기존 ERP(3,000만원+) 대비 500만원 이내, 4개월 내 구축 가능합니다.</p>
           <h3>투자 대비 효과</h3>
@@ -426,13 +429,28 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
           <p>최대 리스크는 거래처의 시스템 사용 거부입니다. 이메일/SMS 폴백을 P0에 포함하여 대응합니다. 거래처가 시스템을 쓰지 않아도 내부 발주 관리는 정상 작동합니다.</p>
           <h3>의사결정 필요 사항</h3>
           <p>1. 거래처를 시스템 사용자로 포함할지 여부 (포함 시 +300만원, +2개월)<br>2. 일정 3개월 고수 시 대시보드 필터 간소화 수용 가능 여부</p>
+          </div>
+          <div class="lang-en">
+          <h3>Summary</h3>
+          <p>A lightweight order management system to eliminate ~$5K/month in losses from missed purchase orders. Buildable within $50K and 4 months, compared to traditional ERP ($300K+).</p>
+          <h3>ROI</h3>
+          <table><tr><th>Metric</th><th>Current</th><th>After Implementation</th></tr>
+          <tr><td>Missed Orders/Month</td><td>3-4 (~$5K loss)</td><td>0</td></tr>
+          <tr><td>Month-End Settlement</td><td>3 days</td><td>0.5 days (80% reduction)</td></tr>
+          <tr><td>Handoff Period</td><td>2-3 weeks</td><td>Records persist in system</td></tr></table>
+          <h3>Risks</h3>
+          <p>Top risk is vendor refusal to adopt the system. Email/SMS fallback is included in P0. Internal order management works regardless of vendor adoption.</p>
+          <h3>Decisions Needed</h3>
+          <p>1. Include vendors as system users? (If yes: +$30K, +2 months)<br>2. Accept simplified dashboard filters if 3-month timeline is mandatory?</p>
+          </div>
         </div></div>
       </div>
 
       <!-- Role Doc: DEV -->
       <div id="rd-dev" class="prd-section hidden">
-        <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">DEV</span><span class="prd-sec-title">기술 요구사항</span></div><span class="prd-sec-cat">개발 착수용</span></div>
+        <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">DEV</span><span class="prd-sec-title" data-ko="기술 요구사항" data-en="Technical Spec">기술 요구사항</span></div><span class="prd-sec-cat" data-ko="개발 착수용" data-en="For Development">개발 착수용</span></div>
         <div class="prd-sec-body"><div class="sec-content">
+          <div class="lang-ko">
           <h3>P0 기능 명세</h3>
           <table><tr><th>기능</th><th>상세</th><th>수용 기준</th></tr>
           <tr><td>발주서 생성</td><td>거래처 선택 → 품목(복수) 입력 → 단가·수량·납기일 → 미리보기 → 발송</td><td>2클릭 이내 발송 완료</td></tr>
@@ -448,13 +466,32 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
           <p>거래처 관리와 발주 관리는 DB 레벨에서 분리. 추후 거래처 포털 확장 대비.<br>알림 시스템은 외부 API 의존 (SMS: NHN Cloud 또는 유사). 실패 핸들링 필수.<br>동시 편집 충돌: 낙관적 잠금 적용.</p>
           <h3>일정 기획자 의견</h3>
           <p>P0 3개 기준 4개월 권장. 3개월 강행 시 대시보드 필터/검색 간소화 필요.</p>
+          </div>
+          <div class="lang-en">
+          <h3>P0 Feature Spec</h3>
+          <table><tr><th>Feature</th><th>Detail</th><th>Acceptance Criteria</th></tr>
+          <tr><td>Order Creation</td><td>Select vendor → Enter items (multiple) → Price, qty, delivery date → Preview → Send</td><td>Complete send in ≤2 clicks</td></tr>
+          <tr><td>Vendor Confirmation Alert</td><td>Email + SMS on send. Auto-remind once after 24h if unconfirmed.</td><td>Notify owner on alert delivery failure</td></tr>
+          <tr><td>Status Dashboard</td><td>Status-based list (Pending/Confirmed/Delivered/Complete). Basic list, filters in P1.</td><td>Load last 50 orders in &lt;1 second</td></tr></table>
+          <h3>IA Structure</h3>
+          <table><tr><th>Depth 1</th><th>Depth 2</th><th>Page Type</th></tr>
+          <tr><td>Dashboard</td><td>Order Status</td><td>List</td></tr>
+          <tr><td>Orders</td><td>List / Detail / Create</td><td>List / Detail / Input</td></tr>
+          <tr><td>Vendors</td><td>List / Detail</td><td>List / Detail</td></tr>
+          <tr><td>Settings</td><td>Team / Alerts</td><td>Detail / Edit</td></tr></table>
+          <h3>Technical Constraints</h3>
+          <p>Vendors and Orders separated at DB level for future vendor portal extensibility.<br>Notification system depends on external API (SMS: Twilio or similar). Failure handling required.<br>Concurrent edit conflicts: optimistic locking.</p>
+          <h3>Planner Timeline Opinion</h3>
+          <p>4 months recommended for 3 P0 features. If forced to 3 months, dashboard filters must be simplified.</p>
+          </div>
         </div></div>
       </div>
 
       <!-- Role Doc: DESIGN -->
       <div id="rd-design" class="prd-section hidden">
-        <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">DESIGN</span><span class="prd-sec-title">UX 요구사항</span></div><span class="prd-sec-cat">디자인 착수용</span></div>
+        <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">DESIGN</span><span class="prd-sec-title" data-ko="UX 요구사항" data-en="UX Requirements">UX 요구사항</span></div><span class="prd-sec-cat" data-ko="디자인 착수용" data-en="For Design">디자인 착수용</span></div>
         <div class="prd-sec-body"><div class="sec-content">
+          <div class="lang-ko">
           <h3>핵심 사용자</h3>
           <p><strong>1차 사용자:</strong> 구매 담당자 (일 5~10건 발주 생성, 가장 빈번한 사용자)<br><strong>2차 사용자:</strong> 운영 팀장 (현황 확인, 주 1~2회 리포트 조회)</p>
           <h3>UX 원칙</h3>
@@ -465,13 +502,27 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
           <p>As-Is: 엑셀 → 카톡 → 구두 확인 → 수기 기록<br>To-Be: 시스템 생성 → 자동 알림 → 시스템 확인 → 자동 상태 업데이트</p>
           <h3>참고</h3>
           <p>모바일 대응 필요 (현장 사용). 좌측 사이드바(데스크톱) / 하단 탭(모바일) 네비게이션.</p>
+          </div>
+          <div class="lang-en">
+          <h3>Key Users</h3>
+          <p><strong>Primary:</strong> Procurement officer (5-10 orders/day, most frequent user)<br><strong>Secondary:</strong> Operations manager (status checks, 1-2 report views/week)</p>
+          <h3>UX Principles</h3>
+          <p>1. Usable immediately without training (CEO requirement).<br>2. New order creation is the most frequent action — reachable within 2 clicks from dashboard.<br>3. For field staff: prioritize clear status indicators over information density.</p>
+          <h3>Key Flows (Design Priority)</h3>
+          <p>1. New Order: Dashboard → [+New Order] → Vendor → Items → Confirm → Send<br>2. Order Status: Dashboard → Status list → Detail<br>3. Vendor Confirmation: (Vendor side) Alert link → Order details → Confirm button</p>
+          <h3>User Journey</h3>
+          <p>As-Is: Excel → Messenger → Verbal confirmation → Manual record<br>To-Be: System creation → Auto alert → System confirmation → Auto status update</p>
+          <h3>Notes</h3>
+          <p>Mobile support required (field usage). Left sidebar (desktop) / bottom tabs (mobile) navigation.</p>
+          </div>
         </div></div>
       </div>
 
       <!-- Role Doc: SALES -->
       <div id="rd-sales" class="prd-section hidden">
-        <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">SALES</span><span class="prd-sec-title">제품 소개 요약</span></div><span class="prd-sec-cat">고객 커뮤니케이션용</span></div>
+        <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">SALES</span><span class="prd-sec-title" data-ko="제품 소개 요약" data-en="Product Brief">제품 소개 요약</span></div><span class="prd-sec-cat" data-ko="고객 커뮤니케이션용" data-en="For Customer Comms">고객 커뮤니케이션용</span></div>
         <div class="prd-sec-body"><div class="sec-content">
+          <div class="lang-ko">
           <h3>한 줄 소개</h3>
           <p>엑셀과 카톡으로 발주를 관리하는 중소 제조업체를 위한 경량 발주 관리 시스템.</p>
           <h3>해결하는 문제</h3>
@@ -482,6 +533,19 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
           <p>ERP는 너무 비싸고(3,000만원+) 복잡합니다. 이 시스템은 발주 프로세스에만 집중하여 500만원 이내, 교육 없이 바로 사용 가능합니다.</p>
           <h3>고객 대상</h3>
           <p>거래처 10~50곳 규모의 중소 제조업체. 구매팀 1~5명. 현재 엑셀+메신저로 발주 관리 중인 곳.</p>
+          </div>
+          <div class="lang-en">
+          <h3>One-Liner</h3>
+          <p>A lightweight order management system for SMB manufacturers still using spreadsheets and messaging apps.</p>
+          <h3>Problem Solved</h3>
+          <p>Beyond 10 vendors, spreadsheets can't keep up. Missed orders, pricing errors, and delivery delays pile up. Staff turnover breaks handoffs. This system handles order creation, vendor confirmation, and status tracking in one place.</p>
+          <h3>3 Key Features</h3>
+          <p>1. Create and send purchase orders in 1 click with automatic vendor alerts<br>2. Auto-remind vendors after 24 hours if unconfirmed<br>3. Full order status dashboard at a glance</p>
+          <h3>Competitive Edge</h3>
+          <p>ERP is too expensive ($300K+) and complex. This system focuses solely on the ordering process — under $50K, usable immediately without training.</p>
+          <h3>Target Customer</h3>
+          <p>SMB manufacturers with 10-50 vendors. 1-5 person procurement teams. Currently managing orders via spreadsheets + messaging apps.</p>
+          </div>
         </div></div>
       </div>
     </div>
@@ -489,17 +553,19 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
     <!-- Trial -->
     <div class="trial">
       <div class="trial-tag">TRIAL</div>
-      <div class="trial-title">수정하고, 공유하고, <em>함께 완성</em>하세요</div>
-      <div class="trial-desc">기획자 의견 전체 열람, 섹션별 수정, 팀 코멘트까지.<br>체험판에서는 기획자 의견을 2개 섹션만 볼 수 있습니다.</div>
-      <button class="btn" style="width:auto;display:inline-block;padding:13px 32px;">Team 플랜 시작하기 — ₩49,000/월</button>
-      <div class="trial-note">5시트 포함 · 언제든 해지 가능</div>
+      <div class="trial-title" data-ko="수정하고, 공유하고, <em>함께 완성</em>하세요" data-en="Edit, share, and <em>refine together</em>">수정하고, 공유하고, <em>함께 완성</em>하세요</div>
+      <div class="trial-desc" data-ko="기획자 의견 전체 열람, 섹션별 수정, 팀 코멘트까지.<br>체험판에서는 기획자 의견을 2개 섹션만 볼 수 있습니다." data-en="Full planner opinions, section-level edits, team comments.<br>Trial shows planner opinions for 2 sections only.">기획자 의견 전체 열람, 섹션별 수정, 팀 코멘트까지.<br>체험판에서는 기획자 의견을 2개 섹션만 볼 수 있습니다.</div>
+      <button class="btn" style="width:auto;display:inline-block;padding:13px 32px;" data-ko="Team 플랜 시작하기 — ₩49,000/월" data-en="Start Team Plan — $39/mo">Team 플랜 시작하기 — ₩49,000/월</button>
+      <div class="trial-note" data-ko="5시트 포함 · 언제든 해지 가능" data-en="5 seats included · Cancel anytime">5시트 포함 · 언제든 해지 가능</div>
     </div>
   </div>
 </div>
 
 <script>
 // ===== DATA =====
-const SEC=[
+let appLang=(new URLSearchParams(window.location.search).get('lang'))||'ko';
+
+const SEC_KO=[
   {n:'01',t:'요약과 배경',d:'문제 정의, 시장 맥락',c:'맥락',conflict:false},
   {n:'02',t:'주요 사용자',d:'페르소나, 페인포인트',c:'맥락',conflict:true},
   {n:'03',t:'핵심 사용자 여정',d:'As-Is / To-Be',c:'정의',conflict:false},
@@ -509,8 +575,19 @@ const SEC=[
   {n:'07',t:'배포 계획',d:'마일스톤, 일정',c:'실행',conflict:true},
   {n:'08',t:'리스크 및 관련 문서',d:'제약, 의존성',c:'검증',conflict:false},
 ];
+const SEC_EN=[
+  {n:'01',t:'Summary & Background',d:'Problem, market context',c:'Context',conflict:false},
+  {n:'02',t:'Target Users',d:'Personas, pain points',c:'Context',conflict:true},
+  {n:'03',t:'User Journey',d:'As-Is / To-Be',c:'Definition',conflict:false},
+  {n:'04',t:'Functional Requirements',d:'P0 / P1 / P2',c:'Definition',conflict:true},
+  {n:'05',t:'IA Design',d:'Page map, navigation',c:'Design',conflict:false},
+  {n:'06',t:'User Flows',d:'Key scenarios',c:'Design',conflict:false},
+  {n:'07',t:'Release Plan',d:'Milestones, timeline',c:'Execution',conflict:true},
+  {n:'08',t:'Risks & References',d:'Constraints, dependencies',c:'Validation',conflict:false},
+];
+function SEC(){return appLang==='en'?SEC_EN:SEC_KO;}
 
-const CONFLICTS={
+const CONFLICTS_KO={
 '02':{
   issue:'거래처를 시스템 사용자로 포함할 것인가',
   context:'일부 참여자는 내부 사용자만 고려하면 된다는 입장이고, 다른 참여자는 거래처도 시스템에서 직접 확인할 수 있어야 한다고 봅니다.',
@@ -530,8 +607,29 @@ const CONFLICTS={
   demoReply:'3개월 출시가 투자 미팅과 연결되어 있다면, <strong>3개월에 코어 기능만 출시 + 1개월 후 업데이트</strong> 전략이 가능합니다. 1차 출시에서 필터를 빼고 기본 목록만 제공, 4개월차에 필터/검색 추가. 투자 미팅에는 실동작 데모를 보여줄 수 있습니다. 이 방향으로 07 섹션을 수정할까요?'
 }
 };
+const CONFLICTS_EN={
+'02':{
+  issue:'Should vendors be included as system users?',
+  context:'Some participants say only internal users matter for MVP. Others believe vendors should confirm orders directly in the system.',
+  current:'We recommend <strong>limiting to internal users</strong> for MVP. Including vendors requires a vendor portal (+$30K budget, +2 months). Email/SMS notifications can handle vendor confirmation initially.',
+  demoReply:'Without a vendor portal, email alerts still achieve vendor confirmation. However, <strong>providing a 1-click confirmation web link within the notification</strong> enables confirmation without a full portal. Additional cost: ~$5K, no timeline impact. Should I update sections 02 and 04?'
+},
+'04':{
+  issue:'How many features should be P0?',
+  context:'Business wants 5 features at P0 including auto-reports and vendor portal. Engineering says even 3 features are tight within the timeline.',
+  current:'With $50K and 3 months, <strong>P0 is limited to 3 features</strong>. For 5 P0 features, you need $80K or 5 months. Auto-reports and vendor portal are classified as P2.',
+  demoReply:'Moving auto-reports to P1 while dropping delivery inspection to P2 makes it <strong>feasible within 4 months</strong>. Reports are monthly but directly tied to executive reporting, making P1 appropriate. This adjustment affects sections 04 and 07.'
+},
+'07':{
+  issue:'What should the development timeline be?',
+  context:'Business demands launch within 3 months. Engineering says 6 months is realistic.',
+  current:'With 3 P0 features, <strong>4 months is recommended</strong>. To hit 3 months, dashboard filtering must be simplified (basic list only). Acceptable for an initial 3-vendor pilot.',
+  demoReply:'If the 3-month deadline is tied to investor meetings, a <strong>3-month core launch + 1-month update</strong> strategy works. Ship without filters first, add search/filtering in month 4. You\'ll have a working demo for investor meetings. Should I update section 07?'
+}
+};
+function CONFLICTS(){return appLang==='en'?CONFLICTS_EN:CONFLICTS_KO;}
 
-const BODY={
+const BODY_KO={
 '01':'<h3>문제 정의</h3><p>중소 제조업체의 발주 관리는 여전히 엑셀과 메신저에 의존하고 있습니다. 거래처가 10곳을 넘어가면 발주 누락, 단가 착오, 납기 지연이 반복 발생하며, 담당자 교체 시 인수인계 단절이 심각한 운영 리스크입니다.</p><h3>왜 지금인가</h3><p>거래처 확장으로 월 3~4건의 발주 누락 발생 중. 월간 손실 약 500만원 추산. 기존 ERP 도입은 비용(3,000만원+)과 학습 곡선으로 비현실적이며, 핵심 발주 프로세스에 특화된 경량 솔루션이 필요합니다.</p><h3>시장 맥락</h3><p>국내 중소 제조업체 약 12만 곳 중 전용 발주 시스템 사용률 15% 미만. 엑셀(68%), 수기(12%), 메신저(5%) 등으로 처리 중이며 명확한 시장 기회가 존재합니다.</p>',
 '02':'<h3>Persona A — 김재현 (구매 담당자)</h3><table><tr><th>항목</th><th>내용</th></tr><tr><td>역할</td><td>중소 제조업체 구매팀 3년차</td></tr><tr><td>페인포인트</td><td>거래처 30곳 엑셀 관리. 단가 이력 추적 불가. 카톡 누락으로 납기 지연.</td></tr><tr><td>원하는 것</td><td>발주 현황 한눈에, 거래처 확인까지 시스템 내 완결</td></tr></table><h3>Persona B — 박소영 (운영 팀장)</h3><table><tr><th>항목</th><th>내용</th></tr><tr><td>역할</td><td>5명 구매팀 관리, 경영진 보고</td></tr><tr><td>페인포인트</td><td>팀원별 현황 취합 수동. 월말 단가 불일치.</td></tr><tr><td>원하는 것</td><td>팀 전체 대시보드, 자동 리포트</td></tr></table>',
 '03':'<h3>As-Is</h3><p>엑셀 발주서 → 카톡 전달 → 구두 확인 → 별도 엑셀 기록 → 수기 대조 → 수동 정산</p><h3>To-Be</h3><p>시스템 발주 생성 → 자동 알림 → 시스템 내 확인 → 상태 자동 업데이트 → 자동 대조 → 자동 정산</p><h3>사용자가 얻는 가치</h3><p>발주 누락 제로, 단가 이력 자동 추적, 인수인계 연속성 확보, 월말 정산 80% 절감.</p>',
@@ -541,8 +639,19 @@ const BODY={
 '07':'<h3>Phase 1 — MVP (1~2개월)</h3><p>발주 생성/발송, 거래처 확인, 대시보드. 파일럿 3곳.</p><h3>Phase 2 — 안정화 (3~4개월)</h3><p>단가 이력, 검수, 알림 고도화. 거래처 10곳.</p><h3>Phase 3 — 확장 (5~6개월)</h3><p>리포트, 거래처 포털, 모바일. 정식 출시.</p>',
 '08':'<h3>리스크</h3><table><tr><th>리스크</th><th>영향도</th><th>대응</th></tr><tr><td>거래처 시스템 사용 거부</td><td>높음</td><td>이메일/SMS 폴백</td></tr><tr><td>엑셀 데이터 마이그레이션</td><td>중간</td><td>임포트 기능 우선</td></tr><tr><td>동시 접속 충돌</td><td>낮음</td><td>낙관적 잠금</td></tr></table><h3>관련 문서</h3><p>추후 연결: UX 플로우, API 명세서, DB 스키마, QA 체크리스트</p>'
 };
+const BODY_EN={
+'01':'<h3>Problem Definition</h3><p>SMB manufacturers still manage purchase orders via spreadsheets and messaging apps. Beyond 10 vendors, missed orders, pricing errors, and delivery delays recur. Staff turnover causes critical handoff failures.</p><h3>Why Now</h3><p>Vendor expansion has led to 3-4 missed orders per month, ~$5K in monthly losses. Traditional ERP ($300K+) is cost-prohibitive. A lightweight solution focused on the core ordering process is needed.</p><h3>Market Context</h3><p>Of ~120K SMB manufacturers, less than 15% use dedicated ordering systems. 68% use spreadsheets, 12% manual records, 5% messaging apps. Clear market opportunity exists.</p>',
+'02':'<h3>Persona A — Jay Kim (Procurement Officer)</h3><table><tr><th>Attribute</th><th>Detail</th></tr><tr><td>Role</td><td>3-year procurement team member at SMB manufacturer</td></tr><tr><td>Pain Points</td><td>Managing 30 vendors in Excel. No price history tracking. Missed messages causing delivery delays.</td></tr><tr><td>Needs</td><td>Order status at a glance, vendor confirmation within the system</td></tr></table><h3>Persona B — Sarah Park (Operations Manager)</h3><table><tr><th>Attribute</th><th>Detail</th></tr><tr><td>Role</td><td>Manages 5-person procurement team, reports to executives</td></tr><tr><td>Pain Points</td><td>Manual status aggregation across team. Month-end pricing discrepancies.</td></tr><tr><td>Needs</td><td>Team-wide dashboard, automated reports</td></tr></table>',
+'03':'<h3>As-Is</h3><p>Excel order → Messenger delivery → Verbal confirmation → Separate record → Manual reconciliation → Manual settlement</p><h3>To-Be</h3><p>System order creation → Auto notification → In-system confirmation → Auto status update → Auto reconciliation → Auto settlement</p><h3>User Value</h3><p>Zero missed orders, automatic price history tracking, handoff continuity, 80% reduction in month-end settlement time.</p>',
+'04':'<h3>P0 — Must Have</h3><table><tr><th>Feature</th><th>Acceptance Criteria</th></tr><tr><td>Order Creation & Send</td><td>Item, quantity, price, delivery date input. 1-click send.</td></tr><tr><td>Vendor Confirmation Alert</td><td>Auto-remind after 24h if unconfirmed</td></tr><tr><td>Status Dashboard</td><td>Filter by status, search</td></tr></table><h3>P1 — Should Have</h3><table><tr><th>Feature</th><th>Acceptance Criteria</th></tr><tr><td>Price History</td><td>Change history per vendor × item</td></tr><tr><td>Delivery Inspection</td><td>Quantity/quality check, photo attachment</td></tr></table><h3>P2 — Nice to Have</h3><table><tr><th>Feature</th><th>Acceptance Criteria</th></tr><tr><td>Monthly Auto Report</td><td>Auto-generate order amount, delivery compliance rate</td></tr><tr><td>Vendor Portal</td><td>Vendor direct login, order confirmation</td></tr></table>',
+'05':'<h3>Page Map</h3><table><tr><th>Depth 1</th><th>Depth 2</th><th>Type</th></tr><tr><td>Dashboard</td><td>Order Summary</td><td>List + Result</td></tr><tr><td>Orders</td><td>List / Detail / Create</td><td>List / Detail / Input</td></tr><tr><td>Vendors</td><td>List / Detail</td><td>List / Detail</td></tr><tr><td>Reports</td><td>Monthly Analysis</td><td>Execute + Result</td></tr><tr><td>Settings</td><td>Team / Permissions / Alerts</td><td>Detail / Edit</td></tr></table><h3>Navigation</h3><p>Fixed left sidebar: Dashboard / Orders / Vendors / Reports / Settings. Mobile: bottom tab bar.</p>',
+'06':'<h3>Scenario 1: New Order</h3><p>Dashboard → [+New Order] → Select vendor → Enter items → Preview → Send → Dashboard shows "Pending"</p><h3>Scenario 2: Vendor Confirmation & Delivery</h3><p>Receive alert → Access system → Confirm → "Confirmed" → Delivery inspection → "Complete"</p><h3>Scenario 3: Month-End Settlement</h3><p>Reports → Date/vendor filter → Generate → Amount & compliance → PDF download</p>',
+'07':'<h3>Phase 1 — MVP (Months 1-2)</h3><p>Order creation/send, vendor confirmation, dashboard. Pilot with 3 vendors.</p><h3>Phase 2 — Stabilization (Months 3-4)</h3><p>Price history, inspection, alert enhancement. Expand to 10 vendors.</p><h3>Phase 3 — Scale (Months 5-6)</h3><p>Reports, vendor portal, mobile. Full launch.</p>',
+'08':'<h3>Risks</h3><table><tr><th>Risk</th><th>Impact</th><th>Mitigation</th></tr><tr><td>Vendor refuses to use system</td><td>High</td><td>Email/SMS fallback</td></tr><tr><td>Excel data migration</td><td>Medium</td><td>Import feature first</td></tr><tr><td>Concurrent edit conflicts</td><td>Low</td><td>Optimistic locking</td></tr></table><h3>Related Documents</h3><p>To be linked: UX flows, API spec, DB schema, QA checklist</p>'
+};
+function BODY(){return appLang==='en'?BODY_EN:BODY_KO;}
 
-const OPINION={
+const OPINION_KO={
 '01':'<strong>대표와 영업의 문제 인식이 다릅니다.</strong> 대표는 운영 효율(발주 누락 방지), 영업은 고객 관계(납기 지연으로 인한 신뢰 하락)를 강조했습니다. 둘 다 유효하나 MVP에서는 <strong>발주 누락 방지가 우선</strong>입니다. 납기 지연은 발주가 제대로 관리되면 자연히 줄어드는 후행 지표입니다.',
 '02':'<strong>거래처를 사용자로 포함할지 결정이 없었습니다.</strong> 영업팀은 "거래처도 시스템에서 확인하면 좋겠다"고 했으나, 대표와 개발팀은 내부 사용자만 언급했습니다. <strong>거래처를 사용자로 포함하면 거래처 포털이 P0으로 올라가며 예산 300만원, 일정 2개월 추가</strong>가 필요합니다. 결정이 필요합니다.',
 '03':'현재 플로우에서 <strong>가장 손실이 큰 구간은 "발주 확인"</strong>입니다. 엑셀 발주서를 카톡으로 보내고 구두로 확인받는 과정에서 누락이 발생합니다. 이 구간을 먼저 자동화하는 것을 권장합니다.',
@@ -552,8 +661,19 @@ const OPINION={
 '07':'<strong>개발팀 6개월 vs 대표 3개월.</strong> P0 3개 기준 <strong>4개월을 권장</strong>합니다. 3개월에 맞추려면 납품 검수(P1)를 P2로 내려야 합니다. MVP에서 납품 확인이 수동이 되지만 초기에는 수용 가능합니다.',
 '08':'<strong>거래처 시스템 사용 거부가 최대 리스크입니다.</strong> 아무도 이 문제를 언급하지 않았으나, 이 업종에서 가장 흔한 실패 원인입니다. 이메일/SMS 폴백을 P0에 포함시켰습니다.'
 };
+const OPINION_EN={
+'01':'<strong>CEO and Sales have different problem perceptions.</strong> CEO emphasizes operational efficiency (preventing missed orders). Sales focuses on client relationships (trust erosion from delivery delays). Both are valid, but for MVP, <strong>preventing missed orders takes priority</strong>. Delivery delays are a lagging indicator that improves when orders are managed properly.',
+'02':'<strong>No decision was made on including vendors as users.</strong> Sales suggested vendors should confirm in-system. CEO and engineering only mentioned internal users. <strong>Including vendors requires a vendor portal at P0: +$30K budget, +2 months</strong>. A decision is needed.',
+'03':'In the current flow, <strong>the highest-loss segment is "order confirmation."</strong> Sending Excel orders via messenger and confirming verbally causes missed orders. Automating this segment first is recommended.',
+'04':'<strong>Out of 5 CEO requests, P0 is limited to 3.</strong> With $50K and 3 months, 5 P0 features are not feasible. For 5 P0s, you need $80K or 5 months. Auto-reports and vendor portal moved to P2. Both are "nice to have," not "must have."',
+'05':'Orders and Vendors are <strong>separated</strong> at the data level. Engineering suggested combining them, but separation is better for scalability. A vendor portal later will require this separated structure.',
+'06':'Of 3 scenarios, <strong>"New Order" is most frequent</strong> (estimated 5-10/day). Minimizing clicks in this flow is critical. Order submission must be reachable within 2 clicks from dashboard.',
+'07':'<strong>Engineering says 6 months. CEO says 3.</strong> With 3 P0 features, <strong>4 months is recommended</strong>. To hit 3 months, delivery inspection (P1) must drop to P2. Manual delivery confirmation in MVP is acceptable initially.',
+'08':'<strong>Vendor refusal to use the system is the top risk.</strong> No one mentioned this, but it\'s the most common failure reason in this industry. Email/SMS fallback is included in P0.'
+};
+function OPINION(){return appLang==='en'?OPINION_EN:OPINION_KO;}
 
-const COMMENTS={
+const COMMENTS_KO={
 '04':[
   {name:'김대표',role:'대표',time:'10분 전',body:'자동 리포트는 꼭 넣어주세요. 매달 수작업으로 보고서 만드는 게 너무 힘듭니다.'},
   {name:'이개발',role:'개발',time:'5분 전',body:'P0 3개도 3개월은 빡빡합니다. 알림 시스템이 생각보다 복잡해요.'},
@@ -562,13 +682,28 @@ const COMMENTS={
   {name:'김대표',role:'대표',time:'8분 전',body:'4개월이요? 3개월 안에 무조건 나와야 합니다. 투자 미팅이 있어요.'},
 ]
 };
+const COMMENTS_EN={
+'04':[
+  {name:'James',role:'CEO',time:'10m ago',body:'Auto-reports are a must. Building monthly reports manually is killing us.'},
+  {name:'Alex',role:'Engineering',time:'5m ago',body:'Even 3 P0 features in 3 months is tight. The notification system is more complex than it looks.'},
+],
+'07':[
+  {name:'James',role:'CEO',time:'8m ago',body:'4 months? It has to ship in 3. We have investor meetings.'},
+]
+};
+function COMMENTS(){return appLang==='en'?COMMENTS_EN:COMMENTS_KO;}
 
-const REVISION={
+const REVISION_KO={
 '04':'자동 리포트를 P1으로 올리면 <strong>일정이 1개월 늘어납니다</strong> (4개월 → 5개월). 대신 납품 검수를 P2로 내리면 <strong>4개월 내 가능</strong>합니다.<br><br>정리하면:<br>— 안 A: P0 3개 + 자동 리포트(P1) = 5개월<br>— 안 B: P0 3개 + 자동 리포트(P1) - 납품 검수(→P2) = 4개월<br>— 안 C: 현행 유지 (자동 리포트 P2) = 4개월<br><br><strong>어떻게 하시겠습니까?</strong>',
 '07':'3개월에 맞추려면 <strong>2가지 중 하나를 선택</strong>해야 합니다.<br><br>— 안 A: 거래처 확인 알림을 P1으로 내림 → 수동 확인 (카톡 유지)<br>— 안 B: 대시보드 필터/검색을 간소화 → 기본 목록만 제공<br><br>안 A는 핵심 가치(발주 누락 방지)를 훼손하므로 <strong>안 B를 권장</strong>합니다. 필터 없이 목록만 있어도 초기 거래처 3곳에서는 충분합니다.'
 };
+const REVISION_EN={
+'04':'Moving auto-reports to P1 <strong>extends timeline by 1 month</strong> (4→5 months). But dropping delivery inspection to P2 makes it <strong>feasible in 4 months</strong>.<br><br>Options:<br>— Option A: 3 P0 + auto-reports (P1) = 5 months<br>— Option B: 3 P0 + auto-reports (P1) - delivery inspection (→P2) = 4 months<br>— Option C: Keep current (auto-reports at P2) = 4 months<br><br><strong>Which option do you prefer?</strong>',
+'07':'To meet 3 months, <strong>choose one of two trade-offs</strong>:<br><br>— Option A: Drop vendor alerts to P1 → manual confirmation (keep messaging)<br>— Option B: Simplify dashboard → basic list only, no filters<br><br>Option A undermines core value (preventing missed orders). <strong>Option B is recommended.</strong> A basic list without filters is sufficient for 3 initial vendors.'
+};
+function REVISION(){return appLang==='en'?REVISION_EN:REVISION_KO;}
 
-const RQ={
+const RQ_KO={
   ceo:['안녕하세요. 대표님 관점에서 여쭤보겠습니다. 이 제품을 왜 지금 만들려고 하시나요? 가장 큰 계기가 무엇인가요?','예산과 일정은 어떻게 생각하고 계신가요? 이것이 성공하면 어떤 상태인가요?','절대 안 되는 것이 있나요? "이것만은 피해야 한다" 같은 제약 조건이 있다면 말씀해주세요.','이 제품의 첫 번째 고객은 누구라고 생각하시나요? 내부 사용자인가요, 외부 고객인가요?','경쟁 서비스나 대안으로 검토해본 것이 있나요?','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
   dev:['안녕하세요. 개발자 관점에서 여쭤보겠습니다. 현재 사용 중인 기술 스택이 있나요? 기술적 제약 사항은요?','이 시스템을 만든다면 현실적으로 몇 개월이 필요하다고 보시나요? 가장 까다로운 부분은 무엇인가요?','기존에 쌓여있는 기술 부채나, 연동해야 하는 외부 시스템이 있나요?','성능이나 보안 측면에서 특별히 신경 써야 할 부분이 있나요?','인프라 환경은 어떻게 생각하시나요? 클라우드, 온프레미스 등.','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
   sales:['안녕하세요. 영업/CS 관점에서 여쭤보겠습니다. 고객이 가장 많이 불평하는 것이 무엇인가요?','경쟁사 대비 우리가 부족한 점은 무엇인가요? 고객이 이탈하는 가장 큰 사유는요?','고객이 "이것만 있으면 바로 쓰겠다"고 한 기능이 있나요?','고객 응대 과정에서 반복적으로 시간을 잡아먹는 업무가 있나요?','고객이 가장 만족하는 부분은 무엇인가요? 그걸 더 강화할 수 있을까요?','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
@@ -576,6 +711,15 @@ const RQ={
   design:['안녕하세요. 디자인 관점에서 여쭤보겠습니다. 참고하면 좋을 서비스나 디자인이 있나요?','UX에서 가장 중요하게 생각하는 원칙이 있나요?','기존 디자인 자산(디자인 시스템, 컴포넌트)이 있나요?','사용자가 가장 자주 접하게 될 화면은 무엇이라고 생각하시나요?','모바일 대응이 필요한가요? 주 사용 환경은 어디인가요?','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
   other:['안녕하세요. 이 프로젝트에 대해 자유롭게 의견을 들려주세요. 가장 중요하다고 생각하는 것이 무엇인가요?','걱정되는 부분이 있나요?','추가로 꼭 전달하고 싶은 의견이 있나요?','이 프로젝트가 성공하려면 반드시 피해야 할 것이 있나요?','다른 분들의 의견 중 동의하지 않는 부분이 있을 수 있나요?','자유롭게 더 말씀해주세요.']
 };
+const RQ_EN={
+  ceo:['Hi! From a CEO/PM perspective — why build this product now? What triggered the need?','What\'s your budget and timeline expectation? What does success look like?','Are there any absolute constraints? Things that must be avoided?','Who is the first customer? Internal users or external clients?','Have you evaluated competing services or alternatives?','Anything else you\'d like to share?'],
+  dev:['Hi! From an engineering perspective — what\'s your current tech stack? Any technical constraints?','Realistically, how many months would this take to build? What\'s the trickiest part?','Any existing tech debt or external systems to integrate with?','Any specific performance or security concerns?','What infrastructure do you prefer? Cloud, on-premise, etc.','Anything else you\'d like to share?'],
+  sales:['Hi! From a Sales/CS perspective — what do customers complain about most?','Where do we fall short vs. competitors? What\'s the top reason customers leave?','Is there a feature customers have said "I\'d use it immediately if you had this"?','Any repetitive tasks in customer support that eat up time?','What do customers love most? Can we double down on that?','Anything else you\'d like to share?'],
+  user:['Hi! As someone who actually does this work — how do you currently handle this task?','What\'s the most frustrating part? What takes the longest?','Any must-have features? Anything that should absolutely not be included?','Do others doing the same work share the same frustrations?','How much time per day do you spend on this task?','Anything else you\'d like to share?'],
+  design:['Hi! From a design perspective — any reference services or designs worth looking at?','Any core UX principles you prioritize?','Do you have existing design assets (design system, components)?','What screen will users interact with most frequently?','Is mobile support needed? What\'s the primary usage environment?','Anything else you\'d like to share?'],
+  other:['Hi! Feel free to share your thoughts on this project. What do you think is most important?','Any concerns?','Anything you absolutely want to communicate?','What must this project avoid to succeed?','Are there opinions from others you might disagree with?','Feel free to share more.']
+};
+function RQ(){return appLang==='en'?RQ_EN:RQ_KO;}
 
 let selectedRole='',qIdx=0,projectName='';
 
@@ -600,7 +744,7 @@ function selectRole(el){
 function startInterview(){
   if(!selectedRole||!document.getElementById('pt-name').value.trim())return;
   go('p-chat');qIdx=0;document.getElementById('cb').innerHTML='';
-  setTimeout(()=>{addMsg('assistant',RQ[selectedRole][0]);updateDots(0);},500);
+  setTimeout(()=>{addMsg('assistant',RQ()[selectedRole][0]);updateDots(0);},500);
 }
 
 // ===== CHAT =====
@@ -613,20 +757,28 @@ function send(){
   addMsg('user',t);inp.value='';qIdx++;updateDots(Math.min(qIdx,3));
   // Show finish button after 3 answers
   if(qIdx>=3){document.getElementById('finish-bar').classList.remove('hidden');}
-  const qs=RQ[selectedRole];
+  const qs=RQ()[selectedRole];
   if(qIdx<qs.length){
     addTyping();setTimeout(()=>{document.getElementById('typing')?.remove();addMsg('assistant',qs[qIdx]);},1000);
   } else {
-    // Past scripted questions — acknowledge freely
-    addTyping();setTimeout(()=>{document.getElementById('typing')?.remove();addMsg('assistant','확인했습니다. 추가 의견이 더 있으시면 계속 말씀해주세요.');},800);
+    addTyping();setTimeout(()=>{document.getElementById('typing')?.remove();addMsg('assistant',appLang==='en'?'Got it. Feel free to share more if you have anything to add.':'확인했습니다. 추가 의견이 더 있으시면 계속 말씀해주세요.');},800);
   }
 }
 
 // ===== PRD RENDER =====
 function renderPRD(){
+  const _SEC=SEC(),_BODY=BODY(),_OPINION=OPINION(),_CONFLICTS=CONFLICTS(),_COMMENTS=COMMENTS(),_REVISION=REVISION();
+  const lockMsg=appLang==='en'?'Available in Team plan':'Team 플랜에서 열람할 수 있습니다';
+  const opLockMsg=appLang==='en'?'Full planner opinions available in Team plan':'기획자 의견은 Team 플랜에서 열람 가능합니다';
+  const issuePh=appLang==='en'?'Share your opinion on this issue...':'이 논점에 대한 의견을 입력하세요...';
+  const sendLabel=appLang==='en'?'Send':'전송';
+  const approveLabel=appLang==='en'?'Approve':'승인';
+  const rejectLabel=appLang==='en'?'Reject':'거부';
+  const approvedMsg=appLang==='en'?'Approved.':'반영되었습니다.';
+  const rejectedMsg=appLang==='en'?'Rejected.':'거부되었습니다.';
   // Nav cards
   const sg=document.getElementById('sg');sg.innerHTML='';
-  SEC.forEach((s,i)=>{
+  _SEC.forEach((s,i)=>{
     const locked=i>=6;
     const d=document.createElement('div');
     d.className=`sc ${locked?'lock':'done'} fade`;d.style.animationDelay=`${i*.05}s`;
@@ -636,7 +788,7 @@ function renderPRD(){
     else badge='<div class="sc-badge sc-badge-done">DONE</div>';
     d.innerHTML=`<div class="sc-num">${s.n}</div><div class="sc-title">${s.t}</div>${badge}`;
     d.onclick=()=>{
-      if(locked){alert('Team 플랜에서 열람할 수 있습니다.');return;}
+      if(locked){alert(lockMsg);return;}
       const el=document.getElementById('sec-'+s.n);if(el)el.scrollIntoView({behavior:'smooth'});
     };
     sg.appendChild(d);
@@ -644,7 +796,7 @@ function renderPRD(){
 
   // Full document
   const doc=document.getElementById('prd-doc');doc.innerHTML='';
-  SEC.forEach((s,i)=>{
+  _SEC.forEach((s,i)=>{
     const locked=i>=6;
     const section=document.createElement('div');
     section.className='prd-section fade';section.id='sec-'+s.n;
@@ -653,23 +805,23 @@ function renderPRD(){
     let html=`<div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">${s.n}</span><span class="prd-sec-title">${s.t}</span></div><span class="prd-sec-cat">${s.c}</span></div>`;
 
     if(locked){
-      html+=`<div class="prd-sec-body" style="opacity:.3;filter:blur(4px);user-select:none;min-height:120px;"><div class="sec-content">${BODY[s.n]||''}</div></div>`;
+      html+=`<div class="prd-sec-body" style="opacity:.3;filter:blur(4px);user-select:none;min-height:120px;"><div class="sec-content">${_BODY[s.n]||''}</div></div>`;
     } else {
       html+=`<div class="prd-sec-body">`;
 
       // Planner opinion
-      if(OPINION[s.n]){
+      if(_OPINION[s.n]){
         const opLocked=i>=2;
         if(opLocked){
-          html+=`<div class="po po-locked"><div class="po-title">PLANNER OPINION</div><div class="po-body">${OPINION[s.n]}</div></div><div class="po-lock-msg">기획자 의견은 Team 플랜에서 열람 가능합니다</div>`;
+          html+=`<div class="po po-locked"><div class="po-title">PLANNER OPINION</div><div class="po-body">${_OPINION[s.n]}</div></div><div class="po-lock-msg">${opLockMsg}</div>`;
         } else {
-          html+=`<div class="po"><div class="po-title">PLANNER OPINION</div><div class="po-body">${OPINION[s.n]}</div></div>`;
+          html+=`<div class="po"><div class="po-title">PLANNER OPINION</div><div class="po-body">${_OPINION[s.n]}</div></div>`;
         }
       }
 
       // Conflict Resolution
-      if(s.conflict && CONFLICTS[s.n]){
-        const cf=CONFLICTS[s.n];
+      if(s.conflict && _CONFLICTS[s.n]){
+        const cf=_CONFLICTS[s.n];
         const cfId='cf-'+s.n;
         html+=`<div class="cb">
           <div class="cb-title">OPEN ISSUE</div>
@@ -680,28 +832,28 @@ function renderPRD(){
             <div class="cb-current-body">${cf.current}</div>
           </div>
           <div class="cb-input-area" id="${cfId}-input-area">
-            <input class="cb-input" id="${cfId}-input" placeholder="이 논점에 대한 의견을 입력하세요..." onkeydown="if(event.key==='Enter')submitIssueComment('${cfId}')">
-            <button class="cb-submit" onclick="submitIssueComment('${cfId}')">전송</button>
+            <input class="cb-input" id="${cfId}-input" placeholder="${issuePh}" onkeydown="if(event.key==='Enter')submitIssueComment('${cfId}')">
+            <button class="cb-submit" onclick="submitIssueComment('${cfId}')">${sendLabel}</button>
           </div>
           <div class="cb-thread" id="${cfId}-thread"></div>
         </div>`;
       }
 
       // Content
-      html+=`<div class="sec-content">${BODY[s.n]||''}</div>`;
+      html+=`<div class="sec-content">${_BODY[s.n]||''}</div>`;
 
       // Comments
-      if(COMMENTS[s.n]){
+      if(_COMMENTS[s.n]){
         html+=`<div class="cmt-area"><div class="cmt-title">TEAM COMMENTS</div>`;
-        COMMENTS[s.n].forEach(c=>{
+        _COMMENTS[s.n].forEach(c=>{
           html+=`<div class="cmt"><div class="cmt-hd"><span class="cmt-name">${c.name}</span><span class="cmt-role">${c.role}</span><span class="cmt-time">${c.time}</span></div><div class="cmt-body">${c.body}</div></div>`;
         });
         html+=`</div>`;
       }
 
       // AI Revision
-      if(REVISION[s.n]){
-        html+=`<div class="rev"><div class="rev-title">AI PLANNER REVISION</div><div class="rev-body">${REVISION[s.n]}</div><div class="rev-actions"><button class="btn-sm btn-sm-y" onclick="alert('반영되었습니다.')">승인</button><button class="btn-sm btn-sm-n" onclick="alert('거부되었습니다.')">거부</button></div></div>`;
+      if(_REVISION[s.n]){
+        html+=`<div class="rev"><div class="rev-title">AI PLANNER REVISION</div><div class="rev-body">${_REVISION[s.n]}</div><div class="rev-actions"><button class="btn-sm btn-sm-y" onclick="alert('${approvedMsg}')">${approveLabel}</button><button class="btn-sm btn-sm-n" onclick="alert('${rejectedMsg}')">${rejectLabel}</button></div></div>`;
       }
 
       html+=`</div>`;
@@ -725,7 +877,7 @@ function submitIssueComment(cfId){
   inp.value='';
   // AI reply (demo)
   const secNum=cfId.replace('cf-','');
-  const reply=CONFLICTS[secNum]?.demoReply||'의견을 확인했습니다. 관련 섹션에 미치는 영향을 분석 중입니다.';
+  const reply=CONFLICTS()[secNum]?.demoReply||(appLang==='en'?'Noted. Analyzing impact on related sections.':'의견을 확인했습니다. 관련 섹션에 미치는 영향을 분석 중입니다.');
   setTimeout(()=>{
     const aiItem=document.createElement('div');
     aiItem.className='cb-thread-item fade';
@@ -745,6 +897,20 @@ function toggleRoleDoc(id){
 // Watch for PRD page activation
 const obs=new MutationObserver(()=>{if(document.getElementById('p-prd').classList.contains('active')){renderPRD();setTimeout(()=>document.getElementById('early-access-bar').classList.add('visible'),3000);}});
 obs.observe(document.getElementById('p-prd'),{attributes:true,attributeFilter:['class']});
+
+// ===== APP LANG INIT =====
+function setAppLang(lang){
+  appLang=lang;
+  document.body.classList.toggle('en',lang==='en');
+  document.querySelectorAll('[data-'+lang+']').forEach(el=>{
+    const val=el.getAttribute('data-'+lang);
+    if(val!==null) el.innerHTML=val;
+  });
+  document.querySelectorAll('[data-'+lang+'-ph]').forEach(el=>{
+    el.placeholder=el.getAttribute('data-'+lang+'-ph');
+  });
+}
+setAppLang(appLang);
 </script>
 
 <!-- Early Access Bar -->
