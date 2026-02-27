@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a0a0a'/><text x='3' y='23' font-family='Arial' font-weight='bold' font-size='18' fill='%23d4f53c'>On</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0a'/%3E%3Ctext x='3' y='23' font-family='Arial' font-weight='bold' font-size='18' fill='%23d4f53c'%3EOn%3C/text%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OnPlan — AI 프로덕 기획자</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -254,15 +254,15 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 <body>
 
 <nav class="nav">
-  <div class="nav-logo">
+  <a href="/onplan" class="nav-logo" style="text-decoration:none;">
     <svg viewBox="0 0 232.56 84.15" xmlns="http://www.w3.org/2000/svg">
       <text font-size="66.39" transform="translate(0 56.73)">
         <tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan>
         <tspan x="103.57" y="0" fill="#0a0a0a" font-family="Outfit" font-weight="500">plan</tspan>
       </text>
     </svg>
-  </div>
-  <div class="nav-status"><a href="/onplan" style="font-size:11px;color:var(--g500);text-decoration:none;letter-spacing:1px;">← HOME</a></div>
+  </a>
+  <div class="nav-status"><a href="/onplan" style="font-size:11px;color:var(--g500);text-decoration:none;letter-spacing:1px;">HOME</a></div>
 </nav>
 
 <!-- P1: PROJECT CREATE -->
@@ -584,13 +584,13 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
       <!-- Early Access Form -->
       <div class="ea-inline">
         <div class="ea-inline-divider"></div>
-        <div class="ea-inline-title" data-ko="아직 준비 중이에요" data-en="We're still building">아직 준비 중이에요</div>
-        <div class="ea-inline-desc" data-ko="출시되면 가장 먼저 알려드립니다." data-en="Be the first to know when we launch.">출시되면 가장 먼저 알려드립니다.</div>
+        <div class="ea-inline-title" data-ko="우리 팀에도 적용하고 싶다면" data-en="Want this for your team?">우리 팀에도 적용하고 싶다면</div>
+        <div class="ea-inline-desc" data-ko="이메일을 남겨주시면 먼저 안내드립니다." data-en="Leave your email and we'll get you started.">이메일을 남겨주시면 먼저 안내드립니다.</div>
         <div class="ea-inline-form" id="ea-form">
           <input type="email" class="ea-inline-input" id="ea-email" placeholder="you@company.com">
-          <button class="ea-inline-btn" onclick="submitEarlyAccess()" data-ko="얼리 액세스 신청" data-en="Request Early Access">얼리 액세스 신청</button>
+          <button class="ea-inline-btn" onclick="submitEarlyAccess()" data-ko="신청하기" data-en="Get Started">신청하기</button>
         </div>
-        <div class="ea-inline-success hidden" id="ea-success" data-ko="신청이 완료되었습니다. 출시되면 연락드리겠습니다." data-en="You're on the list. We'll be in touch.">신청이 완료되었습니다. 출시되면 연락드리겠습니다.</div>
+        <div class="ea-inline-success hidden" id="ea-success" data-ko="신청이 완료되었습니다. 곧 연락드리겠습니다." data-en="You're in. We'll reach out shortly.">신청이 완료되었습니다. 곧 연락드리겠습니다.</div>
       </div>
     </div>
 
@@ -988,4 +988,12 @@ function submitEarlyAccess(){
   if(!email||!email.includes('@')){document.getElementById('ea-email').style.borderColor='#ff6b6b';return;}
   const WEBHOOK_URL='https://script.google.com/macros/s/AKfycbzxA8AAw-V_AnEJ-9WPdgGjEnmNXVQDHNNFq47HutGNT5h3Td-vD97E-tBxs5H_GgfA8Q/exec';
   if(WEBHOOK_URL){
-    fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,timestamp:new Date().toISO
+    fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,timestamp:new Date().toISOString(),source:'onplan-demo'})});
+  }
+  document.getElementById('ea-form').classList.add('hidden');
+  document.getElementById('ea-success').classList.remove('hidden');
+  console.log('Early access request:',email);
+}
+</script>
+</body>
+</html>
