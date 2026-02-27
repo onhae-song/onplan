@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a0a0a'/><text x='3' y='23' font-family='Arial' font-weight='bold' font-size='18' fill='%23d4f53c'>On</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0a'/%3E%3Ctext x='3' y='23' font-family='Arial' font-weight='bold' font-size='18' fill='%23d4f53c'%3EOn%3C/text%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OnPlan — No planner? No problem.</title>
 <meta name="description" content="Your team shares opinions. AI planner judges, synthesizes, and generates a PRD.">
@@ -199,7 +199,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
       <div class="footer-tagline" data-ko="AI로 일하는 방식을 바꿉니다" data-en="Changing how teams work with AI">Changing how teams work with AI</div>
     </div>
     <div class="footer-contact">
-      <div class="footer-contact-item"><span class="footer-contact-label">Email</span><a href="/cdn-cgi/l/email-protection#f09f9e989195839f9e97b0979d91999cde939f9d"><span class="__cf_email__" data-cfemail="6b0405030a0e1804050c2b0c060a020745080406">[email&#160;protected]</span></a></div>
+      <div class="footer-contact-item"><span class="footer-contact-label">Email</span><a href="mailto:onhaesong@gmail.com">onhaesong@gmail.com</a></div>
       <div class="footer-contact-item"><span class="footer-contact-label">Tel</span><a href="tel:+821057413556">+82 10-5741-3556</a></div>
     </div>
   </div>
@@ -209,7 +209,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 let currentLang='en';
 function setLang(lang){
   currentLang=lang;
@@ -228,6 +228,7 @@ function setLang(lang){
 setLang('en');
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.15});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+setTimeout(()=>{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));},1200);
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});});
 
 function sendContact(){
@@ -243,4 +244,8 @@ function sendContact(){
   const subject=encodeURIComponent('[OnPlan] '+name+' — Contact');
   const body=encodeURIComponent('From: '+name+'\nEmail: '+email+'\n\n'+msg);
   window.location.href='mailto:onhaesong@gmail.com?subject='+subject+'&body='+body;
-  doc
+  document.querySelector('.contact-form').innerHTML='<div class="ct-success">'+(currentLang==='ko'?'메일 클라이언트가 열렸습니다. 감사합니다.':'Your email client has been opened. Thank you.')+'</div>';
+}
+</script>
+</body>
+</html>
