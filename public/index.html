@@ -190,6 +190,8 @@ function setLang(lang){
   });
   document.documentElement.lang=lang;
   document.title=lang==='ko'?'OnPlan — 기획자 없이, 기획서를.':'OnPlan — No planner? No problem.';
+  // Update app links with lang param
+  document.querySelectorAll('a[href^="app.html"]').forEach(a=>{a.href='app.html?lang='+lang;});
 }
 setLang('en');
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.15});
