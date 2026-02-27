@@ -20,9 +20,15 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
 .stats-bar{display:flex;justify-content:center;gap:80px;padding:80px 48px;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);}.stat{text-align:center;}.stat-num{font-family:var(--en);font-size:48px;font-weight:900;color:var(--lime);line-height:1;}.stat-label{font-size:13px;color:var(--g400);margin-top:8px;}
 .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}.price-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);padding:36px;border-radius:12px;position:relative;transition:all .3s;}.price-card:hover{border-color:rgba(255,255,255,.1);}.price-card.featured{border-color:var(--lime-border);background:var(--dark3);}.price-card.featured::before{content:'POPULAR';position:absolute;top:16px;right:16px;font-size:9px;letter-spacing:2px;padding:4px 10px;background:var(--lime);color:var(--black);font-weight:700;border-radius:4px;}.price-name{font-family:var(--en);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--g300);margin-bottom:16px;}.price-amount{font-family:var(--en);font-size:42px;font-weight:900;color:var(--white);line-height:1;}.price-amount span{font-size:14px;font-weight:400;color:var(--g400);}.price-desc{font-size:13px;color:var(--g400);margin:16px 0 24px;line-height:1.5;}.price-features{list-style:none;margin-bottom:28px;}.price-features li{font-size:13px;color:var(--g300);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:8px;}.price-features li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--lime);flex-shrink:0;}.price-btn{display:block;width:100%;padding:14px;text-align:center;font-family:var(--en);font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;transition:all .2s;border:none;cursor:pointer;}.price-btn-lime{background:var(--lime);color:var(--black);}.price-btn-lime:hover{background:#e8ff5e;}.price-btn-outline{background:transparent;border:1px solid var(--g500);color:var(--g200);}.price-btn-outline:hover{border-color:var(--g300);color:var(--white);}
 .final-cta{text-align:center;padding:120px 48px;position:relative;}.final-cta h2{font-family:var(--en);font-size:clamp(36px,5vw,56px);font-weight:900;letter-spacing:-2px;color:var(--white);line-height:1.1;margin-bottom:16px;}.final-cta h2 em{font-style:normal;color:var(--lime);}.final-cta p{font-size:16px;color:var(--g300);margin-bottom:36px;}.final-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(212,245,60,.06),transparent 70%);pointer-events:none;}
-.footer{border-top:1px solid rgba(255,255,255,.06);padding:48px;display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;}.footer-logo svg{height:20px;opacity:.5;}.footer-links{display:flex;gap:24px;}.footer-links a{font-size:12px;color:var(--g500);text-decoration:none;}.footer-links a:hover{color:var(--g300);}.footer-copy{font-size:11px;color:var(--g600);}
+.footer{border-top:1px solid rgba(255,255,255,.06);padding:48px;max-width:1200px;margin:0 auto;}.footer-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}.footer-logo svg{height:20px;opacity:.7;}.footer-tagline{font-size:12px;color:var(--g500);margin-top:6px;}.footer-contact{display:flex;flex-direction:column;gap:8px;text-align:right;}.footer-contact-item{font-size:13px;color:var(--g500);}.footer-contact-label{font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--g600);margin-right:8px;}.footer-contact-item a{color:var(--g300);text-decoration:none;}.footer-contact-item a:hover{color:var(--lime);}.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:20px;display:flex;align-items:center;justify-content:space-between;}.footer-links{display:flex;gap:24px;}.footer-links a{font-size:12px;color:var(--g500);text-decoration:none;}.footer-links a:hover{color:var(--g300);}.footer-copy{font-size:11px;color:var(--g600);}
+.contact-form{display:flex;flex-direction:column;gap:12px;max-width:480px;margin:0 auto;}
+.ct-input{padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--white);font-size:14px;font-family:'Pretendard Variable',sans-serif;outline:none;transition:border .2s;}.ct-input:focus{border-color:var(--lime);}
+.ct-input::placeholder{color:var(--g600);}
+.ct-textarea{resize:vertical;min-height:100px;}
+.ct-btn{padding:14px 32px;background:var(--lime);color:var(--black);font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:8px;cursor:pointer;transition:all .2s;}.ct-btn:hover{background:#e8ff5e;transform:scale(1.02);}
+.ct-success{color:var(--lime);font-size:14px;font-weight:600;padding:16px 0;}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}.reveal.visible{opacity:1;transform:translateY(0);}.reveal-d1{transition-delay:.1s;}.reveal-d2{transition-delay:.2s;}.reveal-d3{transition-delay:.3s;}.reveal-d4{transition-delay:.4s;}
-@media(max-width:900px){.nav{padding:0 20px;}.nav-links a:not(.nav-cta){display:none;}section{padding:80px 20px;}.steps{grid-template-columns:1fr 1fr;}.planner-grid{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr 1fr;}.pricing-grid{grid-template-columns:1fr;}.stats-bar{gap:40px;padding:60px 20px;flex-wrap:wrap;}.hero-visual-content{grid-template-columns:1fr;}.footer{flex-direction:column;gap:20px;text-align:center;}}
+@media(max-width:900px){.nav{padding:0 20px;}.nav-links a:not(.nav-cta){display:none;}section{padding:80px 20px;}.steps{grid-template-columns:1fr 1fr;}.planner-grid{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr 1fr;}.pricing-grid{grid-template-columns:1fr;}.stats-bar{gap:40px;padding:60px 20px;flex-wrap:wrap;}.hero-visual-content{grid-template-columns:1fr;}.footer{flex-direction:column;gap:20px;text-align:center;}.footer-top{flex-direction:column;gap:20px;align-items:center;}.footer-contact{text-align:center;}.footer-bottom{flex-direction:column;gap:12px;}}
 @media(max-width:600px){.steps{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr;}.hero{padding:120px 20px 60px;}.hero-actions{flex-direction:column;align-items:flex-start;}}
 </style>
 </head>
@@ -34,7 +40,8 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
       <a href="#how" data-ko="작동 방식" data-en="How it works">작동 방식</a>
       <a href="#planner" data-ko="AI 기획자" data-en="AI Planner">AI 기획자</a>
       <a href="#pricing" data-ko="가격" data-en="Pricing">가격</a>
-      <a href="app.html" class="nav-cta" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
+      <a href="#contact" data-ko="문의" data-en="Contact">Contact</a>
+      <a href="demo.html" class="nav-cta" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
     </div>
     <div class="lang-toggle">
       <button class="lang-btn" id="btn-ko" onclick="setLang('ko')">KO</button>
@@ -48,7 +55,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
   <h1 class="reveal reveal-d1" data-ko="기획자 없이,<br><em>기획서를.</em>" data-en="No planner?<br><em>No problem.</em>">기획자 없이,<br><em>기획서를.</em></h1>
   <p class="hero-sub reveal reveal-d2" data-ko="팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지." data-en="Your team shares opinions. AI planner judges, synthesizes, and delivers a PRD — with role-specific documents for everyone.">팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지.</p>
   <div class="hero-actions reveal reveal-d3">
-    <a href="app.html" class="btn-primary" data-ko="데모 체험하기 →" data-en="Try the Demo →">Try the Demo →</a>
+    <a href="demo.html" class="btn-primary" data-ko="데모 체험하기 →" data-en="Try the Demo →">Try the Demo →</a>
     <a href="#how" class="btn-ghost" data-ko="어떻게 작동하나요?" data-en="How does it work?">How does it work?</a>
   </div>
   <div class="hero-visual reveal reveal-d4">
@@ -131,7 +138,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
         <li data-ko="기획자 의견 2개 섹션" data-en="Planner opinions — 2 sections">기획자 의견 2개 섹션</li>
         <li data-ko="역할별 문서 미리보기" data-en="Role docs preview">역할별 문서 미리보기</li>
       </ul>
-      <a href="app.html" class="price-btn price-btn-outline" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
+      <a href="demo.html" class="price-btn price-btn-outline" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
     </div>
     <div class="price-card featured reveal reveal-d1">
       <div class="price-name">Team</div>
@@ -145,7 +152,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
         <li data-ko="역할별 문서 4종" data-en="4 role-based documents">역할별 문서 4종</li>
         <li data-ko="팀 코멘트 + AI 반영" data-en="Team comments + AI revisions">팀 코멘트 + AI 반영</li>
       </ul>
-      <a href="app.html" class="price-btn price-btn-lime" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
+      <a href="demo.html" class="price-btn price-btn-lime" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
     </div>
     <div class="price-card reveal reveal-d2">
       <div class="price-name">Pro</div>
@@ -168,13 +175,37 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
   <div class="final-glow"></div>
   <h2 class="reveal" data-ko="기획서, <em>의견만 모으면</em><br>나머지는 AI가." data-en="Just collect opinions.<br><em>AI handles the rest.</em>">기획서, <em>의견만 모으면</em><br>나머지는 AI가.</h2>
   <p class="reveal reveal-d1" data-ko="지금 바로 프로젝트를 만들고 팀에 공유하세요." data-en="Create a project now and share with your team.">지금 바로 프로젝트를 만들고 팀에 공유하세요.</p>
-  <a href="app.html" class="btn-primary reveal reveal-d2" data-ko="데모 체험하기 →" data-en="Try the Demo →">Try the Demo →</a>
+  <a href="demo.html" class="btn-primary reveal reveal-d2" data-ko="데모 체험하기 →" data-en="Try the Demo →">Try the Demo →</a>
 </div>
 
+<!-- CONTACT -->
+<section id="contact" style="padding:80px 48px;max-width:640px;margin:0 auto;text-align:center;">
+  <div class="sec-label reveal" data-ko="문의하기" data-en="Contact">Contact</div>
+  <h2 class="reveal" style="font-size:28px;margin-bottom:8px;" data-ko="궁금한 점이 있으신가요?" data-en="Have a question?">Have a question?</h2>
+  <p class="reveal" style="font-size:14px;color:var(--g400);margin-bottom:32px;" data-ko="제안, 협업, 피드백 무엇이든 환영합니다." data-en="Proposals, partnerships, feedback — all welcome.">Proposals, partnerships, feedback — all welcome.</p>
+  <div class="contact-form reveal">
+    <input type="text" id="ct-name" class="ct-input" data-ko="이름" data-en="Name" placeholder="Name">
+    <input type="email" id="ct-email" class="ct-input" data-ko="이메일" data-en="Email" placeholder="Email">
+    <textarea id="ct-msg" class="ct-input ct-textarea" rows="4" data-ko="내용을 입력하세요" data-en="Your message" placeholder="Your message"></textarea>
+    <button class="ct-btn" onclick="sendContact()" data-ko="메일 보내기" data-en="Send Message">Send Message</button>
+  </div>
+</section>
+
 <footer class="footer">
-  <div class="footer-logo"><svg viewBox="0 0 165 60" xmlns="http://www.w3.org/2000/svg"><text font-size="47" transform="translate(0 40)"><tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan><tspan fill="#555" font-family="Outfit" font-weight="500">hae</tspan></text></svg></div>
-  <div class="footer-links"><a href="#" data-ko="이용약관" data-en="Terms">이용약관</a><a href="#" data-ko="개인정보처리방침" data-en="Privacy">개인정보처리방침</a><a href="#" data-ko="고객지원" data-en="Support">고객지원</a></div>
-  <div class="footer-copy">&copy; 2026 ONhae. All rights reserved.</div>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo"><svg viewBox="0 0 165 60" xmlns="http://www.w3.org/2000/svg"><text font-size="47" transform="translate(0 40)"><tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan><tspan fill="#555" font-family="Outfit" font-weight="500">hae</tspan></text></svg></div>
+      <div class="footer-tagline" data-ko="AI로 일하는 방식을 바꿉니다" data-en="Changing how teams work with AI">Changing how teams work with AI</div>
+    </div>
+    <div class="footer-contact">
+      <div class="footer-contact-item"><span class="footer-contact-label">Email</span><a href="mailto:onhaesong@gmail.com">onhaesong@gmail.com</a></div>
+      <div class="footer-contact-item"><span class="footer-contact-label">Tel</span><a href="tel:+821057413556">+82 10-5741-3556</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-links"><a href="#" data-ko="이용약관" data-en="Terms">Terms</a><a href="#" data-ko="개인정보처리방침" data-en="Privacy">Privacy</a><a href="#" data-ko="고객지원" data-en="Support">Support</a></div>
+    <div class="footer-copy">&copy; 2026 ONhae. All rights reserved.</div>
+  </div>
 </footer>
 
 <script>
@@ -191,12 +222,28 @@ function setLang(lang){
   document.documentElement.lang=lang;
   document.title=lang==='ko'?'OnPlan — 기획자 없이, 기획서를.':'OnPlan — No planner? No problem.';
   // Update app links with lang param
-  document.querySelectorAll('a[href^="app.html"]').forEach(a=>{a.href='app.html?lang='+lang;});
+  document.querySelectorAll('a[href^="demo.html"]').forEach(a=>{a.href='demo.html?lang='+lang;});
 }
 setLang('en');
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.15});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});});
+
+function sendContact(){
+  const name=document.getElementById('ct-name').value.trim();
+  const email=document.getElementById('ct-email').value.trim();
+  const msg=document.getElementById('ct-msg').value.trim();
+  if(!name||!email||!msg){
+    if(!name)document.getElementById('ct-name').style.borderColor='#ff6b6b';
+    if(!email)document.getElementById('ct-email').style.borderColor='#ff6b6b';
+    if(!msg)document.getElementById('ct-msg').style.borderColor='#ff6b6b';
+    return;
+  }
+  const subject=encodeURIComponent('[OnPlan] '+name+' — Contact');
+  const body=encodeURIComponent('From: '+name+'\nEmail: '+email+'\n\n'+msg);
+  window.location.href='mailto:onhaesong@gmail.com?subject='+subject+'&body='+body;
+  document.querySelector('.contact-form').innerHTML='<div class="ct-success">'+(currentLang==='ko'?'메일 클라이언트가 열렸습니다. 감사합니다.':'Your email client has been opened. Thank you.')+'</div>';
+}
 </script>
 </body>
 </html>
