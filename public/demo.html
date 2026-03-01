@@ -875,9 +875,13 @@ async function callAI(userText){
 
 async function startInterview(){
   if(!selectedRole||!document.getElementById('pt-name').value.trim())return;
+  const ptName=document.getElementById('pt-name').value.trim();
   go('p-chat');qIdx=0;chatHistory=[];document.getElementById('cb').innerHTML='';
   addTyping();
-  const reply=await callAI(null);
+  const kickoff=appLang==='en'
+    ?`Start the interview. My name is ${ptName}. Project: ${projectName}.`
+    :`인터뷰를 시작해주세요. 저는 ${ptName}입니다. 프로젝트: ${projectName}.`;
+  const reply=await callAI(kickoff);
   document.getElementById('typing')?.remove();
   addMsg('assistant',reply);
   updateDots(0);
