@@ -2,8 +2,8 @@
   "buildCommand": "",
   "outputDirectory": "public",
   "routes": [
-    { "src": "/app", "dest": "/app.html" },
-    { "src": "/onplan", "dest": "/onplan.html" },
+    { "src": "/api/chat", "dest": "/api/chat.js" },
+    { "src": "/demo", "dest": "/demo.html" },
     { "src": "/", "dest": "/onplan.html" }
   ]
 }
