@@ -1,8 +1,8 @@
 {
   "buildCommand": "",
   "outputDirectory": "public",
-  "routes": [
-    { "src": "/demo", "dest": "/demo.html" },
-    { "src": "/", "dest": "/onplan.html" }
+  "rewrites": [
+    { "source": "/demo", "destination": "/demo.html" },
+    { "source": "/", "destination": "/onplan.html" }
   ]
 }
