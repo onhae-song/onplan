@@ -1,8 +1,6 @@
 {
-  "buildCommand": "",
   "outputDirectory": "public",
   "rewrites": [
-    { "source": "/demo", "destination": "/demo.html" },
     { "source": "/", "destination": "/onplan.html" }
   ]
 }
