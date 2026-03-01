@@ -5,7 +5,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0a'/%3E%3Ctext x='3' y='23' font-family='Arial' font-weight='bold' font-size='18' fill='%23d4f53c'%3EOn%3C/text%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OnPlan</title>
-<meta name="description" content="Your team shares opinions. AI planner judges, synthesizes, and generates a PRD.">
+<meta name="description" content="Your team shares opinions. OnPlan AI judges, synthesizes, and generates a PRD.">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--lime:#d4f53c;--lime-dim:#a8cc00;--lime-bg:rgba(212,245,60,.06);--lime-border:rgba(212,245,60,.15);--black:#0a0a0a;--dark:#111;--dark2:#161616;--dark3:#1a1a1a;--dark4:#222;--white:#f0f0f0;--g100:#e0e0e0;--g200:#bbb;--g300:#999;--g400:#777;--g500:#555;--g600:#333;--en:'Outfit',sans-serif;--kr:'Pretendard Variable','Pretendard',-apple-system,sans-serif;}
@@ -28,6 +28,52 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
 .ct-textarea{resize:vertical;min-height:100px;}
 .ct-btn{padding:14px 32px;background:var(--lime);color:var(--black);font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:8px;cursor:pointer;transition:all .2s;}.ct-btn:hover{background:#e8ff5e;transform:scale(1.02);}
 .ct-success{color:var(--lime);font-size:14px;font-weight:600;padding:16px 0;}
+.output-preview{background:var(--dark2);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;}
+.op-bar{height:40px;background:var(--dark3);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 16px;gap:8px;}
+.op-dot{width:10px;height:10px;border-radius:50%;background:var(--g600);}
+.op-bar-title{font-size:12px;color:var(--g400);margin-left:8px;font-family:var(--en);letter-spacing:.5px;}
+.op-body{padding:28px;}
+.op-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--g400);margin-bottom:14px;}
+.op-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:28px;}
+.op-card{background:var(--dark3);border:1px solid rgba(255,255,255,.06);padding:14px;border-radius:6px;}
+.op-card-num{font-family:var(--en);font-size:10px;color:var(--lime);font-weight:700;display:block;margin-bottom:4px;}
+.op-card-name{font-size:12px;color:var(--white);font-weight:600;display:block;margin-bottom:6px;}
+.op-card-tag{font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 6px;border-radius:3px;}
+.op-card-tag.done{background:rgba(168,204,0,.15);color:var(--lime);}
+.op-card-tag.issue{background:rgba(214,48,49,.12);color:#ff6b6b;}
+.op-card-tag.team{background:rgba(255,255,255,.06);color:var(--g400);}
+.op-section-demo{margin-bottom:20px;}
+.op-section-head{font-family:var(--en);font-size:16px;font-weight:800;color:var(--white);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);}
+.op-opinion{background:rgba(232,116,10,.08);border:1px solid rgba(232,116,10,.2);border-radius:8px;padding:18px;margin-bottom:14px;}
+.op-opinion-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#e8740a;font-weight:700;margin-bottom:8px;}
+.op-opinion-text{font-size:13px;line-height:1.7;color:var(--g200);}.op-opinion-text strong{color:var(--white);}
+.op-content-preview{font-size:13px;line-height:1.8;color:var(--g400);padding:0 2px;margin-bottom:20px;}
+.op-issue-demo{background:rgba(214,48,49,.06);border:1px solid rgba(214,48,49,.15);border-radius:8px;padding:18px;}
+.op-issue-badge{display:inline-block;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#ff6b6b;font-weight:700;margin-bottom:8px;}
+.op-issue-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px;}
+.op-issue-body{font-size:13px;line-height:1.7;color:var(--g300);margin-bottom:12px;}
+.op-issue-ai{font-size:13px;color:var(--g200);background:rgba(255,255,255,.04);padding:12px;border-radius:6px;}
+.op-issue-ai-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--lime);font-weight:700;margin-right:8px;}
+@media(max-width:600px){.op-cards{grid-template-columns:repeat(2,1fr);}}
+.op-step{display:flex;align-items:center;gap:16px;margin:40px 0 16px;}
+.op-step-num{font-family:var(--en);font-size:11px;font-weight:800;color:var(--black);background:var(--lime);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.op-step-label{font-size:15px;font-weight:600;color:var(--white);}
+.op-step:first-of-type{margin-top:0;}
+.op-section-content{padding:4px 0;}
+.op-h4{font-size:14px;font-weight:700;color:var(--white);margin:16px 0 6px;}.op-h4:first-child{margin-top:0;}
+.op-p{font-size:13px;line-height:1.8;color:var(--g300);}
+.op-opinion-note{font-size:12px;color:var(--g400);font-style:italic;margin-top:14px;padding-left:2px;}
+.op-chat-input{display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);}
+.op-chat-field{flex:1;padding:12px 16px;background:var(--dark3);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:var(--g400);font-size:13px;font-family:var(--kr);}
+.op-chat-btn{padding:12px 24px;background:var(--dark4);color:var(--g300);font-family:var(--en);font-weight:700;font-size:13px;border:none;border-radius:6px;}
+.op-revision{padding:4px 0;}
+.op-revision-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:12px;}
+.op-revision-text{font-size:14px;line-height:1.8;color:var(--g200);margin-bottom:16px;}.op-revision-text strong{color:var(--white);}
+.op-revision-options{font-size:13px;line-height:1.9;color:var(--g300);background:rgba(255,255,255,.03);padding:16px;border-radius:6px;margin-bottom:16px;}
+.op-revision-question{font-size:15px;font-weight:700;color:var(--white);margin-bottom:12px;}
+.op-revision-actions{display:flex;gap:10px;}
+.op-btn-approve{padding:10px 28px;background:var(--lime);color:var(--black);font-family:var(--en);font-weight:700;font-size:13px;border:none;border-radius:6px;}
+.op-btn-reject{padding:10px 28px;background:transparent;color:var(--g300);font-family:var(--en);font-weight:600;font-size:13px;border:1px solid var(--g500);border-radius:6px;}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}.reveal.visible{opacity:1;transform:translateY(0);}.reveal-d1{transition-delay:.1s;}.reveal-d2{transition-delay:.2s;}.reveal-d3{transition-delay:.3s;}.reveal-d4{transition-delay:.4s;}
 @media(max-width:900px){.nav{padding:0 20px;}.nav-links a:not(.nav-cta){display:none;}section{padding:80px 20px;}.steps{grid-template-columns:1fr 1fr;}.planner-grid{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr 1fr;}.pricing-grid{grid-template-columns:1fr;}.stats-bar{gap:40px;padding:60px 20px;flex-wrap:wrap;}.hero-visual-content{grid-template-columns:1fr;}.footer{flex-direction:column;gap:20px;text-align:center;}.footer-top{flex-direction:column;gap:20px;align-items:center;}.footer-contact{text-align:center;}.footer-bottom{flex-direction:column;gap:12px;}}
 @media(max-width:600px){.steps{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr;}.hero{padding:120px 20px 60px;}.hero-actions{flex-direction:column;align-items:flex-start;}}
@@ -39,7 +85,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
   <div class="nav-right">
     <div class="nav-links">
       <a href="#how" data-ko="작동 방식" data-en="How it works">작동 방식</a>
-      <a href="#planner" data-ko="AI 기획자" data-en="AI Planner">AI 기획자</a>
+      <a href="#planner" data-ko="AI 기획자" data-en="OnPlan AI">AI 기획자</a>
       <a href="#pricing" data-ko="가격" data-en="Pricing">가격</a>
       <a href="#contact" data-ko="문의" data-en="Contact">Contact</a>
       <a href="demo.html" class="nav-cta" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
@@ -54,7 +100,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
 <header class="hero">
   <div class="hero-badge reveal"><div class="hero-badge-dot"></div><span>AI-Powered Product Planning</span></div>
   <h1 class="reveal reveal-d1" data-ko="기획자 없이,<br><em>기획서를.</em>" data-en="Skip the PM.<br><em>Ship the PRD.</em>">기획자 없이,<br><em>기획서를.</em></h1>
-  <p class="hero-sub reveal reveal-d2" data-ko="팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지." data-en="Your team shares opinions. AI planner judges, synthesizes, and delivers a PRD — with role-specific documents for everyone.">팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지.</p>
+  <p class="hero-sub reveal reveal-d2" data-ko="팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지." data-en="Your team shares opinions. OnPlan AI judges, synthesizes, and delivers a PRD — with role-specific documents for everyone.">팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지.</p>
   <div class="hero-actions reveal reveal-d3">
     <a href="demo.html" class="btn-primary" data-ko="데모 체험하기 →" data-en="Try the Demo →">Try the Demo →</a>
     <a href="#how" class="btn-ghost" data-ko="어떻게 작동하나요?" data-en="How does it work?">How does it work?</a>
@@ -67,7 +113,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
         <div class="hv-issue"><div class="hv-issue-label">OPEN ISSUE</div><div class="hv-issue-body" data-ko="P0 기능 범위를 어디까지 잡을 것인가 — 경영 관점 5개 vs 기술 관점 3개" data-en="How many P0 features? Business wants 5 vs Engineering says 3">P0 기능 범위를 어디까지 잡을 것인가 — 경영 관점 5개 vs 기술 관점 3개</div></div>
       </div>
       <div>
-        <div class="hv-opinion"><div class="hv-opinion-label">PLANNER OPINION</div><div class="hv-opinion-body" data-ko="<strong>P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다. 자동 리포트와 거래처 포털은 P2로 내렸습니다." data-en="<strong>P0 is limited to 3.</strong> With $50K and 3 months, 5 P0s are not feasible. Auto-reports and vendor portal moved to P2."><strong>P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다. 자동 리포트와 거래처 포털은 P2로 내렸습니다.</div></div>
+        <div class="hv-opinion"><div class="hv-opinion-label">ONPLAN OPINION</div><div class="hv-opinion-body" data-ko="<strong>P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다. 자동 리포트와 거래처 포털은 P2로 내렸습니다." data-en="<strong>P0 is limited to 3.</strong> With $50K and 3 months, 5 P0s are not feasible. Auto-reports and vendor portal moved to P2."><strong>P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다. 자동 리포트와 거래처 포털은 P2로 내렸습니다.</div></div>
         <div class="hv-card" style="margin-top:16px"><div class="hv-card-label">FOR CEO</div><div class="hv-card-title" data-ko="사업 타당성 요약" data-en="Business Case Summary">사업 타당성 요약</div><div class="hv-card-body" data-ko="월 500만원 손실 제거, ERP 대비 1/6 비용, 4개월 내 구축" data-en="Eliminates $5K/mo losses, 1/6 cost of ERP, built in 4 months">월 500만원 손실 제거, ERP 대비 1/6 비용, 4개월 내 구축</div></div>
       </div>
     </div>
@@ -84,7 +130,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
 <section id="how">
   <div class="sec-label reveal">How it works</div>
   <h2 class="sec-title reveal" data-ko="의견을 모으면,<br>기획서가 나옵니다." data-en="Collect opinions.<br>Get a PRD.">의견을 모으면,<br>기획서가 나옵니다.</h2>
-  <p class="sec-desc reveal" data-ko="기획 지식이 없어도 됩니다. 자기 입장만 말하면 AI 기획자가 알아서 판단합니다." data-en="No planning expertise needed. Just share your perspective — the AI planner handles judgment calls.">기획 지식이 없어도 됩니다. 자기 입장만 말하면 AI 기획자가 알아서 판단합니다.</p>
+  <p class="sec-desc reveal" data-ko="기획 지식이 없어도 됩니다. 자기 입장만 말하면 AI 기획자가 알아서 판단합니다." data-en="No planning expertise needed. Just share your perspective — OnPlan AI handles judgment calls.">기획 지식이 없어도 됩니다. 자기 입장만 말하면 AI 기획자가 알아서 판단합니다.</p>
   <div class="steps">
     <div class="step reveal"><div class="step-num">01</div><div class="step-phase">Phase 0</div><div class="step-title" data-ko="프로젝트 생성" data-en="Create Project">프로젝트 생성</div><div class="step-body" data-ko="제품명과 한 줄 설명만 입력하세요. 참여 링크가 자동 생성됩니다. 카톡, 슬랙 어디든 공유하면 됩니다." data-en="Enter a product name and one-liner. A shareable link is generated. Send it via Slack, Teams, or any messenger.">제품명과 한 줄 설명만 입력하세요. 참여 링크가 자동 생성됩니다. 카톡, 슬랙 어디든 공유하면 됩니다.</div><div class="step-time">30s</div></div>
     <div class="step reveal reveal-d1"><div class="step-num">02</div><div class="step-phase">Phase 1</div><div class="step-title" data-ko="각자 인터뷰" data-en="1:1 AI Interviews">각자 인터뷰</div><div class="step-body" data-ko="링크를 받은 팀원들이 각자 AI와 1:1 인터뷰. 역할에 맞는 질문이 자동으로 나옵니다. 로그인 불필요." data-en="Each team member has a private 1:1 interview with AI. Questions adapt to their role. No login required.">링크를 받은 팀원들이 각자 AI와 1:1 인터뷰. 역할에 맞는 질문이 자동으로 나옵니다. 로그인 불필요.</div><div class="step-time">3~5min</div></div>
@@ -94,7 +140,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
 </section>
 
 <section id="planner">
-  <div class="sec-label reveal">AI Planner</div>
+  <div class="sec-label reveal">OnPlan AI</div>
   <h2 class="sec-title reveal" data-ko="정리만 하는 서기가 아닌,<br>판단하는 <em style='font-style:normal;color:var(--lime)'>기획자</em>." data-en="Not a note-taker.<br>A <em style='font-style:normal;color:var(--lime)'>decision-maker</em>.">정리만 하는 서기가 아닌,<br>판단하는 <em style="font-style:normal;color:var(--lime)">기획자</em>.</h2>
   <p class="sec-desc reveal" data-ko="OnPlan의 AI는 의견을 모아 정리만 하지 않습니다. 우선순위를 판단하고, 트레이드오프를 제시하고, 빠진 관점을 짚어냅니다." data-en="OnPlan's AI doesn't just organize opinions. It prioritizes, presents trade-offs, and catches what your team missed.">OnPlan의 AI는 의견을 모아 정리만 하지 않습니다. 우선순위를 판단하고, 트레이드오프를 제시하고, 빠진 관점을 짚어냅니다.</p>
   <div class="planner-grid">
@@ -105,7 +151,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
       <div class="planner-item reveal reveal-d3"><div class="planner-item-title" data-ko="트레이드오프 제시" data-en="Trade-off Analysis">트레이드오프 제시</div><div class="planner-item-desc" data-ko="&quot;넣으면 일정이 1개월 늘어납니다. 대신 이걸 빼면 현행 유지 가능합니다.&quot;" data-en="&quot;Adding this extends timeline by 1 month. Removing X keeps it on track.&quot;">"넣으면 일정이 1개월 늘어납니다. 대신 이걸 빼면 현행 유지 가능합니다."</div><div class="planner-item-vs" data-ko="서기: &quot;넣겠습니다&quot;" data-en="Note-taker: &quot;We'll add it&quot;">서기: "넣겠습니다"</div></div>
     </div>
     <div class="planner-demo reveal">
-      <div class="pd-label" data-ko="PLANNER OPINION — 04. 기능적 요구사항" data-en="PLANNER OPINION — 04. FUNCTIONAL REQUIREMENTS">PLANNER OPINION — 04. 기능적 요구사항</div>
+      <div class="pd-label" data-ko="ONPLAN OPINION — 04. 기능적 요구사항" data-en="ONPLAN OPINION — 04. FUNCTIONAL REQUIREMENTS">ONPLAN OPINION — 04. 기능적 요구사항</div>
       <div class="pd-body" data-ko="<strong>대표 요청 5개 중 P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다.<br><br>자동 리포트와 거래처 포털은 P2로 내렸습니다. 둘 다 &quot;있으면 좋겠다&quot;이지 <strong>&quot;없으면 안 된다&quot;가 아닙니다.</strong>" data-en="<strong>Out of 5 CEO requests, P0 is limited to 3.</strong> With $50K and 3 months, 5 P0s are not possible.<br><br>Auto-reports and vendor portal moved to P2. Both are &quot;nice to have,&quot; not <strong>&quot;must have.&quot;</strong>"><strong>대표 요청 5개 중 P0은 3개로 제한했습니다.</strong> 500만원·3개월 기준으로 P0 5개는 불가능합니다.<br><br>자동 리포트와 거래처 포털은 P2로 내렸습니다. 둘 다 "있으면 좋겠다"이지 <strong>"없으면 안 된다"가 아닙니다.</strong></div>
     </div>
   </div>
@@ -123,10 +169,122 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
   </div>
 </section>
 
+<!-- OUTPUT PREVIEW -->
+<section id="output" style="padding:120px 48px;max-width:1000px;margin:0 auto;">
+  <div class="sec-label reveal" data-ko="결과물 미리보기" data-en="Output Preview">Output Preview</div>
+  <h2 class="sec-title reveal" data-ko="기획서라는 이름에<br>걸맞은 결과물." data-en="A PRD that actually<br>earns the name.">기획서라는 이름에<br>걸맞은 결과물.</h2>
+  <p class="sec-desc reveal" data-ko="팀의 목소리를 구조화하고, 판단을 더하고, 의사결정까지 설계합니다." data-en="Structured from your team's voice. Layered with judgment. Designed for decisions.">팀의 목소리를 구조화하고, 판단을 더하고, 의사결정까지 설계합니다.</p>
+
+  <!-- STEP 1: 8 Section Cards -->
+  <div class="op-step reveal">
+    <div class="op-step-num">01</div>
+    <div class="op-step-label" data-ko="8개 섹션이 자동으로 구성됩니다" data-en="8 PRD sections are auto-generated">8 PRD sections are auto-generated</div>
+  </div>
+  <div class="output-preview reveal">
+    <div class="op-bar"><div class="op-dot"></div><div class="op-dot"></div><div class="op-dot"></div><span class="op-bar-title">OnPlan — PRD</span></div>
+    <div class="op-body">
+      <div class="op-cards">
+        <div class="op-card"><span class="op-card-num">01</span><span class="op-card-name" data-ko="요약과 배경" data-en="Summary & Background">Summary & Background</span><span class="op-card-tag done">DONE</span></div>
+        <div class="op-card"><span class="op-card-num">02</span><span class="op-card-name" data-ko="주요 사용자" data-en="Target Users">Target Users</span><span class="op-card-tag issue">ISSUE</span></div>
+        <div class="op-card"><span class="op-card-num">03</span><span class="op-card-name" data-ko="사용자 여정" data-en="User Journey">User Journey</span><span class="op-card-tag done">DONE</span></div>
+        <div class="op-card"><span class="op-card-num">04</span><span class="op-card-name" data-ko="기능적 요구사항" data-en="Functional Requirements">Functional Requirements</span><span class="op-card-tag issue">ISSUE</span></div>
+        <div class="op-card"><span class="op-card-num">05</span><span class="op-card-name" data-ko="IA 설계" data-en="IA Design">IA Design</span><span class="op-card-tag done">DONE</span></div>
+        <div class="op-card"><span class="op-card-num">06</span><span class="op-card-name" data-ko="사용자 플로우" data-en="User Flows">User Flows</span><span class="op-card-tag done">DONE</span></div>
+        <div class="op-card"><span class="op-card-num">07</span><span class="op-card-name" data-ko="배포 계획" data-en="Release Plan">Release Plan</span><span class="op-card-tag team">TEAM</span></div>
+        <div class="op-card"><span class="op-card-num">08</span><span class="op-card-name" data-ko="리스크" data-en="Risks & Docs">Risks & Docs</span><span class="op-card-tag team">TEAM</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Section Body Content -->
+  <div class="op-step reveal">
+    <div class="op-step-num">02</div>
+    <div class="op-step-label" data-ko="각 섹션에 완성된 기획 내용이 담깁니다" data-en="Each section contains a complete write-up">Each section contains a complete write-up</div>
+  </div>
+  <div class="output-preview reveal">
+    <div class="op-bar"><div class="op-dot"></div><div class="op-dot"></div><div class="op-dot"></div><span class="op-bar-title" data-ko="01 요약과 배경" data-en="01 Summary & Background">01 Summary & Background</span></div>
+    <div class="op-body">
+      <div class="op-section-content">
+        <h4 class="op-h4" data-ko="문제 정의" data-en="Problem Definition">Problem Definition</h4>
+        <p class="op-p" data-ko="중소 제조업체의 발주 관리는 여전히 엑셀과 메신저에 의존하고 있습니다. 거래처가 10곳을 넘어가면 발주 누락, 단가 착오, 납기 지연이 반복 발생하며, 담당자 교체 시 인수인계 단절이 심각한 운영 리스크입니다." data-en="SMB manufacturers still manage purchase orders via spreadsheets and messaging apps. Beyond 10 vendors, missed orders, pricing errors, and delivery delays become recurring issues, and staff turnover causes critical handoff failures.">SMB manufacturers still manage purchase orders via spreadsheets and messaging apps. Beyond 10 vendors, missed orders, pricing errors, and delivery delays become recurring issues, and staff turnover causes critical handoff failures.</p>
+        <h4 class="op-h4" data-ko="왜 지금인가" data-en="Why Now">Why Now</h4>
+        <p class="op-p" data-ko="거래처 확장으로 월 3~4건의 발주 누락 발생 중. 월간 손실 약 500만원 추산. 기존 ERP 도입은 비용(3,000만원+)과 학습 곡선으로 비현실적이며, 핵심 발주 프로세스에 특화된 경량 솔루션이 필요합니다." data-en="Vendor expansion causing 3-4 missed orders monthly. Estimated $5K monthly loss. Traditional ERP adoption is unrealistic due to cost ($300K+) and learning curve. A lightweight solution focused on the core ordering process is needed.">Vendor expansion causing 3-4 missed orders monthly. Estimated $5K monthly loss. Traditional ERP adoption is unrealistic due to cost ($300K+) and learning curve. A lightweight solution focused on the core ordering process is needed.</p>
+        <h4 class="op-h4" data-ko="시장 맥락" data-en="Market Context">Market Context</h4>
+        <p class="op-p" data-ko="국내 중소 제조업체 약 12만 곳 중 전용 발주 시스템 사용률 15% 미만. 엑셀(68%), 수기(12%), 메신저(5%) 등으로 처리 중이며 명확한 시장 기회가 존재합니다." data-en="Among ~120K domestic SMB manufacturers, less than 15% use a dedicated ordering system. 68% use spreadsheets, 12% manual records, 5% messaging apps — a clear market opportunity.">Among ~120K domestic SMB manufacturers, less than 15% use a dedicated ordering system. 68% use spreadsheets, 12% manual records, 5% messaging apps — a clear market opportunity.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: OnPlan Opinion -->
+  <div class="op-step reveal">
+    <div class="op-step-num">03</div>
+    <div class="op-step-label" data-ko="AI 기획자의 의견이 섹션마다 추가됩니다" data-en="OnPlan AI's opinion is added to every section">OnPlan AI's opinion is added to every section</div>
+  </div>
+  <div class="output-preview reveal">
+    <div class="op-bar"><div class="op-dot"></div><div class="op-dot"></div><div class="op-dot"></div><span class="op-bar-title">ONPLAN OPINION</span></div>
+    <div class="op-body">
+      <div class="op-opinion">
+        <div class="op-opinion-label">ONPLAN OPINION</div>
+        <div class="op-opinion-text" data-ko="<strong>대표와 영업의 문제 인식이 다릅니다.</strong> 대표는 운영 효율(발주 누락 방지), 영업은 고객 관계(납기 지연으로 인한 신뢰 하락)를 강조했습니다. 둘 다 유효하나 MVP에서는 <strong>발주 누락 방지가 우선</strong>입니다. 납기 지연은 발주가 제대로 관리되면 자연히 줄어드는 후행 지표입니다." data-en="<strong>CEO and Sales disagree on the core problem.</strong> CEO emphasizes operational efficiency (preventing missed orders), Sales highlights customer trust (delivery delays hurting credibility). Both valid, but for MVP, <strong>preventing missed orders takes priority</strong>. Delivery delays naturally decrease when orders are properly managed — it's a lagging indicator.">CEO and Sales disagree on the core problem. CEO emphasizes operational efficiency (preventing missed orders), Sales highlights customer trust (delivery delays hurting credibility). Both valid, but for MVP, <strong>preventing missed orders takes priority</strong>. Delivery delays naturally decrease when orders are properly managed — it's a lagging indicator.</div>
+      </div>
+      <div class="op-opinion-note" data-ko="단순 요약이 아닙니다. 팀 의견의 충돌을 감지하고, 우선순위를 판단합니다." data-en="This isn't a summary. It detects conflicts in team opinions and makes priority judgments.">This isn't a summary. It detects conflicts in team opinions and makes priority judgments.</div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Open Issue + Real-time Discussion -->
+  <div class="op-step reveal">
+    <div class="op-step-num">04</div>
+    <div class="op-step-label" data-ko="이슈에 대해 팀과 AI가 실시간으로 소통합니다" data-en="Discuss issues in real-time with your team and AI">Discuss issues in real-time with your team and AI</div>
+  </div>
+  <div class="output-preview reveal">
+    <div class="op-bar"><div class="op-dot"></div><div class="op-dot"></div><div class="op-dot"></div><span class="op-bar-title">OPEN ISSUE</span></div>
+    <div class="op-body">
+      <div class="op-issue-demo">
+        <div class="op-issue-badge" data-ko="미해결 이슈" data-en="OPEN ISSUE">OPEN ISSUE</div>
+        <div class="op-issue-title" data-ko="거래처를 시스템 사용자로 포함할 것인가" data-en="Should vendors be included as system users?">Should vendors be included as system users?</div>
+        <div class="op-issue-body" data-ko="일부 참여자는 내부 사용자만 고려하면 된다는 입장이고, 다른 참여자는 거래처도 시스템에서 직접 확인할 수 있어야 한다고 봅니다." data-en="Some participants believe only internal users need access, while others think vendors should be able to confirm orders directly in the system.">Some participants believe only internal users need access, while others think vendors should be able to confirm orders directly in the system.</div>
+        <div class="op-issue-ai">
+          <span class="op-issue-ai-label" data-ko="AI 기획자 권장안" data-en="ONPLAN RECOMMENDATION">ONPLAN RECOMMENDATION</span>
+          <span data-ko="MVP에서는 <strong>내부 사용자로 한정</strong>을 권장합니다. 거래처 포함 시 거래처 포털이 P0으로 올라가며 예산 +300만원, 일정 +2개월이 필요합니다. 거래처에는 이메일/SMS 알림으로 우선 대응 가능합니다." data-en="We recommend <strong>limiting to internal users</strong> for MVP. Including vendors would escalate the vendor portal to P0, adding +$30K budget and +2 months. Email/SMS alerts can cover vendor needs initially.">We recommend <strong>limiting to internal users</strong> for MVP. Including vendors would escalate the vendor portal to P0, adding +$30K budget and +2 months. Email/SMS alerts can cover vendor needs initially.</span>
+        </div>
+      </div>
+      <div class="op-chat-input">
+        <input type="text" class="op-chat-field" disabled data-ko-ph="이 논점에 대한 의견을 입력하세요..." data-en-ph="Share your opinion on this issue..." placeholder="Share your opinion on this issue...">
+        <button class="op-chat-btn" disabled data-ko="전송" data-en="Send">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: AI Revision -->
+  <div class="op-step reveal">
+    <div class="op-step-num">05</div>
+    <div class="op-step-label" data-ko="AI 기획자가 수정안을 제안하고, 승인/거부할 수 있습니다" data-en="OnPlan AI proposes revisions you can approve or reject">OnPlan AI proposes revisions you can approve or reject</div>
+  </div>
+  <div class="output-preview reveal">
+    <div class="op-bar"><div class="op-dot"></div><div class="op-dot"></div><div class="op-dot"></div><span class="op-bar-title" data-ko="AI 기획자 수정 제안" data-en="ONPLAN REVISION">ONPLAN REVISION</span></div>
+    <div class="op-body">
+      <div class="op-revision">
+        <div class="op-revision-label" data-ko="AI 기획자 수정 제안" data-en="ONPLAN REVISION">ONPLAN REVISION</div>
+        <div class="op-revision-text" data-ko="자동 리포트를 P1으로 올리면 <strong>일정이 1개월 늘어납니다</strong> (4개월 → 5개월). 대신 납품 검수를 P2로 내리면 <strong>4개월 내 가능</strong>합니다." data-en="Moving auto-reports to P1 would <strong>extend the timeline by 1 month</strong> (4 → 5 months). However, moving delivery inspection to P2 <strong>keeps it within 4 months</strong>.">Moving auto-reports to P1 would <strong>extend the timeline by 1 month</strong> (4 → 5 months). However, moving delivery inspection to P2 <strong>keeps it within 4 months</strong>.</div>
+        <div class="op-revision-options" data-ko="정리하면:<br>— 안 A: P0 3개 + 자동 리포트(P1) = 5개월<br>— 안 B: P0 3개 + 자동 리포트(P1) - 납품 검수(→P2) = 4개월<br>— 안 C: 현행 유지 (자동 리포트 P2) = 4개월" data-en="Summary:<br>— Option A: 3 P0s + Auto-report (P1) = 5 months<br>— Option B: 3 P0s + Auto-report (P1) - Inspection (→P2) = 4 months<br>— Option C: Keep current (Auto-report P2) = 4 months">Summary:<br>— Option A: 3 P0s + Auto-report (P1) = 5 months<br>— Option B: 3 P0s + Auto-report (P1) - Inspection (→P2) = 4 months<br>— Option C: Keep current (Auto-report P2) = 4 months</div>
+        <div class="op-revision-question" data-ko="어떻게 하시겠습니까?" data-en="What would you like to do?">What would you like to do?</div>
+        <div class="op-revision-actions">
+          <button class="op-btn-approve" disabled data-ko="승인" data-en="Approve">Approve</button>
+          <button class="op-btn-reject" disabled data-ko="거부" data-en="Reject">Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;">
+    <a href="demo.html" class="btn-primary reveal" data-ko="직접 확인하기 →" data-en="See full demo →">See full demo →</a>
+  </div>
+</section>
+
 <section id="pricing">
   <div class="sec-label reveal">Pricing</div>
-  <h2 class="sec-title reveal" data-ko="기획자 월급 대신,<br>OnPlan." data-en="Instead of hiring a planner,<br>OnPlan.">기획자 월급 대신,<br>OnPlan.</h2>
-  <p class="sec-desc reveal" data-ko="기획자 1명 채용 비용의 1/100로 시작하세요." data-en="Start at 1/100th the cost of hiring a product planner.">기획자 1명 채용 비용의 1/100로 시작하세요.</p>
+  <h2 class="sec-title reveal" data-ko="모든 팀을 위한 기획." data-en="Product direction,<br>for every team.">모든 팀을 위한 기획.</h2>
+  <p class="sec-desc reveal" data-ko="팀의 규모와 단계에 맞는 플랜을 선택하세요." data-en="Choose the plan that fits your team's size and stage.">팀의 규모와 단계에 맞는 플랜을 선택하세요.</p>
   <div class="pricing-grid">
     <div class="price-card reveal">
       <div class="price-name">Trial</div>
@@ -136,7 +294,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
         <li data-ko="프로젝트 1건" data-en="1 project">프로젝트 1건</li>
         <li data-ko="참여자 3명" data-en="Up to 3 participants">참여자 3명</li>
         <li data-ko="PRD 1회 생성" data-en="1 PRD generation">PRD 1회 생성</li>
-        <li data-ko="기획자 의견 2개 섹션" data-en="Planner opinions — 2 sections">기획자 의견 2개 섹션</li>
+        <li data-ko="기획자 의견 2개 섹션" data-en="OnPlan opinions — 2 sections">기획자 의견 2개 섹션</li>
         <li data-ko="역할별 문서 미리보기" data-en="Role docs preview">역할별 문서 미리보기</li>
       </ul>
       <a href="demo.html" class="price-btn price-btn-outline" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
@@ -149,7 +307,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
         <li data-ko="무제한 프로젝트" data-en="Unlimited projects">무제한 프로젝트</li>
         <li data-ko="참여자 10명" data-en="Up to 10 participants">참여자 10명</li>
         <li data-ko="무제한 PRD 수정" data-en="Unlimited revisions">무제한 PRD 수정</li>
-        <li data-ko="기획자 의견 전체" data-en="Full planner opinions">기획자 의견 전체</li>
+        <li data-ko="기획자 의견 전체" data-en="Full OnPlan opinions">기획자 의견 전체</li>
         <li data-ko="역할별 문서 4종" data-en="4 role-based documents">역할별 문서 4종</li>
         <li data-ko="팀 코멘트 + AI 반영" data-en="Team comments + AI revisions">팀 코멘트 + AI 반영</li>
       </ul>
@@ -163,7 +321,7 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
         <li data-ko="무제한 프로젝트" data-en="Unlimited projects">무제한 프로젝트</li>
         <li data-ko="무제한 참여자" data-en="Unlimited participants">무제한 참여자</li>
         <li data-ko="무제한 PRD 수정" data-en="Unlimited revisions">무제한 PRD 수정</li>
-        <li data-ko="기획자 의견 전체" data-en="Full planner opinions">기획자 의견 전체</li>
+        <li data-ko="기획자 의견 전체" data-en="Full OnPlan opinions">기획자 의견 전체</li>
         <li data-ko="역할별 문서 4종" data-en="4 role-based documents">역할별 문서 4종</li>
         <li data-ko="HTML 데모 자동 생성" data-en="Auto HTML prototype generation">HTML 데모 자동 생성</li>
       </ul>
