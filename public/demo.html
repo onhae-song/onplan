@@ -34,6 +34,17 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 .center-sm{max-width:440px;margin:0 auto;padding:48px 24px;}
 .center-wide{max-width:920px;margin:0 auto;padding:40px 24px;}
 
+/* STEP INDICATOR */
+.steps-bar{display:flex;align-items:center;gap:0;padding:0;margin:0 0 24px;}
+.step-item{display:flex;align-items:center;gap:0;flex-shrink:0;}
+.step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--en);font-size:12px;font-weight:700;border:2px solid var(--border);color:var(--g500);background:var(--white);flex-shrink:0;transition:all .3s;}
+.step-circle.active{border-color:var(--accent);background:var(--accent);color:var(--white);}
+.step-circle.done{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
+.step-label{font-size:10px;color:var(--g500);margin-left:6px;white-space:nowrap;letter-spacing:-.2px;}
+.step-label.active{color:var(--black);font-weight:600;}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 10px;min-width:8px;}
+.step-line.done{background:var(--accent);}
+
 /* COMMON */
 .tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
 .title{font-family:var(--en);font-size:36px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:10px;}
@@ -271,6 +282,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
     <div class="tag">New Project</div>
     <h1 class="title" data-ko="팀의 의견을<br><em>기획서로.</em>" data-en="Turn opinions<br>into a <em>PRD.</em>">팀의 의견을<br><em>기획서로.</em></h1>
     <p class="desc" data-ko="프로젝트를 만들고 팀에 공유하세요.<br>각자 의견을 말하면 AI 기획자가 판단하고 정리합니다." data-en="Create a project and share with your team.<br>Each person shares their view — OnPlan AI judges and synthesizes.">프로젝트를 만들고 팀에 공유하세요.<br>각자 의견을 말하면 AI 기획자가 판단하고 정리합니다.</p>
+    <div id="sb-p-create"></div>
     <div class="card">
       <div class="card-title" data-ko="프로젝트 생성" data-en="Create Project">프로젝트 생성</div>
       <div class="ff"><label class="fl" data-ko="제품 이름 <span class='req'>*</span>" data-en="Product Name <span class='req'>*</span>">제품 이름 <span class="req">*</span></label><input id="pj-name" class="fi" data-ko-ph="예: 발주 관리 시스템" data-en-ph="e.g. Order Management System" placeholder="예: 발주 관리 시스템"></div>
@@ -286,13 +298,14 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
   <div class="center-sm">
     <div class="complete-check">V</div>
     <div class="complete-title" data-ko="프로젝트가 생성되었습니다" data-en="Project created">프로젝트가 생성되었습니다</div>
-    <div class="complete-desc" data-ko="아래 링크를 팀원들에게 공유하세요.<br>각자 자기 입장에서 AI와 인터뷰하면 됩니다." data-en="Share this link with your team.<br>Each member interviews with AI from their own perspective.">아래 링크를 팀원들에게 공유하세요.<br>각자 자기 입장에서 AI와 인터뷰하면 됩니다.</div>
+    <div class="complete-desc" data-ko="실제 서비스에서는 아래 링크를 팀원에게 공유합니다.<br>데모에서는 직접 참여해 보세요." data-en="In the full product, share this link with your team.<br>For this demo, try it yourself.">실제 서비스에서는 아래 링크를 팀원에게 공유합니다.<br>데모에서는 직접 참여해 보세요.</div>
+    <div id="sb-p-link"></div>
     <div class="link-box">
       <div class="link-url">onplan.onhae.studio/join/a7f3k2</div>
       <button class="link-copy" onclick="this.textContent='Copied'" data-ko="복사" data-en="Copy">복사</button>
     </div>
     <p style="font-size:12px;color:var(--g500);margin-bottom:24px;line-height:1.6" data-ko="카카오톡, 슬랙 등 어디든 링크를 붙여넣으면 됩니다.<br>참여자는 로그인 없이 바로 시작할 수 있습니다." data-en="Paste this link anywhere — Slack, Teams, email.<br>Participants can start immediately without logging in.">카카오톡, 슬랙 등 어디든 링크를 붙여넣으면 됩니다.<br>참여자는 로그인 없이 바로 시작할 수 있습니다.</p>
-    <button class="btn" onclick="go('p-landing')" data-ko="참여자 화면 미리보기" data-en="Preview participant view">참여자 화면 미리보기</button>
+    <button class="btn" onclick="go('p-landing')" data-ko="인터뷰 시작하기" data-en="Start Interview">인터뷰 시작하기</button>
     <button class="btn" style="background:var(--white);color:var(--black);border:1px solid var(--border);margin-top:8px" onclick="go('p-dash')" data-ko="오너 대시보드" data-en="Owner Dashboard">오너 대시보드</button>
   </div>
 </div>
@@ -303,6 +316,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
     <div class="tag" id="pj-name-display">발주 관리 시스템</div>
     <h1 class="title" style="font-size:28px" data-ko="의견을<br>들려주세요." data-en="Share your<br>perspective.">의견을<br>들려주세요.</h1>
     <p class="desc" style="font-size:14px" data-ko="AI 기획자가 질문합니다. 3~5분이면 끝나요.<br>기획 지식 없이 자기 입장만 말하면 됩니다." data-en="OnPlan AI will ask questions. Takes 3–5 minutes.<br>No planning expertise needed — just share your view.">AI 기획자가 질문합니다. 3~5분이면 끝나요.<br>기획 지식 없이 자기 입장만 말하면 됩니다.</p>
+    <div id="sb-p-landing"></div>
     <div class="card">
       <div class="card-title" data-ko="참여 정보" data-en="Participant Info">참여 정보</div>
       <div class="ff"><label class="fl" data-ko="이름 <span class='req'>*</span>" data-en="Name <span class='req'>*</span>">이름 <span class="req">*</span></label><input id="pt-name" class="fi" data-ko-ph="홍길동" data-en-ph="John Doe" placeholder="홍길동"></div>
@@ -323,11 +337,12 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 <!-- P4: AI INTERVIEW -->
 <div id="p-chat" class="page">
   <div style="padding:24px;">
+    <div id="sb-p-chat"></div>
     <div class="chat-wrap">
       <div class="chat-hd">
         <div class="chat-ai">
           <div class="chat-av">ON</div>
-          <div><div class="chat-name">OnPlan AI</div><div class="chat-role-label" data-ko="AI 프로덕 기획자" data-en="OnPlan AI">AI 프로덕 기획자</div></div>
+          <div><div class="chat-name">OnPlan AI</div><div class="chat-role-label" data-ko="OnPlan AI" data-en="OnPlan AI">OnPlan AI</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:9px;letter-spacing:1px;color:var(--g500)">CONTEXT</span>
@@ -349,15 +364,16 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 
 <!-- P5: INTERVIEW COMPLETE -->
 <div id="p-complete" class="page">
-  <div class="center-sm" style="text-align:center;padding-top:120px;">
+  <div class="center-sm" style="text-align:center;padding-top:48px;">
     <div class="complete-check">V</div>
     <div class="complete-title" data-ko="의견이 등록되었습니다" data-en="Opinion submitted">의견이 등록되었습니다</div>
-    <div class="complete-desc" data-ko="다른 참여자들의 인터뷰가 완료되면<br>AI 기획자가 종합 판단하여 PRD를 생성합니다." data-en="Once all interviews are complete,<br>OnPlan AI will synthesize and generate the PRD.">다른 참여자들의 인터뷰가 완료되면<br>AI 기획자가 종합 판단하여 PRD를 생성합니다.</div>
+    <div class="complete-desc" data-ko="데모에서는 다른 3명의 인터뷰가 이미 완료되어 있습니다.<br>AI 기획자가 전체 의견을 종합 판단하여 PRD를 생성합니다." data-en="In this demo, 3 other interviews are already complete.<br>OnPlan AI will synthesize all opinions and generate the PRD.">데모에서는 다른 3명의 인터뷰가 이미 완료되어 있습니다.<br>AI 기획자가 전체 의견을 종합 판단하여 PRD를 생성합니다.</div>
+    <div id="sb-p-complete" style="text-align:left;"></div>
     <div style="background:var(--white);border:1px solid var(--border);padding:20px;margin-bottom:24px;">
       <div style="font-size:11px;color:var(--g500);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase" data-ko="참여 현황" data-en="Participation Status">참여 현황</div>
-      <div style="font-family:var(--en);font-size:28px;font-weight:800">3<span style="font-size:14px;font-weight:400;color:var(--g500)" data-ko=" / 4명 완료" data-en=" / 4 completed"> / 4명 완료</span></div>
+      <div style="font-family:var(--en);font-size:28px;font-weight:800">4<span style="font-size:14px;font-weight:400;color:var(--g500)" data-ko=" / 4명 완료" data-en=" / 4 completed"> / 4명 완료</span></div>
     </div>
-    <button class="btn" onclick="go('p-dash')" data-ko="오너 대시보드 보기" data-en="View Owner Dashboard">오너 대시보드 보기</button>
+    <button class="btn btn-accent" onclick="go('p-prd')" data-ko="PRD 결과 보기" data-en="View PRD Result">PRD 결과 보기</button>
   </div>
 </div>
 
@@ -369,14 +385,14 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
     <div class="prd-meta" style="margin-bottom:28px" data-ko="생성일 2026.02.27" data-en="Created 2026.02.27">생성일 2026.02.27</div>
     <div class="dash-stat">
       <div class="dash-stat-card"><div class="dash-stat-num">4</div><div class="dash-stat-label" data-ko="참여자" data-en="Participants">참여자</div></div>
-      <div class="dash-stat-card"><div class="dash-stat-num" style="color:var(--accent)">3</div><div class="dash-stat-label" data-ko="인터뷰 완료" data-en="Completed">인터뷰 완료</div></div>
-      <div class="dash-stat-card"><div class="dash-stat-num" style="color:var(--g400)">1</div><div class="dash-stat-label" data-ko="대기 중" data-en="Pending">대기 중</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-num" style="color:var(--accent)">4</div><div class="dash-stat-label" data-ko="인터뷰 완료" data-en="Completed">인터뷰 완료</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-num" style="color:var(--g400)">0</div><div class="dash-stat-label" data-ko="대기 중" data-en="Pending">대기 중</div></div>
     </div>
     <div class="participant-list">
       <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="김" data-en="J">김</div><div><div class="participant-name" data-ko="김대표" data-en="James Kim">김대표</div><div class="participant-role-tag" data-ko="대표 / PM" data-en="CEO / PM">대표 / PM</div></div></div><div class="status-done" data-ko="완료" data-en="Done">완료</div></div>
       <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="이" data-en="A">이</div><div><div class="participant-name" data-ko="이개발" data-en="Alex Lee">이개발</div><div class="participant-role-tag" data-ko="개발" data-en="Engineering">개발</div></div></div><div class="status-done" data-ko="완료" data-en="Done">완료</div></div>
       <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="박" data-en="S">박</div><div><div class="participant-name" data-ko="박영업" data-en="Sarah Park">박영업</div><div class="participant-role-tag" data-ko="영업 / CS" data-en="Sales / CS">영업 / CS</div></div></div><div class="status-done" data-ko="완료" data-en="Done">완료</div></div>
-      <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="최" data-en="D">최</div><div><div class="participant-name" data-ko="최디자인" data-en="Dana Choi">최디자인</div><div class="participant-role-tag" data-ko="디자인" data-en="Design">디자인</div></div></div><div class="status-wait" data-ko="대기" data-en="Pending">대기</div></div>
+      <div class="participant-row"><div class="participant-info"><div class="participant-avatar" data-ko="최" data-en="D">최</div><div><div class="participant-name" data-ko="최디자인" data-en="Dana Choi">최디자인</div><div class="participant-role-tag" data-ko="디자인" data-en="Design">디자인</div></div></div><div class="status-done" data-ko="완료" data-en="Done">완료</div></div>
     </div>
     <button class="btn btn-accent" onclick="go('p-prd')" data-ko="PRD 생성하기" data-en="Generate PRD">PRD 생성하기</button>
     <p style="font-size:11px;color:var(--g500);margin-top:8px;text-align:center" data-ko="3명 이상 완료 시 생성 가능" data-en="Available when 3+ interviews are complete">3명 이상 완료 시 생성 가능</p>
@@ -386,6 +402,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 <!-- P7: PRD DASHBOARD + FULL DOCUMENT -->
 <div id="p-prd" class="page">
   <div class="center-wide">
+    <div id="sb-p-prd"></div>
     <div class="prd-hd">
       <div>
         <div class="prd-tag">Product Requirements Document</div>
@@ -781,14 +798,38 @@ const RQ_EN={
 };
 function RQ(){return appLang==='en'?RQ_EN:RQ_KO;}
 
-let selectedRole='',qIdx=0,projectName='';
+let selectedRole='',qIdx=0,projectName='',projectDesc='',chatHistory=[],isSending=false;
+
+// ===== STEP INDICATOR =====
+const PAGE_STEP={'p-create':1,'p-link':2,'p-landing':3,'p-chat':3,'p-complete':4,'p-prd':4};
+const STEP_KO=['프로젝트 생성','팀 공유','AI 인터뷰','PRD 결과'];
+const STEP_EN=['Create','Share','Interview','Result'];
+function renderSteps(pageId){
+  const cur=PAGE_STEP[pageId];if(!cur)return '';
+  const labels=appLang==='en'?STEP_EN:STEP_KO;
+  let h='<div class="steps-bar">';
+  for(let i=1;i<=4;i++){
+    const cls=i<cur?'done':i===cur?'active':'';
+    h+=`<div class="step-item"><div class="step-circle ${cls}">${i<cur?'✓':i}</div><span class="step-label ${cls}">${labels[i-1]}</span></div>`;
+    if(i<4) h+=`<div class="step-line ${i<cur?'done':''}"></div>`;
+  }
+  h+='</div>';return h;
+}
 
 // ===== NAV =====
-function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  // inject step bar
+  const sb=document.getElementById('sb-'+id);
+  if(sb) sb.innerHTML=renderSteps(id);
+}
 
 function createProject(){
   const n=document.getElementById('pj-name').value.trim();if(!n)return;
   projectName=n;
+  projectDesc=document.getElementById('pj-desc')?.value.trim()||'';
   document.getElementById('pj-name-display').textContent=n;
   document.getElementById('dash-pj-name').textContent=n;
   document.getElementById('prd-name').textContent=n;
@@ -810,10 +851,36 @@ function selectRole(el){
   const b=document.getElementById('btn-join');b.style.opacity='1';b.style.pointerEvents='auto';
 }
 
-function startInterview(){
+async function callAI(userText){
+  try{
+    if(userText) chatHistory.push({role:'user',content:userText});
+    const resp=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({role:selectedRole,projectName,projectDesc,messages:chatHistory,lang:appLang})
+    });
+    if(!resp.ok) throw new Error('API '+resp.status);
+    const data=await resp.json();
+    const reply=data.reply;
+    chatHistory.push({role:'assistant',content:reply});
+    return reply;
+  }catch(e){
+    console.error('AI call failed:',e);
+    const fallback=RQ()[selectedRole];
+    const fb=fallback[Math.min(qIdx,fallback.length-1)];
+    chatHistory.push({role:'assistant',content:fb});
+    return fb;
+  }
+}
+
+async function startInterview(){
   if(!selectedRole||!document.getElementById('pt-name').value.trim())return;
-  go('p-chat');qIdx=0;document.getElementById('cb').innerHTML='';
-  setTimeout(()=>{addMsg('assistant',RQ()[selectedRole][0]);updateDots(0);},500);
+  go('p-chat');qIdx=0;chatHistory=[];document.getElementById('cb').innerHTML='';
+  addTyping();
+  const reply=await callAI(null);
+  document.getElementById('typing')?.remove();
+  addMsg('assistant',reply);
+  updateDots(0);
 }
 
 // ===== CHAT =====
@@ -821,17 +888,16 @@ function addMsg(r,t){const b=document.getElementById('cb'),d=document.createElem
 function addTyping(){const b=document.getElementById('cb'),d=document.createElement('div');d.className='msg assistant';d.id='typing';d.innerHTML=`<div class="msg-av">ON</div><div class="msg-typing"><span></span><span></span><span></span></div>`;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function updateDots(i){document.querySelectorAll('#dots .chat-dot').forEach((d,x)=>{d.classList.remove('on','now');if(x<i)d.classList.add('on');if(x===i)d.classList.add('now');});}
 
-function send(){
-  const inp=document.getElementById('ci'),t=inp.value.trim();if(!t)return;
+async function send(){
+  const inp=document.getElementById('ci'),t=inp.value.trim();if(!t||isSending)return;
+  isSending=true;inp.disabled=true;
   addMsg('user',t);inp.value='';qIdx++;updateDots(Math.min(qIdx,3));
-  // Show finish button after 3 answers
   if(qIdx>=3){document.getElementById('finish-bar').classList.remove('hidden');}
-  const qs=RQ()[selectedRole];
-  if(qIdx<qs.length){
-    addTyping();setTimeout(()=>{document.getElementById('typing')?.remove();addMsg('assistant',qs[qIdx]);},1000);
-  } else {
-    addTyping();setTimeout(()=>{document.getElementById('typing')?.remove();addMsg('assistant',appLang==='en'?'Got it. Feel free to share more if you have anything to add.':'확인했습니다. 추가 의견이 더 있으시면 계속 말씀해주세요.');},800);
-  }
+  addTyping();
+  const reply=await callAI(t);
+  document.getElementById('typing')?.remove();
+  addMsg('assistant',reply);
+  isSending=false;inp.disabled=false;inp.focus();
 }
 
 // ===== PRD RENDER =====
@@ -978,8 +1044,13 @@ function setAppLang(lang){
   document.querySelectorAll('[data-'+lang+'-ph]').forEach(el=>{
     el.placeholder=el.getAttribute('data-'+lang+'-ph');
   });
+  // re-render step bar for active page
+  const ap=document.querySelector('.page.active');
+  if(ap){const sb=document.getElementById('sb-'+ap.id);if(sb)sb.innerHTML=renderSteps(ap.id);}
 }
 setAppLang(appLang);
+// initial step bar
+document.getElementById('sb-p-create').innerHTML=renderSteps('p-create');
 </script>
 
 <!-- Footer Script -->
