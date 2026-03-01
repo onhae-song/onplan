@@ -859,7 +859,11 @@ async function callAI(userText){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({role:selectedRole,projectName,projectDesc,messages:chatHistory,lang:appLang})
     });
-    if(!resp.ok) throw new Error('API '+resp.status);
+    if(!resp.ok){
+      const errBody=await resp.text();
+      console.error('API error response:',resp.status,errBody);
+      throw new Error('API '+resp.status+': '+errBody);
+    }
     const data=await resp.json();
     const reply=data.reply;
     chatHistory.push({role:'assistant',content:reply});
