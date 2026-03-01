@@ -6,10 +6,18 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { role, projectName, projectDesc, messages, lang } = req.body;
+  // Robust body parsing
+  let body = req.body;
+  if (!body || typeof body === 'string') {
+    try { body = JSON.parse(body || '{}'); } catch(e) {
+      return res.status(400).json({ error: 'Invalid JSON', detail: String(e) });
+    }
+  }
 
-  if (!role || !messages) {
-    return res.status(400).json({ error: 'Missing required fields' });
+  const { role, projectName, projectDesc, messages, lang } = body;
+
+  if (!role || !Array.isArray(messages)) {
+    return res.status(400).json({ error: 'Missing required fields', received: { role, messagesType: typeof messages, bodyKeys: Object.keys(body) } });
   }
 
   const roleContext = {
@@ -92,6 +100,10 @@ Interviewee: ${rc.en}
 - Design: Reference services, UX principles, key screens, usage environment
 - User: Current workflow, biggest pain, must-have features, time spent
 - Other: Most important thing, concerns, what to avoid`;
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
+  }
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
