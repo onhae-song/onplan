@@ -622,7 +622,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
         <div class="footer-contact">
           <div class="footer-contact-item">
             <span class="footer-label">Email</span>
-            <a href="/cdn-cgi/l/email-protection#6b0405030a0e1804050c2b0c060a020745080406"><span class="__cf_email__" data-cfemail="7e1110161f1b0d1110193e19131f1712501d1113">[email&#160;protected]</span></a>
+            <a href="/cdn-cgi/l/email-protection#a7c8c9cfc6c2d4c8c9c0e7c0cac6cecb89c4c8ca"><span class="__cf_email__" data-cfemail="513e3f393034223e3f3611363c30383d7f323e3c">[email&#160;protected]</span></a>
           </div>
           <div class="footer-contact-item">
             <span class="footer-label">Tel</span>
@@ -909,136 +909,55 @@ async function send(){
 }
 
 // ===== PRD RENDER =====
-function renderPRD(){
-  const _SEC=SEC(),_BODY=BODY(),_OPINION=OPINION(),_CONFLICTS=CONFLICTS(),_COMMENTS=COMMENTS(),_REVISION=REVISION();
+let prdRendered=false;
+async function renderPRD(){
+  if(prdRendered) return;
+  prdRendered=true;
+  const sg=document.getElementById('sg');
+  const doc=document.getElementById('prd-doc');
   const lockMsg=appLang==='en'?'Available in Team plan':'Team 플랜에서 열람할 수 있습니다';
-  const opLockMsg=appLang==='en'?'Full OnPlan opinions available in Team plan':'기획자 의견은 Team 플랜에서 열람 가능합니다';
-  const issuePh=appLang==='en'?'Share your opinion on this issue...':'이 논점에 대한 의견을 입력하세요...';
-  const sendLabel=appLang==='en'?'Send':'전송';
-  const approveLabel=appLang==='en'?'Approve':'승인';
-  const rejectLabel=appLang==='en'?'Reject':'거부';
-  const approvedMsg=appLang==='en'?'Approved.':'반영되었습니다.';
-  const rejectedMsg=appLang==='en'?'Rejected.':'거부되었습니다.';
-  // Nav cards
-  const sg=document.getElementById('sg');sg.innerHTML='';
-  _SEC.forEach((s,i)=>{
-    const locked=i>=6;
-    const d=document.createElement('div');
-    d.className=`sc ${locked?'lock':'done'} fade`;d.style.animationDelay=`${i*.05}s`;
-    let badge;
-    if(locked) badge='<div class="sc-badge sc-badge-lock">TEAM</div>';
-    else if(s.conflict) badge='<div class="sc-badge sc-badge-conflict">ISSUE</div>';
-    else badge='<div class="sc-badge sc-badge-done">DONE</div>';
-    d.innerHTML=`<div class="sc-num">${s.n}</div><div class="sc-title">${s.t}</div>${badge}`;
-    d.onclick=()=>{
-      if(locked){alert(lockMsg);return;}
-      const el=document.getElementById('sec-'+s.n);if(el)el.scrollIntoView({behavior:'smooth'});
-    };
+  const loadingMsg=appLang==='en'?'Generating PRD from your interview...':'인터뷰 내용을 기반으로 PRD를 생성하고 있습니다...';
+
+  sg.innerHTML='';
+  doc.innerHTML='<div style="text-align:center;padding:80px 20px;"><div class="msg-typing" style="display:inline-flex;margin-bottom:16px;"><span></span><span></span><span></span></div><div style="font-size:14px;color:var(--g600);">'+loadingMsg+'</div><div style="font-size:11px;color:var(--g400);margin-top:8px;">10~15s</div></div>';
+
+  let sections=null;
+  if(chatHistory.length>0){
+    try{
+      const log=chatHistory.map(m=>(m.role==='user'?'User: ':'AI: ')+m.content).join('\n');
+      const resp=await fetch('/api/prd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectName,projectDesc,interviewLog:log,lang:appLang})});
+      if(resp.ok){const data=await resp.json();if(data.sections&&Array.isArray(data.sections))sections=data.sections;}
+      else{console.error('PRD API error:',resp.status,await resp.text());}
+    }catch(e){console.error('PRD API fail:',e);}
+  }
+  if(!sections){
+    const _SEC=SEC(),_BODY=BODY();
+    sections=_SEC.map(s=>({num:s.n,title:s.t,category:s.c,body:_BODY[s.n]||''}));
+  }
+
+  sg.innerHTML='';
+  sections.forEach((s,i)=>{
+    const locked=i>=6;const d=document.createElement('div');
+    d.className='sc '+(locked?'lock':'done')+' fade';d.style.animationDelay=i*.05+'s';
+    d.innerHTML='<div class="sc-num">'+s.num+'</div><div class="sc-title">'+s.title+'</div>'+(locked?'<div class="sc-badge sc-badge-lock">TEAM</div>':'<div class="sc-badge sc-badge-done">DONE</div>');
+    d.onclick=function(){if(locked){alert(lockMsg);return;}var el=document.getElementById('sec-'+s.num);if(el)el.scrollIntoView({behavior:'smooth'});};
     sg.appendChild(d);
   });
 
-  // Full document
-  const doc=document.getElementById('prd-doc');doc.innerHTML='';
-  _SEC.forEach((s,i)=>{
-    const locked=i>=6;
-    const section=document.createElement('div');
-    section.className='prd-section fade';section.id='sec-'+s.n;
-    section.style.animationDelay=`${i*.06+.3}s`;
-
-    let html=`<div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">${s.n}</span><span class="prd-sec-title">${s.t}</span></div><span class="prd-sec-cat">${s.c}</span></div>`;
-
-    if(locked){
-      html+=`<div class="prd-sec-body" style="opacity:.3;filter:blur(4px);user-select:none;min-height:120px;"><div class="sec-content">${_BODY[s.n]||''}</div></div>`;
-    } else {
-      html+=`<div class="prd-sec-body">`;
-
-      // Planner opinion
-      if(_OPINION[s.n]){
-        const opLocked=i>=2;
-        if(opLocked){
-          html+=`<div class="po po-locked"><div class="po-title">ONPLAN OPINION</div><div class="po-body">${_OPINION[s.n]}</div></div><div class="po-lock-msg">${opLockMsg}</div>`;
-        } else {
-          html+=`<div class="po"><div class="po-title">ONPLAN OPINION</div><div class="po-body">${_OPINION[s.n]}</div></div>`;
-        }
-      }
-
-      // Conflict Resolution
-      if(s.conflict && _CONFLICTS[s.n]){
-        const cf=_CONFLICTS[s.n];
-        const cfId='cf-'+s.n;
-        html+=`<div class="cb">
-          <div class="cb-title">OPEN ISSUE</div>
-          <div class="cb-issue">${cf.issue}</div>
-          <div class="cb-context">${cf.context}</div>
-          <div class="cb-current">
-            <div class="cb-current-title">ONPLAN RECOMMENDATION</div>
-            <div class="cb-current-body">${cf.current}</div>
-          </div>
-          <div class="cb-input-area" id="${cfId}-input-area">
-            <input class="cb-input" id="${cfId}-input" placeholder="${issuePh}" onkeydown="if(event.key==='Enter')submitIssueComment('${cfId}')">
-            <button class="cb-submit" onclick="submitIssueComment('${cfId}')">${sendLabel}</button>
-          </div>
-          <div class="cb-thread" id="${cfId}-thread"></div>
-        </div>`;
-      }
-
-      // Content
-      html+=`<div class="sec-content">${_BODY[s.n]||''}</div>`;
-
-      // Comments
-      if(_COMMENTS[s.n]){
-        html+=`<div class="cmt-area"><div class="cmt-title">TEAM COMMENTS</div>`;
-        _COMMENTS[s.n].forEach(c=>{
-          html+=`<div class="cmt"><div class="cmt-hd"><span class="cmt-name">${c.name}</span><span class="cmt-role">${c.role}</span><span class="cmt-time">${c.time}</span></div><div class="cmt-body">${c.body}</div></div>`;
-        });
-        html+=`</div>`;
-      }
-
-      // AI Revision
-      if(_REVISION[s.n]){
-        html+=`<div class="rev"><div class="rev-title">ONPLAN REVISION</div><div class="rev-body">${_REVISION[s.n]}</div><div class="rev-actions"><button class="btn-sm btn-sm-y" onclick="alert('${approvedMsg}')">${approveLabel}</button><button class="btn-sm btn-sm-n" onclick="alert('${rejectedMsg}')">${rejectLabel}</button></div></div>`;
-      }
-
-      html+=`</div>`;
-    }
-
-    section.innerHTML=html;
-    doc.appendChild(section);
+  doc.innerHTML='';
+  sections.forEach((s,i)=>{
+    const locked=i>=6;const sec=document.createElement('div');
+    sec.className='prd-section fade';sec.id='sec-'+s.num;sec.style.animationDelay=i*.06+.3+'s';
+    var html='<div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">'+s.num+'</span><span class="prd-sec-title">'+s.title+'</span></div><span class="prd-sec-cat">'+s.category+'</span></div>';
+    if(locked){html+='<div class="prd-sec-body" style="opacity:.3;filter:blur(4px);user-select:none;min-height:120px;"><div class="sec-content">'+(s.body||'')+'</div></div>';}
+    else{html+='<div class="prd-sec-body"><div class="sec-content">'+(s.body||'')+'</div></div>';}
+    sec.innerHTML=html;doc.appendChild(sec);
   });
 }
 
-// Issue discussion
-function submitIssueComment(cfId){
-  const inp=document.getElementById(cfId+'-input');
-  const t=inp.value.trim();if(!t)return;
-  const thread=document.getElementById(cfId+'-thread');
-  // User comment
-  const userItem=document.createElement('div');
-  userItem.className='cb-thread-item fade';
-  userItem.innerHTML=`<div class="cb-thread-label is-user">YOUR OPINION</div><div class="cb-thread-body">${t}</div>`;
-  thread.appendChild(userItem);
-  inp.value='';
-  // AI reply (demo)
-  const secNum=cfId.replace('cf-','');
-  const reply=CONFLICTS()[secNum]?.demoReply||(appLang==='en'?'Noted. Analyzing impact on related sections.':'의견을 확인했습니다. 관련 섹션에 미치는 영향을 분석 중입니다.');
-  setTimeout(()=>{
-    const aiItem=document.createElement('div');
-    aiItem.className='cb-thread-item fade';
-    aiItem.innerHTML=`<div class="cb-thread-label is-ai">ONPLAN FEEDBACK</div><div class="cb-thread-body">${reply}</div>`;
-    thread.appendChild(aiItem);
-    aiItem.scrollIntoView({behavior:'smooth',block:'nearest'});
-  },800);
-}
+function toggleRoleDoc(id){var el=document.getElementById(id);if(el.classList.contains('hidden')){el.classList.remove('hidden');el.scrollIntoView({behavior:'smooth',block:'start'});}else{el.classList.add('hidden');}}
 
-// Role doc toggle
-function toggleRoleDoc(id){
-  const el=document.getElementById(id);
-  if(el.classList.contains('hidden')){el.classList.remove('hidden');el.scrollIntoView({behavior:'smooth',block:'start'});}
-  else{el.classList.add('hidden');}
-}
-
-// Watch for PRD page activation
-const obs=new MutationObserver(()=>{if(document.getElementById('p-prd').classList.contains('active')){renderPRD();}});
+const obs=new MutationObserver(function(){if(document.getElementById('p-prd').classList.contains('active')){renderPRD();}});
 obs.observe(document.getElementById('p-prd'),{attributes:true,attributeFilter:['class']});
 
 // ===== APP LANG INIT =====
@@ -1068,12 +987,4 @@ function submitEarlyAccess(){
   if(!email||!email.includes('@')){document.getElementById('ea-email').style.borderColor='#ff6b6b';return;}
   const WEBHOOK_URL='https://script.google.com/macros/s/AKfycbzxA8AAw-V_AnEJ-9WPdgGjEnmNXVQDHNNFq47HutGNT5h3Td-vD97E-tBxs5H_GgfA8Q/exec';
   if(WEBHOOK_URL){
-    fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,timestamp:new Date().toISOString(),source:'onplan-demo'})});
-  }
-  document.getElementById('ea-form').classList.add('hidden');
-  document.getElementById('ea-success').classList.remove('hidden');
-  console.log('Early access request:',email);
-}
-</script>
-</body>
-</html>
+    fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,timestamp:new Date().toISO
