@@ -1027,7 +1027,9 @@ async function renderPRD(){
   if(chatHistory.length>0){
     try{
       const log=chatHistory.map(m=>(m.role==='user'?'User: ':'AI: ')+m.content).join('\n');
-      const resp=await fetch('/api/prd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectName,projectDesc,interviewLog:log,lang:appLang})});
+      const prdPayload={projectName,projectDesc,interviewLog:log,lang:appLang};
+      if(projectDoc) prdPayload.projectDoc=projectDoc;
+      const resp=await fetch('/api/prd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(prdPayload)});
       if(resp.ok){const data=await resp.json();if(data.sections&&Array.isArray(data.sections))sections=data.sections;}
       else{console.error('PRD API error:',resp.status,await resp.text());}
     }catch(e){console.error('PRD API fail:',e);}
