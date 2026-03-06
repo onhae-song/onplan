@@ -6,6 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OnPlan — AI 프로덕 기획자</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 <style>
 .lang-en{display:none;}.lang-ko{display:block;}
 body.en .lang-en{display:block;}body.en .lang-ko{display:none;}
@@ -287,6 +290,44 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
       <div class="card-title" data-ko="프로젝트 생성" data-en="Create Project">프로젝트 생성</div>
       <div class="ff"><label class="fl" data-ko="제품 이름 <span class='req'>*</span>" data-en="Product Name <span class='req'>*</span>">제품 이름 <span class="req">*</span></label><input id="pj-name" class="fi" data-ko-ph="예: 발주 관리 시스템" data-en-ph="e.g. Order Management System" placeholder="예: 발주 관리 시스템"></div>
       <div class="ff" style="margin-bottom:24px"><label class="fl" data-ko="한 줄 설명" data-en="One-liner">한 줄 설명</label><input id="pj-desc" class="fi" data-ko-ph="예: 거래처 발주를 한곳에서 관리하는 시스템" data-en-ph="e.g. Manage vendor orders in one place" placeholder="예: 거래처 발주를 한곳에서 관리하는 시스템"></div>
+      <div class="ff" style="margin-bottom:24px">
+        <label class="fl" data-ko="프로젝트 단계 <span class='req'>*</span>" data-en="Project Phase <span class='req'>*</span>">프로젝트 단계 <span class="req">*</span></label>
+        <div style="display:flex;gap:10px;">
+          <label style="flex:1;display:flex;align-items:center;gap:8px;padding:14px 16px;border:1.5px solid var(--accent);cursor:pointer;background:var(--accent-bg);transition:all .2s;" id="phase-ideation" onclick="selectPhase('ideation')">
+            <input type="radio" name="phase" value="ideation" checked style="accent-color:var(--accent);width:16px;height:16px;">
+            <div>
+              <div style="font-size:13px;font-weight:600;" data-ko="구상 중" data-en="Ideation">구상 중</div>
+              <div style="font-size:11px;color:var(--g500);" data-ko="아이디어 단계" data-en="Early idea stage">아이디어 단계</div>
+            </div>
+          </label>
+          <label style="flex:1;display:flex;align-items:center;gap:8px;padding:14px 16px;border:1.5px solid var(--border);cursor:pointer;background:var(--white);transition:all .2s;" id="phase-inprogress" onclick="selectPhase('inprogress')">
+            <input type="radio" name="phase" value="inprogress" style="accent-color:var(--accent);width:16px;height:16px;">
+            <div>
+              <div style="font-size:13px;font-weight:600;" data-ko="추진 중" data-en="In Progress">추진 중</div>
+              <div style="font-size:11px;color:var(--g500);" data-ko="개발 시작 또는 구체적 계획 있음" data-en="Development started or concrete plans">개발 시작 또는 구체적 계획 있음</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="ff" style="margin-bottom:24px">
+        <label class="fl" data-ko="기획 문서 첨부 <span style='font-weight:400;color:var(--g400)'>(선택)</span>" data-en="Upload Document <span style='font-weight:400;color:var(--g400)'>(optional)</span>">기획 문서 첨부 <span style="font-weight:400;color:var(--g400)">(선택)</span></label>
+        <div id="doc-upload-area" style="border:2px dashed var(--border);padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--white);" onclick="document.getElementById('doc-file').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--white)'" ondrop="event.preventDefault();this.style.borderColor='var(--border)';this.style.background='var(--white)';handleDocFile(event.dataTransfer.files[0])">
+          <input type="file" id="doc-file" accept=".pdf,.docx,.doc,.txt,.md,.hwp" style="display:none" onchange="handleDocFile(this.files[0])">
+          <div id="doc-placeholder">
+            <div style="font-size:24px;color:var(--g300);margin-bottom:8px;">+</div>
+            <div style="font-size:13px;color:var(--g500);" data-ko="RFP, 요구사항서, 기획서 등" data-en="RFP, requirements doc, planning doc, etc.">RFP, 요구사항서, 기획서 등</div>
+            <div style="font-size:11px;color:var(--g400);margin-top:4px;">PDF, DOCX, TXT</div>
+          </div>
+          <div id="doc-attached" class="hidden">
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+              <span style="font-size:13px;font-weight:600;color:var(--accent);" id="doc-filename"></span>
+              <button style="background:none;border:1px solid var(--border);padding:2px 8px;font-size:11px;color:var(--g500);cursor:pointer;" onclick="event.stopPropagation();removeDoc()" data-ko="삭제" data-en="Remove">삭제</button>
+            </div>
+            <div style="font-size:11px;color:var(--g500);margin-top:4px;" id="doc-status"></div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--g400);margin-top:6px;" data-ko="문서가 있으면 AI가 문서 내용을 기반으로 더 핵심적인 질문을 합니다." data-en="If provided, OnPlan AI will ask sharper questions based on the document.">문서가 있으면 AI가 문서 내용을 기반으로 더 핵심적인 질문을 합니다.</div>
+      </div>
       <button class="btn" onclick="createProject()" data-ko="프로젝트 생성" data-en="Create Project">프로젝트 생성</button>
     </div>
     <button class="skip-btn" onclick="skipToResult()" data-ko="입력 없이 결과물 먼저 보기 →" data-en="Skip to example PRD →">Skip to example PRD →</button>
@@ -592,11 +633,11 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 
     <!-- Trial -->
     <div class="trial">
-      <div class="trial-tag">EARLY BIRD</div>
+      <div class="trial-tag">TRIAL</div>
       <div class="trial-title" data-ko="수정하고, 공유하고, <em>함께 완성</em>하세요" data-en="Edit, share, and <em>refine together</em>">수정하고, 공유하고, <em>함께 완성</em>하세요</div>
       <div class="trial-desc" data-ko="기획자 의견 전체 열람, 섹션별 수정, 팀 코멘트까지.<br>체험판에서는 기획자 의견을 2개 섹션만 볼 수 있습니다." data-en="Full OnPlan opinions, section-level edits, team comments.<br>Trial shows OnPlan opinions for 2 sections only.">기획자 의견 전체 열람, 섹션별 수정, 팀 코멘트까지.<br>체험판에서는 기획자 의견을 2개 섹션만 볼 수 있습니다.</div>
-      <a href="https://onhae.lemonsqueezy.com/checkout/buy/089c9937-219b-4b63-a14d-f82375df84f3" target="_blank" class="btn" style="width:auto;display:inline-block;padding:13px 32px;text-decoration:none;" data-en="Early Bird Lifetime Deal - $79">Early Bird Lifetime Deal - $79</a>
-      <div class="trial-note" data-ko="5시트 포함 · 언제든 해지 가능" data-en="One-time $79 · Cancel anytime">5시트 포함 · 언제든 해지 가능</div>
+      <button class="btn" style="width:auto;display:inline-block;padding:13px 32px;" data-ko="Team 플랜 시작하기 — ₩49,000/월" data-en="Start Team Plan — $39/mo">Team 플랜 시작하기 — ₩49,000/월</button>
+      <div class="trial-note" data-ko="5시트 포함 · 언제든 해지 가능" data-en="5 seats included · Cancel anytime">5시트 포함 · 언제든 해지 가능</div>
 
       <!-- Early Access Form -->
       <div class="ea-inline">
@@ -798,7 +839,7 @@ const RQ_EN={
 };
 function RQ(){return appLang==='en'?RQ_EN:RQ_KO;}
 
-let selectedRole='',qIdx=0,projectName='',projectDesc='',chatHistory=[],isSending=false;
+let selectedRole='',qIdx=0,projectName='',projectDesc='',projectPhase='ideation',projectDoc='',chatHistory=[],isSending=false;
 
 // ===== STEP INDICATOR =====
 const PAGE_STEP={'p-create':1,'p-link':2,'p-landing':3,'p-chat':3,'p-complete':4,'p-prd':4};
@@ -830,6 +871,7 @@ function createProject(){
   const n=document.getElementById('pj-name').value.trim();if(!n)return;
   projectName=n;
   projectDesc=document.getElementById('pj-desc')?.value.trim()||'';
+  projectPhase=document.querySelector('input[name="phase"]:checked')?.value||'ideation';
   document.getElementById('pj-name-display').textContent=n;
   document.getElementById('dash-pj-name').textContent=n;
   document.getElementById('prd-name').textContent=n;
@@ -851,13 +893,73 @@ function selectRole(el){
   const b=document.getElementById('btn-join');b.style.opacity='1';b.style.pointerEvents='auto';
 }
 
+function selectPhase(p){
+  projectPhase=p;
+  document.getElementById('phase-ideation').style.borderColor=p==='ideation'?'var(--accent)':'var(--border)';
+  document.getElementById('phase-ideation').style.background=p==='ideation'?'var(--accent-bg)':'var(--white)';
+  document.getElementById('phase-inprogress').style.borderColor=p==='inprogress'?'var(--accent)':'var(--border)';
+  document.getElementById('phase-inprogress').style.background=p==='inprogress'?'var(--accent-bg)':'var(--white)';
+}
+
+async function handleDocFile(file){
+  if(!file)return;
+  const maxSize=4*1024*1024;
+  if(file.size>maxSize){alert(appLang==='ko'?'파일 크기가 4MB를 초과합니다.':'File exceeds 4MB limit.');return;}
+  const statusEl=document.getElementById('doc-status');
+  const fnEl=document.getElementById('doc-filename');
+  fnEl.textContent=file.name;
+  statusEl.textContent=appLang==='ko'?'텍스트 추출 중...':'Extracting text...';
+  document.getElementById('doc-placeholder').classList.add('hidden');
+  document.getElementById('doc-attached').classList.remove('hidden');
+  try{
+    let text='';
+    const ext=file.name.split('.').pop().toLowerCase();
+    if(ext==='pdf'){
+      const ab=await file.arrayBuffer();
+      const pdf=await pdfjsLib.getDocument({data:ab}).promise;
+      const pages=[];
+      for(let i=1;i<=pdf.numPages;i++){const pg=await pdf.getPage(i);const tc=await pg.getTextContent();pages.push(tc.items.map(it=>it.str).join(' '));}
+      text=pages.join('\n\n');
+    }else if(ext==='docx'||ext==='doc'){
+      const ab=await file.arrayBuffer();
+      const result=await mammoth.extractRawText({arrayBuffer:ab});
+      text=result.value;
+    }else{
+      text=await file.text();
+    }
+    if(!text||text.trim().length<10){
+      statusEl.textContent=appLang==='ko'?'텍스트를 추출하지 못했습니다. 다른 형식으로 시도해주세요.':'Could not extract text. Try another format.';
+      statusEl.style.color='var(--conflict)';
+      projectDoc='';return;
+    }
+    // 토큰 절약: 최대 8000자로 제한
+    projectDoc=text.substring(0,8000);
+    const charCount=projectDoc.length.toLocaleString();
+    statusEl.textContent=(appLang==='ko'?'추출 완료 · ':'Extracted · ')+charCount+(appLang==='ko'?'자':' chars');
+    statusEl.style.color='var(--accent)';
+  }catch(e){
+    console.error('Doc parse error:',e);
+    statusEl.textContent=appLang==='ko'?'파일을 읽지 못했습니다.':'Failed to read file.';
+    statusEl.style.color='var(--conflict)';
+    projectDoc='';
+  }
+}
+function removeDoc(){
+  projectDoc='';
+  document.getElementById('doc-file').value='';
+  document.getElementById('doc-placeholder').classList.remove('hidden');
+  document.getElementById('doc-attached').classList.add('hidden');
+}
+
 async function callAI(userText){
   try{
     if(userText) chatHistory.push({role:'user',content:userText});
+    const payload={role:selectedRole,projectName,projectDesc,projectPhase:appLang==='ko'?(projectPhase==='inprogress'?'추진 중':'구상 중'):(projectPhase==='inprogress'?'in-progress':'ideation'),messages:chatHistory,lang:appLang};
+    if(projectDoc) payload.projectDoc=projectDoc;
     const resp=await fetch('/api/chat',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({role:selectedRole,projectName,projectDesc,messages:chatHistory,lang:appLang})
+      body:JSON.stringify(payload)
     });
     if(!resp.ok){
       const errBody=await resp.text();
