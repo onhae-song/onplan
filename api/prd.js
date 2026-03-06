@@ -12,7 +12,7 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  const { projectName, projectDesc, interviewLog, lang } = body || {};
+  const { projectName, projectDesc, projectDoc, interviewLog, lang } = body || {};
   if (!projectName || !interviewLog) {
     return res.status(400).json({ error: 'missing_fields' });
   }
@@ -22,8 +22,45 @@ module.exports = async function handler(req, res) {
 
   const isKo = lang === 'ko';
 
+  // ===== DOCUMENT CONTEXT =====
+  let docSectionKo = '';
+  let docSectionEn = '';
+  if (projectDoc && projectDoc.trim().length > 0) {
+    docSectionKo = `
+
+## 참고 문서
+아래는 프로젝트 생성 시 업로드된 기획 문서입니다.
+인터뷰 내용과 이 문서를 모두 종합하여 PRD를 생성하세요.
+
+문서 활용 규칙:
+- 문서에 명시된 요구사항은 PRD에 반드시 반영하세요.
+- 인터뷰에서 나온 의견이 문서와 다를 경우, 양쪽을 모두 기재하고 충돌을 명시하세요.
+- 문서에는 있지만 인터뷰에서 언급되지 않은 항목은 문서 기준으로 반영하되 "[문서 기반]"으로 표시하세요.
+- 인터뷰에서 나왔지만 문서에 없는 내용은 "[인터뷰 기반]"으로 표시하세요.
+
+<document>
+${projectDoc}
+</document>`;
+
+    docSectionEn = `
+
+## Reference Document
+Below is a planning document uploaded during project creation.
+Synthesize BOTH the interview content and this document to generate the PRD.
+
+Document usage rules:
+- Requirements stated in the document MUST be reflected in the PRD.
+- If interview opinions differ from the document, include both and mark the conflict.
+- Items in the document but not mentioned in the interview: reflect from document, mark "[From document]".
+- Items from interview but not in the document: mark "[From interview]".
+
+<document>
+${projectDoc}
+</document>`;
+  }
+
   const systemPrompt = isKo
-    ? `당신은 OnPlan AI 기획자입니다. 아래 인터뷰 내용을 기반으로 PRD(Product Requirements Document)를 JSON으로 생성하세요.
+    ? `당신은 OnPlan AI 기획자입니다. 아래 인터뷰 내용${projectDoc ? '과 참고 문서' : ''}를 기반으로 PRD(Product Requirements Document)를 JSON으로 생성하세요.
 
 ## 출력 형식 (반드시 JSON만, 마크다운 백틱 없이)
 {
@@ -53,8 +90,8 @@ module.exports = async function handler(req, res) {
 - 언급되지 않은 부분은 합리적으로 추론하되 "[추론]" 표시
 - body는 HTML 태그 사용 (h3, p, table, tr, th, td, strong)
 - 한국어로 작성
-- JSON만 출력. 설명 텍스트 없음.`
-    : `You are OnPlan AI. Generate a PRD from the interview below as JSON.
+- JSON만 출력. 설명 텍스트 없음.${docSectionKo}`
+    : `You are OnPlan AI. Generate a PRD from the interview${projectDoc ? ' and reference document' : ''} below as JSON.
 
 ## Output format (JSON only, no markdown fences)
 {
@@ -84,7 +121,7 @@ module.exports = async function handler(req, res) {
 - Infer unmentioned parts reasonably, mark with "[Inferred]"
 - Body uses HTML tags (h3, p, table, tr, th, td, strong)
 - English only
-- Output JSON only. No explanation text.`;
+- Output JSON only. No explanation text.${docSectionEn}`;
 
   const userMessage = isKo
     ? `프로젝트: ${projectName}${projectDesc ? '\n설명: ' + projectDesc : ''}\n\n인터뷰 내용:\n${interviewLog}`
