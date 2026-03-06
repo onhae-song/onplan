@@ -16,7 +16,7 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'no_body' });
   }
 
-  const { role, projectName, projectDesc, projectPhase, messages, lang } = body;
+  const { role, projectName, projectDesc, projectPhase, projectDoc, messages, lang } = body;
   if (!role || !Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'validation' });
   }
@@ -188,12 +188,48 @@ This project is in the early idea stage, not yet concrete.
   const roleG = isKo ? (roleGuideKo[role] || roleGuideKo.other) : (roleGuideEn[role] || roleGuideEn.other);
   const phaseG = isKo ? phaseGuideKo : phaseGuideEn;
 
+  // ===== DOCUMENT CONTEXT =====
+  let docContextKo = '';
+  let docContextEn = '';
+  if (projectDoc && projectDoc.trim().length > 0) {
+    docContextKo = `## 참고 문서
+아래는 이 프로젝트와 관련하여 사전에 제공된 기획 문서입니다.
+이 문서의 내용을 숙지한 상태에서 인터뷰를 진행하세요.
+
+문서 활용 규칙:
+- 문서에 이미 나와 있는 내용을 그대로 다시 묻지 마세요. 시간 낭비입니다.
+- 문서에 나와 있는 내용 중 모호하거나 빠져 있는 부분을 질문하세요.
+- "요구사항서에 ~가 있는데, 실제로 ~한 상황이신가요?" 처럼 문서 내용을 기반으로 구체적으로 질문하세요.
+- 문서에 없는 관점(사용자 입장, 현장 경험, 기술적 제약 등)을 이 인터뷰에서 채우세요.
+
+<document>
+${projectDoc}
+</document>`;
+
+    docContextEn = `## Reference Document
+Below is a planning document provided for this project.
+Conduct the interview with full knowledge of this document.
+
+Document usage rules:
+- Do NOT re-ask what's already stated in the document. That wastes time.
+- Ask about parts that are vague or missing from the document.
+- Ask specific questions based on the document: "The requirements mention X — is that the actual situation on the ground?"
+- Use this interview to fill gaps the document doesn't cover (user perspective, field experience, technical constraints, etc.).
+
+<document>
+${projectDoc}
+</document>`;
+  }
+  const docCtx = isKo ? docContextKo : docContextEn;
+
   const sysKo = `당신은 OnPlan AI — 제품 기획 전문 인터뷰어입니다.
 "${projectName || '새 프로젝트'}"${projectDesc ? ' (' + projectDesc + ')' : ''} 프로젝트의 ${roleLabel}을(를) 인터뷰하고 있습니다.
 
 ${phaseG}
 
 ${roleG}
+
+${docCtx}
 
 ## 대화 기법
 1. 짧거나 추상적인 답변이 오면 같은 주제를 한 단계만 더 여쭤보세요.
@@ -236,6 +272,8 @@ You are interviewing the ${roleLabel} about "${projectName || 'New Project'}"${p
 ${phaseG}
 
 ${roleG}
+
+${docCtx}
 
 ## Conversation Techniques
 1. If an answer is short or abstract, dig one level deeper on the same topic.
