@@ -396,7 +396,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
         <button class="chat-send" onclick="send()">↑</button>
       </div>
       <div id="finish-bar" class="hidden" style="padding:10px 16px;border-top:1px solid var(--accent-border);background:var(--accent-bg);flex-shrink:0;">
-        <button class="btn btn-accent" style="width:100%;margin:0;" onclick="go('p-complete')" data-ko="인터뷰 완료 — 의견 등록하기" data-en="Complete Interview — Submit Opinion">인터뷰 완료 — 의견 등록하기</button>
+        <button class="btn btn-accent" style="width:100%;margin:0;" onclick="submitInterview()" data-ko="인터뷰 완료 — 의견 등록하기" data-en="Complete Interview — Submit Opinion">인터뷰 완료 — 의견 등록하기</button>
         <p style="font-size:11px;color:var(--g500);text-align:center;margin-top:6px;" data-ko="더 말할 내용이 있으면 위에서 계속 입력 가능합니다" data-en="You can continue adding more above if needed">더 말할 내용이 있으면 위에서 계속 입력 가능합니다</p>
       </div>
     </div>
@@ -949,6 +949,29 @@ function removeDoc(){
   document.getElementById('doc-file').value='';
   document.getElementById('doc-placeholder').classList.remove('hidden');
   document.getElementById('doc-attached').classList.add('hidden');
+}
+
+function submitInterview(){
+  // 로그 전송
+  try{
+    const LOG_WEBHOOK='https://script.google.com/macros/s/AKfycbzxA8AAw-V_AnEJ-9WPdgGjEnmNXVQDHNNFq47HutGNT5h3Td-vD97E-tBxs5H_GgfA8Q/exec';
+    const log=chatHistory.map(m=>(m.role==='user'?'[User] ':'[AI] ')+m.content).join('\n');
+    const ptName=document.getElementById('pt-name')?.value?.trim()||'';
+    fetch(LOG_WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      type:'interview_log',
+      project:projectName,
+      desc:projectDesc||'',
+      phase:projectPhase,
+      role:selectedRole,
+      participant:ptName,
+      hasDoc:projectDoc?'Y':'N',
+      turns:chatHistory.length,
+      log:log,
+      lang:appLang,
+      timestamp:new Date().toISOString()
+    })});
+  }catch(e){console.error('Log send fail:',e);}
+  go('p-complete');
 }
 
 async function callAI(userText){
