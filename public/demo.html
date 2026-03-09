@@ -9,6 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 .lang-en{display:none;}.lang-ko{display:block;}
 body.en .lang-en{display:block;}body.en .lang-ko{display:none;}
@@ -276,7 +277,20 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
       </text>
     </svg>
   </a>
-  <div class="nav-status"><a href="/onplan" style="font-size:11px;color:var(--g500);text-decoration:none;letter-spacing:1px;">HOME</a></div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="/onplan" style="font-size:11px;color:var(--g500);text-decoration:none;letter-spacing:1px;">HOME</a>
+    <div id="auth-area">
+      <button id="login-btn" onclick="googleLogin()" style="padding:6px 14px;background:var(--black);color:var(--white);border:none;font-size:11px;font-family:var(--en);font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <span data-ko="로그인" data-en="Sign in">로그인</span>
+      </button>
+      <div id="user-info" class="hidden" style="display:none;align-items:center;gap:8px;">
+        <img id="user-avatar" src="" style="width:24px;height:24px;border-radius:50%;">
+        <span id="user-name" style="font-size:12px;font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+        <button onclick="logOut()" style="padding:4px 10px;background:none;border:1px solid var(--border);font-size:10px;color:var(--g500);cursor:pointer;" data-ko="로그아웃" data-en="Sign out">로그아웃</button>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <!-- P1: PROJECT CREATE -->
@@ -683,6 +697,58 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
 // ===== DATA =====
 let appLang=(new URLSearchParams(window.location.search).get('lang'))||'ko';
 
+// ===== SUPABASE =====
+const SUPABASE_URL='https://dtwgrxsepotwbpaqssgm.supabase.co';
+const SUPABASE_KEY='sb_publishable_IZ2yTDHofociWRxoYZU3pg_8MHHO9St';
+let sb=null,currentUser=null,currentProjectId=null;
+try{
+  if(window.supabase){
+    sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  }
+}catch(e){console.warn('Supabase init fail:',e);}
+
+async function checkAuth(){
+  if(!sb)return;
+  try{
+    const{data:{session}}=await sb.auth.getSession();
+    if(session?.user)setUser(session.user);
+    sb.auth.onAuthStateChange((ev,session)=>{
+      if(session?.user)setUser(session.user);
+      else clearUser();
+    });
+  }catch(e){console.warn('Auth check fail:',e);}
+}
+function setUser(u){
+  currentUser=u;
+  document.getElementById('login-btn').style.display='none';
+  const ui=document.getElementById('user-info');
+  ui.style.display='flex';ui.classList.remove('hidden');
+  document.getElementById('user-name').textContent=u.user_metadata?.full_name||u.email||'';
+  const av=document.getElementById('user-avatar');
+  if(u.user_metadata?.avatar_url){av.src=u.user_metadata.avatar_url;av.style.display='block';}
+  else av.style.display='none';
+}
+function clearUser(){
+  currentUser=null;
+  document.getElementById('login-btn').style.display='flex';
+  document.getElementById('user-info').style.display='none';
+}
+async function googleLogin(){
+  if(!sb)return alert('Supabase not initialized');
+  const{error}=await sb.auth.signInWithOAuth({
+    provider:'google',
+    options:{redirectTo:window.location.origin+window.location.pathname}
+  });
+  if(error)console.error('Login error:',error);
+}
+async function logOut(){
+  if(!sb)return;
+  await sb.auth.signOut();
+  clearUser();
+}
+// init auth
+checkAuth();
+
 const SEC_KO=[
   {n:'01',t:'요약과 배경',d:'문제 정의, 시장 맥락',c:'맥락',conflict:false},
   {n:'02',t:'주요 사용자',d:'페르소나, 페인포인트',c:'맥락',conflict:true},
@@ -867,7 +933,7 @@ function go(id){
   if(sb) sb.innerHTML=renderSteps(id);
 }
 
-function createProject(){
+async function createProject(){
   const n=document.getElementById('pj-name').value.trim();if(!n)return;
   projectName=n;
   projectDesc=document.getElementById('pj-desc')?.value.trim()||'';
@@ -875,6 +941,23 @@ function createProject(){
   document.getElementById('pj-name-display').textContent=n;
   document.getElementById('dash-pj-name').textContent=n;
   document.getElementById('prd-name').textContent=n;
+  // Save to Supabase
+  if(sb&&currentUser){
+    try{
+      const code=Math.random().toString(36).substring(2,8);
+      const{data,error}=await sb.from('projects').insert({
+        name:projectName,
+        description:projectDesc,
+        owner_id:currentUser.id,
+        invite_code:code,
+        phase:projectPhase==='inprogress'?'in_progress':'ideation',
+        doc_text:projectDoc||null,
+        status:'collecting'
+      }).select().single();
+      if(data)currentProjectId=data.id;
+      if(error)console.error('Project save error:',error);
+    }catch(e){console.error('Project save fail:',e);}
+  }
   go('p-link');
 }
 
@@ -952,11 +1035,11 @@ function removeDoc(){
 }
 
 function submitInterview(){
-  // 로그 전송
+  const log=chatHistory.map(m=>(m.role==='user'?'[User] ':'[AI] ')+m.content).join('\n');
+  const ptName=document.getElementById('pt-name')?.value?.trim()||'';
+  // Google Sheets 로그 전송
   try{
     const LOG_WEBHOOK='https://script.google.com/macros/s/AKfycbyQTCOceqq28X-Q9J0NUObr2KMUojrK052nCsmRIy-Afdze8bn5g0kUCMTOjwpxIWav/exec';
-    const log=chatHistory.map(m=>(m.role==='user'?'[User] ':'[AI] ')+m.content).join('\n');
-    const ptName=document.getElementById('pt-name')?.value?.trim()||'';
     fetch(LOG_WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({
       type:'interview_log',
       project:projectName,
@@ -971,6 +1054,19 @@ function submitInterview(){
       timestamp:new Date().toISOString()
     })});
   }catch(e){console.error('Log send fail:',e);}
+  // Supabase 인터뷰 저장
+  if(sb&&currentUser&&currentProjectId){
+    try{
+      sb.from('interviews').insert({
+        project_id:currentProjectId,
+        participant_name:ptName,
+        role:selectedRole,
+        messages:chatHistory,
+        summary:log.substring(0,2000),
+        status:'complete'
+      }).then(({error})=>{if(error)console.error('Interview save error:',error);});
+    }catch(e){console.error('Interview save fail:',e);}
+  }
   go('p-complete');
 }
 
@@ -1060,6 +1156,15 @@ async function renderPRD(){
   if(!sections){
     const _SEC=SEC(),_BODY=BODY();
     sections=_SEC.map(s=>({num:s.n,title:s.t,category:s.c,body:_BODY[s.n]||''}));
+  }
+  // Save PRD to Supabase
+  if(sb&&currentUser&&currentProjectId&&sections){
+    try{
+      sb.from('prds').upsert({project_id:currentProjectId,sections:sections},{onConflict:'project_id'})
+        .then(({error})=>{if(error)console.error('PRD save error:',error);});
+      sb.from('projects').update({status:'complete'}).eq('id',currentProjectId)
+        .then(({error})=>{if(error)console.error('Project status update error:',error);});
+    }catch(e){console.error('PRD save fail:',e);}
   }
 
   sg.innerHTML='';
