@@ -90,10 +90,9 @@ let isLoggedIn=false;
     if(session?.user){
       isLoggedIn=true;
       // nav CTA를 앱으로
-      document.querySelectorAll('.nav-cta').forEach(a=>{a.href='/mypage.html';a.textContent='My Projects';});
-      // 로그인 버튼 → My Projects
+      document.querySelectorAll('.nav-cta').forEach(a=>{a.style.display='none';});
       const lb=document.getElementById('nav-login-btn');
-      if(lb){lb.textContent='My Projects';lb.onclick=function(){window.location.href='/mypage.html';};}
+      if(lb){lb.textContent='My Projects';lb.style.background='var(--lime)';lb.style.color='#0a0a0a';lb.style.border='none';lb.onclick=function(){window.location.href='/mypage.html';};}
     }
   }catch(e){}
 })();
@@ -145,7 +144,7 @@ async function googleSignIn(){
       <a href="#planner" data-ko="AI 기획자" data-en="OnPlan AI">AI 기획자</a>
       <a href="#pricing" data-ko="가격" data-en="Pricing">가격</a>
       <a href="#contact" data-ko="문의" data-en="Contact">Contact</a>
-      <a href="/demo.html" class="nav-cta" data-ko="데모 체험" data-en="Try Demo">Try Demo</a>
+
     </div>
     <div id="nav-auth">
       <button onclick="handleGetStarted()" id="nav-login-btn" style="padding:7px 18px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--g200);font-family:var(--en);font-weight:600;font-size:12px;cursor:pointer;border-radius:6px;transition:all .2s;letter-spacing:.3px;" onmouseover="this.style.borderColor='rgba(255,255,255,.5)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--g200)'" data-ko="로그인" data-en="Sign In">Sign In</button>
