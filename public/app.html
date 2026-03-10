@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OnPlan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════
+   TOKENS — DARK (default)
+═══════════════════════════════════════ */
+:root {
+  --lime: #d4f53c;
+  --lime-dim: #a8cc00;
+  --lime-bg: rgba(212,245,60,.07);
+  --lime-border: rgba(212,245,60,.18);
+  --lime-glow: rgba(212,245,60,.12);
+
+  --bg:    #0a0a0a;
+  --bg2:   #111111;
+  --bg3:   #161616;
+  --bg4:   #1a1a1a;
+  --bg5:   #222222;
+
+  --white: #f0f0f0;
+  --g100:  #e0e0e0;
+  --g200:  #bbbbbb;
+  --g300:  #999999;
+  --g400:  #777777;
+  --g500:  #555555;
+  --g600:  #333333;
+
+  --border:  rgba(255,255,255,.06);
+  --border2: rgba(255,255,255,.10);
+  --border3: rgba(255,255,255,.15);
+
+  --warn:         #e8740a;
+  --warn-bg:      rgba(232,116,10,.08);
+  --warn-border:  rgba(232,116,10,.2);
+  --conflict:     #d63031;
+  --conflict-bg:  rgba(214,48,49,.06);
+  --conflict-border: rgba(214,48,49,.15);
+  --green:        #22c55e;
+  --green-bg:     rgba(34,197,94,.12);
+
+  --en: 'Outfit', sans-serif;
+  --kr: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+
+  --panel-w: 232px;
+  --top-h:   52px;
+
+  --radius-sm: 4px;
+  --radius:    8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+}
+
+/* ═══════════════════════════════════════
+   TOKENS — LIGHT
+═══════════════════════════════════════ */
+@media (prefers-color-scheme: light) {
+  :root {
+    --lime:        #a8cc00;
+    --lime-dim:    #7a9900;
+    --lime-bg:     rgba(168,204,0,.08);
+    --lime-border: rgba(168,204,0,.22);
+    --lime-glow:   rgba(168,204,0,.10);
+
+    --bg:    #f5f5f7;
+    --bg2:   #ffffff;
+    --bg3:   #f0f0f2;
+    --bg4:   #e8e8eb;
+    --bg5:   #dcdce0;
+
+    --white: #111111;
+    --g100:  #222222;
+    --g200:  #444444;
+    --g300:  #666666;
+    --g400:  #888888;
+    --g500:  #aaaaaa;
+    --g600:  #cccccc;
+
+    --border:  rgba(0,0,0,.08);
+    --border2: rgba(0,0,0,.12);
+    --border3: rgba(0,0,0,.18);
+
+    --warn:         #e8740a;
+    --warn-bg:      rgba(232,116,10,.06);
+    --warn-border:  rgba(232,116,10,.18);
+    --conflict:     #d63031;
+    --conflict-bg:  rgba(214,48,49,.05);
+    --conflict-border: rgba(214,48,49,.14);
+    --green:        #16a34a;
+    --green-bg:     rgba(22,163,74,.10);
+  }
+}
+
+/* ═══════════════════════════════════════
+   RESET
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; }
+body {
+  font-family: var(--kr);
+  background: var(--bg);
+  color: var(--g200);
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: var(--kr); cursor: pointer; }
+input, textarea, select { font-family: var(--kr); }
+::selection { background: var(--lime); color: #0a0a0a; }
+* { scrollbar-width: thin; scrollbar-color: var(--border2) transparent; }
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ═══════════════════════════════════════
+   LEFT PANEL
+═══════════════════════════════════════ */
+#panel {
+  width: var(--panel-w);
+  min-width: var(--panel-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.panel-hd {
+  height: var(--top-h);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+.logo-on  { color: var(--lime); }
+.logo-plan{ color: var(--white); font-weight: 500; }
+
+.panel-icon-btn {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--g400);
+  transition: background .12s, color .12s;
+}
+.panel-icon-btn:hover { background: var(--bg3); color: var(--g200); }
+
+.panel-sec-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--g500);
+  padding: 14px 16px 6px;
+}
+
+.new-btn {
+  margin: 0 8px 6px;
+  padding: 7px 10px;
+  width: calc(100% - 16px);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--lime-bg);
+  border: 1px dashed var(--lime-border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lime);
+  transition: background .15s, border-color .15s;
+}
+.new-btn:hover {
+  background: rgba(212,245,60,.12);
+  border-color: rgba(212,245,60,.35);
+}
+
+.proj-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px 12px;
+}
+
+.proj-item {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .12s;
+  margin-bottom: 1px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  position: relative;
+}
+.proj-item:hover { background: var(--bg3); }
+.proj-item.active { background: var(--bg4); }
+.proj-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 5px; bottom: 5px;
+  width: 2px;
+  background: var(--lime);
+  border-radius: 0 2px 2px 0;
+}
+
+.proj-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-active { background: var(--lime); box-shadow: 0 0 5px var(--lime); }
+.dot-done   { background: var(--green); }
+.dot-idle   { background: var(--g500); }
+
+.proj-info { flex: 1; min-width: 0; }
+.proj-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+.proj-meta {
+  font-size: 10px;
+  color: var(--g400);
+  margin-top: 2px;
+  font-family: var(--en);
+}
+
+.proj-badge {
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--en);
+  letter-spacing: .04em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.badge-on     { background: var(--lime-bg); color: var(--lime); border: 1px solid var(--lime-border); }
+.badge-done   { background: var(--green-bg); color: var(--green); }
+.badge-new    { background: var(--bg5); color: var(--g400); }
+
+.panel-ft {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--lime);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--en);
+  font-size: 10px;
+  font-weight: 800;
+  color: #0a0a0a;
+  flex-shrink: 0;
+}
+.user-name { font-size: 12px; font-weight: 500; color: var(--g300); flex: 1; }
+
+/* ═══════════════════════════════════════
+   MAIN
+═══════════════════════════════════════ */
+#main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* ─ TOP BAR ─ */
+.topbar {
+  height: var(--top-h);
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+  background: var(--bg2);
+}
+
+.proj-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 20px;
+  border-right: 1px solid var(--border);
+  margin-right: 20px;
+  min-width: 0;
+  max-width: 200px;
+}
+.proj-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─ STEPPER ─ */
+.stepper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .12s;
+  flex-shrink: 0;
+}
+.step:hover { background: var(--bg3); }
+
+.step-circle {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--en);
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+  transition: all .2s;
+  border: 1.5px solid var(--border2);
+  color: var(--g400);
+  background: transparent;
+}
+.step.done .step-circle {
+  background: var(--lime-bg);
+  border-color: var(--lime-border);
+  color: var(--lime);
+}
+.step.done .step-circle svg { display: block; }
+.step.active .step-circle {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #0a0a0a;
+  box-shadow: 0 0 8px var(--lime-glow);
+}
+.step.idle .step-circle { opacity: .5; }
+
+.step-label {
+  font-size: 11px;
+  font-weight: 500;
+  transition: color .15s;
+  white-space: nowrap;
+}
+.step.done .step-label   { color: var(--lime-dim); }
+.step.active .step-label { color: var(--white); font-weight: 600; }
+.step.idle .step-label   { color: var(--g400); }
+
+.step-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border2);
+  margin: 0 8px;
+  min-width: 16px;
+  max-width: 48px;
+  transition: background .3s;
+}
+.step-line.done { background: var(--lime-border); }
+
+/* ─ CONTENT ─ */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.view {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  animation: fadeUp .18s ease;
+}
+.view.visible { display: flex; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── SHARED FORM STYLES ─── */
+.form-wrap {
+  padding: 40px 56px;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.view-heading { margin-bottom: 28px; }
+.view-heading h2 {
+  font-family: var(--en);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--white);
+  margin-bottom: 5px;
+  line-height: 1.15;
+}
+.view-heading h2 em { font-style: normal; color: var(--lime); }
+.view-heading p { font-size: 13px; color: var(--g300); line-height: 1.7; }
+
+.fl {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--g400);
+  margin-bottom: 7px;
+}
+.req { color: var(--lime); }
+
+.fi, .ft {
+  width: 100%;
+  padding: 11px 13px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--white);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.fi:focus, .ft:focus {
+  border-color: var(--lime);
+  box-shadow: 0 0 0 2px var(--lime-glow);
+}
+.fi::placeholder, .ft::placeholder { color: var(--g500); }
+.ft { resize: none; line-height: 1.65; }
+
+.field { margin-bottom: 18px; }
+
+.upload-zone {
+  width: 100%;
+  border: 1px dashed var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
+  background: var(--bg3);
+}
+.upload-zone:hover {
+  border-color: var(--lime-border);
+  background: var(--lime-bg);
+}
+.upload-zone p { font-size: 12px; color: var(--g400); margin-top: 6px; }
+.upload-zone span { color: var(--lime); font-weight: 600; }
+
+.btn-row { display: flex; gap: 8px; margin-top: 24px; }
+
+.btn-lime {
+  padding: 10px 20px;
+  background: var(--lime);
+  color: #0a0a0a;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--en);
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s;
+}
+.btn-lime:hover { background: #e8ff5e; box-shadow: 0 4px 14px var(--lime-glow); transform: translateY(-1px); }
+
+.btn-ghost {
+  padding: 10px 16px;
+  background: transparent;
+  color: var(--g300);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all .15s;
+}
+.btn-ghost:hover { border-color: var(--border3); color: var(--white); background: var(--bg3); }
+
+/* ═══════════════════════════════════════
+   VIEW 0 — EMPTY
+═══════════════════════════════════════ */
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 40px;
+  color: var(--g400);
+}
+.empty-icon { opacity: .25; margin-bottom: 4px; }
+.empty-title { font-family: var(--en); font-size: 15px; font-weight: 700; color: var(--g300); letter-spacing: -.3px; }
+.empty-desc  { font-size: 13px; line-height: 1.7; max-width: 300px; }
+
+/* ═══════════════════════════════════════
+   VIEW 2 — TEAM SHARE
+═══════════════════════════════════════ */
+.invite-row { display: flex; gap: 7px; margin-bottom: 12px; }
+.invite-row .fi { flex: 1; }
+
+.role-sel {
+  padding: 11px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--g300);
+  outline: none;
+  min-width: 100px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+  cursor: pointer;
+}
+.role-sel option { background: var(--bg3); }
+
+.member-list { display: flex; flex-direction: column; gap: 5px; margin-top: 12px; }
+.member-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.m-av {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--en);
+  font-size: 10px;
+  font-weight: 800;
+  color: #0a0a0a;
+  flex-shrink: 0;
+}
+.m-name { flex: 1; font-size: 12px; font-weight: 600; color: var(--white); }
+.m-email { font-size: 11px; color: var(--g400); }
+.m-role {
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--en);
+  letter-spacing: .05em;
+  padding: 3px 7px;
+  border-radius: 3px;
+}
+.role-pm     { background: var(--lime-bg); color: var(--lime); border: 1px solid var(--lime-border); }
+.role-dev    { background: var(--green-bg); color: var(--green); }
+.role-design { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-border); }
+
+.link-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-top: 16px;
+}
+.link-url {
+  flex: 1;
+  font-size: 11px;
+  font-family: var(--en);
+  color: var(--g400);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.btn-copy {
+  padding: 5px 10px;
+  background: var(--bg5);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--en);
+  color: var(--g300);
+  flex-shrink: 0;
+  transition: all .12s;
+}
+.btn-copy:hover { color: var(--white); border-color: var(--border3); }
+
+/* ═══════════════════════════════════════
+   VIEW 3 — AI INTERVIEW
+═══════════════════════════════════════ */
+.interview-hd {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  background: var(--bg2);
+}
+.ivw-title { font-size: 12px; font-weight: 700; color: var(--white); }
+.ivw-meta  { font-size: 10px; color: var(--g400); margin-top: 2px; font-family: var(--en); }
+
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-family: var(--en);
+  font-weight: 700;
+  color: var(--g300);
+}
+.live-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 5px var(--lime);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+
+/* respondent tabs */
+.rtabs {
+  display: flex;
+  gap: 6px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  overflow-x: auto;
+  background: var(--bg2);
+}
+.rtab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--g300);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all .12s;
+  flex-shrink: 0;
+}
+.rtab:hover { border-color: var(--border3); }
+.rtab.active {
+  background: var(--lime-bg);
+  border-color: var(--lime-border);
+  color: var(--lime);
+}
+.rtab-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+/* chat */
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--bg);
+}
+
+.msg { display: flex; gap: 9px; }
+.msg.ai   { align-self: flex-start; max-width: 78%; }
+.msg.user { align-self: flex-end; flex-direction: row-reverse; max-width: 78%; }
+
+.msg-av {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--en);
+  font-size: 8px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.msg-av.ai-av {
+  background: var(--bg5);
+  border: 1px solid var(--border2);
+  color: var(--lime);
+}
+.msg-av.user-av {
+  background: var(--lime);
+  color: #0a0a0a;
+}
+
+.msg-inner { display: flex; flex-direction: column; gap: 3px; }
+.msg-sender {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--g500);
+  padding: 0 2px;
+}
+.msg.user .msg-sender { text-align: right; }
+
+.bubble {
+  padding: 10px 13px;
+  font-size: 13px;
+  line-height: 1.7;
+  border-radius: var(--radius-sm);
+}
+.msg.ai   .bubble {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--g100);
+  border-top-left-radius: 2px;
+}
+.msg.user .bubble {
+  background: var(--bg5);
+  border: 1px solid var(--border2);
+  color: var(--g100);
+  border-top-right-radius: 2px;
+}
+
+.typing {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 10px 13px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  border-top-left-radius: 2px;
+}
+.typing span {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--g400);
+  animation: tp 1.3s infinite;
+}
+.typing span:nth-child(2) { animation-delay: .15s; }
+.typing span:nth-child(3) { animation-delay: .30s; }
+@keyframes tp { 0%,80%,100%{opacity:.3;transform:scale(.7);} 40%{opacity:1;transform:scale(1);} }
+
+/* chat input */
+.chat-in {
+  padding: 12px 24px 16px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg2);
+}
+.chat-in-box {
+  display: flex;
+  gap: 7px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.chat-in-box:focus-within {
+  border-color: var(--lime);
+  box-shadow: 0 0 0 2px var(--lime-glow);
+}
+.chat-fi {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--white);
+  resize: none;
+  height: 36px;
+  line-height: 1.6;
+}
+.chat-fi::placeholder { color: var(--g500); }
+.send-btn {
+  width: 32px; height: 32px;
+  background: var(--lime);
+  border: none;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  align-self: flex-end;
+  transition: all .15s;
+  color: #0a0a0a;
+}
+.send-btn:hover { background: #e8ff5e; box-shadow: 0 2px 10px var(--lime-glow); }
+
+/* progress row */
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg2);
+}
+.progress-label { font-size: 10px; color: var(--g400); font-family: var(--en); flex-shrink: 0; }
+.progress-track {
+  flex: 1;
+  height: 2px;
+  background: var(--border2);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--lime);
+  border-radius: 1px;
+  transition: width .4s ease;
+}
+.progress-pct { font-size: 10px; font-family: var(--en); font-weight: 700; color: var(--lime); flex-shrink: 0; min-width: 28px; text-align: right; }
+
+/* ═══════════════════════════════════════
+   VIEW 4 — PRD RESULT
+═══════════════════════════════════════ */
+.prd-wrap { flex: 1; display: flex; overflow: hidden; }
+
+.prd-nav {
+  width: 180px;
+  min-width: 180px;
+  border-right: 1px solid var(--border);
+  padding: 16px 0;
+  overflow-y: auto;
+  background: var(--bg2);
+  flex-shrink: 0;
+}
+.prd-nav-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--g500);
+  padding: 0 14px 8px;
+}
+.prd-nav-item {
+  padding: 7px 14px;
+  font-size: 12px;
+  color: var(--g400);
+  cursor: pointer;
+  transition: all .12s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border-left: 2px solid transparent;
+}
+.prd-nav-item:hover { color: var(--g200); background: var(--bg3); }
+.prd-nav-item.active {
+  color: var(--lime);
+  border-left-color: var(--lime);
+  background: var(--lime-bg);
+  font-weight: 600;
+}
+
+.prd-body {
+  flex: 1;
+  padding: 28px 36px;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.prd-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+.prd-doc-title {
+  font-family: var(--en);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--white);
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+.prd-doc-meta { font-size: 10px; font-family: var(--en); color: var(--g500); }
+
+.prd-actions { display: flex; gap: 6px; }
+.btn-export {
+  padding: 7px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--en);
+  color: var(--g300);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  transition: all .12s;
+}
+.btn-export:hover { background: var(--bg4); color: var(--white); border-color: var(--border3); }
+
+/* ─ PRD Document (demo.html style) ─ */
+.prd-doc { max-width: 100%; }
+
+.prd-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  scroll-margin-top: 52px;
+}
+.prd-sec-hd {
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.prd-sec-num {
+  font-family: var(--en);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--lime);
+  letter-spacing: .08em;
+  margin-right: 10px;
+}
+.prd-sec-title { font-size: 15px; font-weight: 700; color: var(--white); }
+.prd-sec-cat {
+  font-size: 9px;
+  color: var(--g500);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.prd-sec-body { padding: 20px 24px; }
+
+/* Section content */
+.sec-content { font-size: 13px; line-height: 1.85; color: var(--g300); }
+.sec-content h3 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 18px 0 6px;
+  letter-spacing: -.1px;
+}
+.sec-content h3:first-child { margin-top: 0; }
+.sec-content p { margin-bottom: 8px; }
+.sec-content strong { color: var(--white); font-weight: 600; }
+.sec-content table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+.sec-content th, .sec-content td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.sec-content th {
+  color: var(--g500);
+  font-weight: 600;
+  font-size: 9px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: var(--bg3);
+}
+
+/* Planner Opinion */
+.po {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  padding: 16px 18px;
+  margin-top: 16px;
+}
+.po-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--warn);
+  margin-bottom: 7px;
+  font-family: var(--en);
+}
+.po-body { font-size: 13px; line-height: 1.8; color: var(--g200); }
+.po-body strong { color: var(--white); font-weight: 600; }
+
+/* Conflict */
+.cb {
+  background: var(--conflict-bg);
+  border: 1px solid var(--conflict-border);
+  padding: 18px;
+  margin-top: 14px;
+}
+.cb-title {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--conflict);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-family: var(--en);
+}
+.cb-issue { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.cb-context { font-size: 12px; line-height: 1.7; color: var(--g400); margin-bottom: 14px; }
+.cb-current {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+.cb-current-title {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--warn);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-family: var(--en);
+}
+.cb-current-body { font-size: 12px; line-height: 1.7; color: var(--g300); }
+.cb-current-body strong { color: var(--white); }
+.cb-input-area { display: flex; gap: 7px; }
+.cb-input {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  font-size: 12px;
+  font-family: var(--kr);
+  color: var(--white);
+  outline: none;
+}
+.cb-input:focus { border-color: var(--conflict); }
+.cb-input::placeholder { color: var(--g500); }
+.cb-submit {
+  padding: 9px 14px;
+  background: var(--bg5);
+  color: var(--g200);
+  border: 1px solid var(--border2);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--en);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all .12s;
+}
+.cb-submit:hover { background: var(--white); color: #0a0a0a; }
+
+/* Comments */
+.cmt-area {
+  border-top: 1px solid var(--border);
+  margin-top: 18px;
+  padding-top: 16px;
+}
+.cmt-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--g500);
+  margin-bottom: 10px;
+  font-family: var(--en);
+}
+.cmt { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.cmt:last-child { border-bottom: none; }
+.cmt-hd { display: flex; align-items: center; gap: 7px; margin-bottom: 3px; }
+.cmt-name { font-size: 12px; font-weight: 600; color: var(--white); }
+.cmt-role { font-size: 10px; color: var(--g500); }
+.cmt-time { font-size: 10px; color: var(--g500); margin-left: auto; }
+.cmt-body { font-size: 12px; line-height: 1.65; color: var(--g300); }
+
+/* AI Revision */
+.rev {
+  background: var(--lime-bg);
+  border: 1px solid var(--lime-border);
+  padding: 16px 18px;
+  margin-top: 14px;
+}
+.rev-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 7px;
+  font-family: var(--en);
+}
+.rev-body { font-size: 13px; line-height: 1.8; color: var(--g200); }
+.rev-body strong { color: var(--white); }
+.rev-actions { display: flex; gap: 7px; margin-top: 10px; }
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 11px;
+  font-family: var(--en);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all .12s;
+}
+.btn-sm-y { background: var(--lime); color: #0a0a0a; }
+.btn-sm-y:hover { background: #e8ff5e; }
+.btn-sm-n { background: var(--bg4); color: var(--g300); border: 1px solid var(--border2); }
+.btn-sm-n:hover { background: var(--bg5); color: var(--g100); }
+
+/* Role doc cards */
+.role-doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.role-doc-card {
+  padding: 14px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all .15s;
+}
+.role-doc-card:hover { border-color: var(--border2); background: var(--bg3); }
+.role-doc-card.open { border-color: var(--lime-border); background: var(--lime-bg); }
+.rdc-num {
+  font-family: var(--en);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--lime);
+  letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+.rdc-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+.rdc-desc { font-size: 11px; color: var(--g500); }
+
+/* ═══════════════════════════════════════
+   EMPTY / NO PROJECT (topbar hidden state)
+═══════════════════════════════════════ */
+.topbar.hidden { display: none; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════ LEFT PANEL ══════════ -->
+<div id="panel">
+  <div class="panel-hd">
+    <div class="logo">
+      <span class="logo-on">ON</span><span class="logo-plan">plan</span>
+    </div>
+    <button class="panel-icon-btn" title="설정">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.9 2.9l1.1 1.1M10 10l1.1 1.1M2.9 11.1L4 10M10 4l1.1-1.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="panel-sec-label">Projects</div>
+
+  <button class="new-btn" onclick="selectProject('new')">
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+      <path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    새 프로젝트
+  </button>
+
+  <div class="proj-list">
+    <div class="proj-item active" onclick="selectProject('p1')">
+      <div class="proj-dot dot-active"></div>
+      <div class="proj-info">
+        <div class="proj-name">NDX PRO 온보딩 개선</div>
+        <div class="proj-meta">3 members · step 3</div>
+      </div>
+      <span class="proj-badge badge-on">LIVE</span>
+    </div>
+    <div class="proj-item" onclick="selectProject('p2')">
+      <div class="proj-dot dot-done"></div>
+      <div class="proj-info">
+        <div class="proj-name">파라미터 DB v2</div>
+        <div class="proj-meta">5 members · done</div>
+      </div>
+      <span class="proj-badge badge-done">PRD</span>
+    </div>
+    <div class="proj-item" onclick="selectProject('p3')">
+      <div class="proj-dot dot-idle"></div>
+      <div class="proj-info">
+        <div class="proj-name">Data Model Studio</div>
+        <div class="proj-meta">1 member · step 1</div>
+      </div>
+      <span class="proj-badge badge-new">NEW</span>
+    </div>
+    <div class="proj-item" onclick="selectProject('p4')">
+      <div class="proj-dot dot-done"></div>
+      <div class="proj-info">
+        <div class="proj-name">Hyundai R&D Dashboard</div>
+        <div class="proj-meta">4 members · done</div>
+      </div>
+      <span class="proj-badge badge-done">PRD</span>
+    </div>
+  </div>
+
+  <div class="panel-ft">
+    <div class="avatar">YJ</div>
+    <span class="user-name">송윤지</span>
+    <button class="panel-icon-btn" title="로그아웃">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+        <path d="M5 1.5H2a1 1 0 00-1 1v8a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════ MAIN ══════════ -->
+<div id="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar hidden" id="topbar">
+    <div class="proj-title-wrap">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color:var(--lime);flex-shrink:0">
+        <rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M4 6h4M4 8h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <span class="proj-title" id="proj-title">—</span>
+    </div>
+
+    <!-- STEPPER -->
+    <div class="stepper">
+      <div class="step idle" id="s1" onclick="goStep(1)">
+        <div class="step-circle" id="sc1">1</div>
+        <span class="step-label">프로젝트 생성</span>
+      </div>
+      <div class="step-line" id="sl1"></div>
+      <div class="step idle" id="s2" onclick="goStep(2)">
+        <div class="step-circle" id="sc2">2</div>
+        <span class="step-label">팀 공유</span>
+      </div>
+      <div class="step-line" id="sl2"></div>
+      <div class="step idle" id="s3" onclick="goStep(3)">
+        <div class="step-circle" id="sc3">3</div>
+        <span class="step-label">AI 인터뷰</span>
+      </div>
+      <div class="step-line" id="sl3"></div>
+      <div class="step idle" id="s4" onclick="goStep(4)">
+        <div class="step-circle" id="sc4">4</div>
+        <span class="step-label">PRD 결과</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ─ VIEW 0: EMPTY ─ -->
+    <div class="view visible" id="view-0" style="flex:1">
+      <div class="empty-state">
+        <svg class="empty-icon" width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect x="6" y="10" width="32" height="28" rx="3" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M6 16h32" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M13 22h8M13 27h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="35" cy="9" r="5" fill="currentColor" opacity=".2"/>
+          <path d="M35 7v4M33 9h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/>
+        </svg>
+        <div class="empty-title">프로젝트를 선택하세요</div>
+        <div class="empty-desc">왼쪽에서 프로젝트를 선택하거나, 새 프로젝트를 만들어 AI 인터뷰를 시작하세요.</div>
+        <button class="btn-lime" style="margin-top:6px" onclick="selectProject('new')">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+            <path d="M5.5 1v9M1 5.5h9" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          새 프로젝트 만들기
+        </button>
+      </div>
+    </div>
+
+    <!-- ─ VIEW 1: CREATE ─ -->
+    <div class="view" id="view-1">
+      <div class="form-wrap">
+        <div class="view-heading">
+          <h2>프로젝트 <em>생성</em></h2>
+          <p>기획하려는 제품 또는 기능의 기본 정보를 입력하세요. AI가 맞춤 인터뷰 질문을 생성합니다.</p>
+        </div>
+
+        <div class="field">
+          <label class="fl">프로젝트명 <span class="req">*</span></label>
+          <input type="text" class="fi" placeholder="예: NDX PRO 온보딩 개선" value="NDX PRO 온보딩 개선">
+        </div>
+
+        <div class="field">
+          <label class="fl">배경 및 목표 <span class="req">*</span></label>
+          <textarea class="ft" rows="4" placeholder="어떤 문제를 해결하려 하나요?">NGSI-LD 기반 플랫폼의 신규 사용자 온보딩 경험이 복잡하여 초기 이탈이 발생하고 있습니다. Data Model → Ingest → Entity 플로우를 직관적으로 안내하는 온보딩을 설계합니다.</textarea>
+        </div>
+
+        <div class="field">
+          <label class="fl">SI 프로젝트 문서 <span style="color:var(--g500);font-weight:400;text-transform:none;letter-spacing:0">선택</span></label>
+          <div class="upload-zone">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="margin:0 auto;color:var(--g400)">
+              <path d="M11 14V4m0 0L7.5 7.5M11 4l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 16v1.5A1.5 1.5 0 004.5 19h13a1.5 1.5 0 001.5-1.5V16" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            <p>드래그하여 업로드 또는 <span>파일 선택</span></p>
+            <p style="font-size:11px;margin-top:3px;color:var(--g500)">PDF, DOCX, PPTX · 최대 20MB</p>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-lime" onclick="goStep(2)">
+            팀 공유로 이동
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+              <path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="btn-ghost">임시저장</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─ VIEW 2: TEAM SHARE ─ -->
+    <div class="view" id="view-2">
+      <div class="form-wrap">
+        <div class="view-heading">
+          <h2>팀 <em>공유</em></h2>
+          <p>인터뷰에 참여할 팀원을 초대하세요. 역할별로 AI가 맞춤 질문을 생성합니다.</p>
+        </div>
+
+        <div class="field">
+          <label class="fl">팀원 초대</label>
+          <div class="invite-row">
+            <input type="text" class="fi" placeholder="이메일 주소 입력">
+            <select class="role-sel">
+              <option>PM / 기획</option>
+              <option>개발자</option>
+              <option>디자이너</option>
+              <option>QA</option>
+              <option>기타</option>
+            </select>
+            <button class="btn-lime" style="padding:10px 14px;white-space:nowrap">초대</button>
+          </div>
+        </div>
+
+        <div class="member-list">
+          <div class="member-item">
+            <div class="m-av" style="background:var(--lime)">YJ</div>
+            <div style="flex:1">
+              <div class="m-name">송윤지 <span style="font-size:10px;color:var(--g400);font-weight:400">(나)</span></div>
+              <div class="m-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7900160c1713391c410a0d0c1d1016571016">[email&#160;protected]</a></div>
+            </div>
+            <span class="m-role role-pm">PM</span>
+          </div>
+          <div class="member-item">
+            <div class="m-av" style="background:#22c55e">KH</div>
+            <div style="flex:1">
+              <div class="m-name">김현준</div>
+              <div class="m-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3d8dbd9f3d68bc0c7c6d7dadc9ddadc">[email&#160;protected]</a></div>
+            </div>
+            <span class="m-role role-dev">DEV</span>
+          </div>
+          <div class="member-item">
+            <div class="m-av" style="background:var(--warn)">PJ</div>
+            <div style="flex:1">
+              <div class="m-name">박지원</div>
+              <div class="m-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c1abb6b1a0b3aa81a4f9b2b5b4a5a8aeefa8ae">[email&#160;protected]</a></div>
+            </div>
+            <span class="m-role role-design">DESIGN</span>
+          </div>
+        </div>
+
+        <div class="link-box">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="color:var(--g400);flex-shrink:0">
+            <path d="M5 8l3-3M4.5 5.5l-.7.7a2 2 0 002.8 2.8l.7-.7M8.5 7.5l.7-.7a2 2 0 00-2.8-2.8l-.7.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          <span class="link-url">https://onplan.io/invite/ndxpro-onb-7f2a9c</span>
+          <button class="btn-copy">링크 복사</button>
+        </div>
+
+        <div class="btn-row" style="margin-top:24px">
+          <button class="btn-lime" onclick="goStep(3)">
+            AI 인터뷰 시작
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+              <path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="btn-ghost" onclick="goStep(1)">이전</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─ VIEW 3: AI INTERVIEW ─ -->
+    <div class="view" id="view-3">
+      <div class="interview-hd">
+        <div>
+          <div class="ivw-title">AI 인터뷰 진행 중</div>
+          <div class="ivw-meta">NDX PRO 온보딩 개선 · 3명 참여 · 오늘 14:23 시작</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            <span>2 / 3 응답 완료</span>
+          </div>
+          <button class="btn-ghost" style="padding:5px 10px;font-size:11px" onclick="goStep(4)">결과 보기 →</button>
+        </div>
+      </div>
+
+      <div class="progress-row">
+        <span class="progress-label">인터뷰 진행률</span>
+        <div class="progress-track"><div class="progress-fill" style="width:66%"></div></div>
+        <span class="progress-pct">66%</span>
+      </div>
+
+      <div class="rtabs">
+        <div class="rtab active">
+          <div class="rtab-dot" style="background:var(--lime)"></div>
+          송윤지 (나)
+        </div>
+        <div class="rtab">
+          <div class="rtab-dot" style="background:var(--green)"></div>
+          김현준
+        </div>
+        <div class="rtab">
+          <div class="rtab-dot" style="background:var(--g500)"></div>
+          박지원 · 대기중
+        </div>
+      </div>
+
+      <div class="chat-area" id="chatArea">
+        <div class="msg ai">
+          <div class="msg-av ai-av">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M4 6l1.5 1.5L8 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="msg-inner">
+            <div class="msg-sender">OnPlan AI</div>
+            <div class="bubble">안녕하세요, 송윤지님. NDX PRO 온보딩 개선 프로젝트 인터뷰를 시작하겠습니다. PM 관점에서 여쭤볼게요. 신규 사용자가 Data Model을 처음 생성할 때 가장 막히는 구간이 어디라고 보시나요?</div>
+          </div>
+        </div>
+
+        <div class="msg user">
+          <div class="msg-av user-av">YJ</div>
+          <div class="msg-inner">
+            <div class="msg-sender">송윤지</div>
+            <div class="bubble">Schema 작성 단계에서 NGSI-LD 스펙을 모르면 막히는 경우가 많아요. 특히 @context 설정이나 속성 타입 정의 부분에서요. Ingest 연결은 그 다음 문제고, 일단 Model 자체를 못 만드는 게 가장 큰 이슈입니다.</div>
+          </div>
+        </div>
+
+        <div class="msg ai">
+          <div class="msg-av ai-av">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M4 6l1.5 1.5L8 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="msg-inner">
+            <div class="msg-sender">OnPlan AI</div>
+            <div class="bubble">명확한 진단 감사합니다. 그렇다면 AI 가이드나 템플릿이 있다면 그 구간을 해소할 수 있다고 보시나요? 혹은 도메인 전문가 리뷰 같은 사람 개입이 필요한 부분인가요?</div>
+          </div>
+        </div>
+
+        <div class="msg ai" id="typingMsg">
+          <div class="msg-av ai-av">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M4 6l1.5 1.5L8 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="msg-inner">
+            <div class="msg-sender">OnPlan AI</div>
+            <div class="typing"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-in">
+        <div class="chat-in-box">
+          <textarea class="chat-fi" placeholder="답변을 입력하세요..." id="chatInput" rows="2"></textarea>
+          <button class="send-btn" id="sendBtn">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2 6.5h9M8 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─ VIEW 4: PRD RESULT ─ -->
+    <div class="view" id="view-4">
+      <div class="prd-wrap">
+
+        <!-- 목차 nav -->
+        <div class="prd-nav">
+          <div class="prd-nav-title">목차</div>
+          <div class="prd-nav-item active" onclick="scrollToSec('sec-01',this)">01 요약과 배경</div>
+          <div class="prd-nav-item" onclick="scrollToSec('sec-02',this)">02 주요 사용자</div>
+          <div class="prd-nav-item" onclick="scrollToSec('sec-03',this)">03 핵심 사용자 여정</div>
+          <div class="prd-nav-item" onclick="scrollToSec('sec-04',this)">04 기능적 요구사항</div>
+          <div class="prd-nav-item" onclick="scrollToSec('sec-05',this)">05 IA 설계</div>
+          <div class="prd-nav-item" onclick="scrollToSec('sec-06',this)">06 사용자 플로우</div>
+          <div class="prd-nav-item" onclick="scrollToSec('sec-07',this)">07 배포 계획</div>
+          <div class="prd-nav-item" onclick="scrollToSec('sec-08',this)">08 리스크 및 관련 문서</div>
+          <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+          <div class="prd-nav-title">역할별 문서</div>
+          <div class="prd-nav-item" onclick="scrollToSec('rd-section',this)">역할별 변환 문서</div>
+        </div>
+
+        <!-- 본문 -->
+        <div class="prd-body" id="prdBody">
+
+          <!-- 헤더 -->
+          <div class="prd-top">
+            <div>
+              <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:4px;font-family:var(--en)">Product Requirements Document</div>
+              <div class="prd-doc-title">NDX PRO 온보딩 개선</div>
+              <div class="prd-doc-meta">생성일 2026.03.10 · OnPlan AI v1.0 · 참여자 3명의 인터뷰 기반</div>
+            </div>
+            <div class="prd-actions">
+              <button class="btn-export">저장</button>
+              <button class="btn-export">공유</button>
+              <button class="btn-export">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M5 1v5.5M2.5 5l2.5 2.5L7.5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M1 7.5V8.5A.5.5 0 001.5 9h7a.5.5 0 00.5-.5v-1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                PDF
+              </button>
+            </div>
+          </div>
+
+          <div class="prd-doc">
+
+            <!-- SEC 01 -->
+            <div class="prd-section" id="sec-01">
+              <div class="prd-sec-hd">
+                <div style="display:flex;align-items:center">
+                  <span class="prd-sec-num">01</span>
+                  <span class="prd-sec-title">요약과 배경</span>
+                </div>
+                <span class="prd-sec-cat">맥락</span>
+              </div>
+              <div class="prd-sec-body">
+                <div class="sec-content">
+                  <h3>문제 정의</h3>
+                  <p>NDX PRO 신규 사용자는 NGSI-LD 기반의 Data Model 생성 단계에서 높은 이탈률을 보입니다. @context 설정, 속성 타입 정의 등 플랫폼 고유 개념에 대한 사전 지식 없이는 첫 Model 생성이 불가능한 구조입니다.</p>
+                  <h3>왜 지금인가</h3>
+                  <p>Hyundai 도메인 확장에 따른 신규 사용자 온보딩 건수 증가 예정. 현재 온보딩 가이드 부재로 지원 요청이 집중되고 있으며, Data Model Studio 출시 전 온보딩 경험 정비가 필수입니다.</p>
+                  <h3>목표 지표</h3>
+                  <table>
+                    <tr><th>지표</th><th>현재</th><th>목표</th></tr>
+                    <tr><td>첫 Model 생성 완료율</td><td>미측정</td><td>70% 이상</td></tr>
+                    <tr><td>온보딩 완료 시간</td><td>미측정</td><td>20분 이내</td></tr>
+                    <tr><td>지원 요청 건수</td><td>기준치 설정 필요</td><td>30% 감소</td></tr>
+                  </table>
+                </div>
+                <div class="po">
+                  <div class="po-title">OnPlan AI 기획자 의견</div>
+                  <div class="po-body"><strong>PM과 개발자의 문제 인식이 다릅니다.</strong> PM은 UX 복잡도(온보딩 경험)를 강조한 반면, 개발자는 Translator 연결 구조의 분리가 근본 원인이라 봤습니다. 둘 다 유효하나 온보딩 개선은 <strong>UX 레이어에서 먼저 해결</strong>하고, 구조 개선은 Data Model Studio에서 병행하는 것을 권장합니다.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEC 02 -->
+            <div class="prd-section" id="sec-02">
+              <div class="prd-sec-hd">
+                <div style="display:flex;align-items:center">
+                  <span class="prd-sec-num">02</span>
+                  <span class="prd-sec-title">주요 사용자</span>
+                </div>
+                <span class="prd-sec-cat">맥락</span>
+              </div>
+              <div class="prd-sec-body">
+                <div class="sec-content">
+                  <h3>Persona A — 신규 도메인 엔지니어</h3>
+                  <table>
+                    <tr><th>항목</th><th>내용</th></tr>
+                    <tr><td>역할</td><td>Hyundai 섀시해석팀, NGSI-LD 비전공</td></tr>
+                    <tr><td>페인포인트</td><td>@context 개념 미숙. 속성 타입(Property vs Relationship) 구분 불명확. 오류 메시지 의미 파악 불가.</td></tr>
+                    <tr><td>원하는 것</td><td>스펙 학습 없이 첫 Model 완성. 실수해도 되돌릴 수 있는 환경.</td></tr>
+                  </table>
+                  <h3>Persona B — NDX PRO 관리자</h3>
+                  <table>
+                    <tr><th>항목</th><th>내용</th></tr>
+                    <tr><td>역할</td><td>플랫폼 운영, 신규 사용자 교육 담당</td></tr>
+                    <tr><td>페인포인트</td><td>온보딩 가이드 부재로 반복 지원 필요. 사용자별 진행 현황 파악 불가.</td></tr>
+                    <tr><td>원하는 것</td><td>자동화된 온보딩 플로우, 완료율 대시보드.</td></tr>
+                  </table>
+                </div>
+                <!-- Conflict -->
+                <div class="cb">
+                  <div class="cb-title">의견 충돌 · 결정 필요</div>
+                  <div class="cb-issue">온보딩 가이드를 강제할 것인가, 선택으로 할 것인가</div>
+                  <div class="cb-context">PM은 "첫 진입 시 강제 가이드"를 선호. 개발자는 "숙련 사용자가 불편하다"는 이유로 스킵 가능한 선택형을 주장. 디자이너는 아직 의견 없음.</div>
+                  <div class="cb-current">
+                    <div class="cb-current-title">OnPlan AI 현재 권고</div>
+                    <div class="cb-current-body"><strong>첫 진입 1회만 강제, 이후 스킵 가능</strong>으로 절충 권고. 강제 가이드는 첫 Model 생성 완료율을 높이는 데 효과적이나, 반복 노출은 숙련 사용자 이탈 원인이 됩니다.</div>
+                  </div>
+                  <div class="cb-input-area">
+                    <input class="cb-input" placeholder="의견을 입력하세요...">
+                    <button class="cb-submit">AI에게 묻기</button>
+                  </div>
+                </div>
+                <!-- Comments -->
+                <div class="cmt-area">
+                  <div class="cmt-title">팀 코멘트</div>
+                  <div class="cmt">
+                    <div class="cmt-hd">
+                      <span class="cmt-name">송윤지</span>
+                      <span class="cmt-role">PM</span>
+                      <span class="cmt-time">10분 전</span>
+                    </div>
+                    <div class="cmt-body">첫 진입 강제에 동의합니다. 단, 가이드 자체가 길면 역효과. 3단계 이내로 압축해야 합니다.</div>
+                  </div>
+                  <div class="cmt">
+                    <div class="cmt-hd">
+                      <span class="cmt-name">김현준</span>
+                      <span class="cmt-role">개발</span>
+                      <span class="cmt-time">5분 전</span>
+                    </div>
+                    <div class="cmt-body">강제는 괜찮은데, 관리자 계정은 제외해줘야 합니다. 매번 보면 너무 불편해요.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEC 03 -->
+            <div class="prd-section" id="sec-03">
+              <div class="prd-sec-hd">
+                <div style="display:flex;align-items:center">
+                  <span class="prd-sec-num">03</span>
+                  <span class="prd-sec-title">핵심 사용자 여정</span>
+                </div>
+                <span class="prd-sec-cat">정의</span>
+              </div>
+              <div class="prd-sec-body">
+                <div class="sec-content">
+                  <h3>As-Is</h3>
+                  <p>NDX PRO 첫 접속 → 빈 화면 → Data Model 메뉴 탐색 → Schema 탭 발견 → @context 오류 반복 → 지원 요청 또는 이탈</p>
+                  <h3>To-Be</h3>
+                  <p>NDX PRO 첫 접속 → 온보딩 가이드 투어 시작 → Data Model 생성 (인라인 힌트 포함) → Ingest 연결 유도 → 첫 Entity 확인 → 온보딩 완료</p>
+                  <h3>사용자가 얻는 가치</h3>
+                  <p>NGSI-LD 스펙 학습 없이 첫 Model 완성. 실수 시 안전한 롤백. Data Model → Ingest → Entity 플로우 직관적 이해.</p>
+                </div>
+                <div class="po">
+                  <div class="po-title">OnPlan AI 기획자 의견</div>
+                  <div class="po-body">현재 플로우에서 <strong>가장 이탈이 많은 구간은 @context 설정</strong>입니다. 이 구간에서 인라인 설명과 기본값 자동 채움만 제공해도 완료율이 크게 오릅니다. 전체 투어보다 <strong>이 단 하나의 개선이 우선순위 1순위</strong>입니다.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEC 04 -->
+            <div class="prd-section" id="sec-04">
+              <div class="prd-sec-hd">
+                <div style="display:flex;align-items:center">
+                  <span class="prd-sec-num">04</span>
+                  <span class="prd-sec-title">기능적 요구사항</span>
+                </div>
+                <span class="prd-sec-cat">정의</span>
+              </div>
+              <div class="prd-sec-body">
+                <div class="sec-content">
+                  <h3>P0 — Must Have</h3>
+                  <table>
+                    <tr><th>기능</th><th>수용 기준</th></tr>
+                    <tr><td>온보딩 가이드 투어</td><td>첫 진입 시 1회 강제 실행. 3단계 이내. 스킵 가능.</td></tr>
+                    <tr><td>@context 인라인 힌트</td><td>Schema 편집 시 속성 타입 자동완성 + 설명 팝오버</td></tr>
+                    <tr><td>Ingest 연결 유도 배너</td><td>Model 생성 완료 후 Ingest 연결 CTA 노출</td></tr>
+                  </table>
+                  <h3>P1 — Should Have</h3>
+                  <table>
+                    <tr><th>기능</th><th>수용 기준</th></tr>
+                    <tr><td>온보딩 완료율 대시보드</td><td>관리자 뷰. 사용자별 단계 진행 현황.</td></tr>
+                    <tr><td>도메인 템플릿 라이브러리</td><td>Hyundai 도메인 기본 Model 템플릿 3종 이상</td></tr>
+                  </table>
+                  <h3>P2 — Nice to Have</h3>
+                  <table>
+                    <tr><th>기능</th><th>수용 기준</th></tr>
+                    <tr><td>AI 스키마 자동 생성</td><td>자연어 입력 → NGSI-LD Schema 초안 생성</td></tr>
+                    <tr><td>인터랙티브 튜토리얼 모드</td><td>샌드박스 환경에서 실습</td></tr>
+                  </table>
+                </div>
+                <div class="po">
+                  <div class="po-title">OnPlan AI 기획자 의견</div>
+                  <div class="po-body"><strong>P0 3개 기준 2개월 내 가능합니다.</strong> 도메인 템플릿은 Hyundai 케이스가 있으므로 P1이지만 실질적으로 P0에 가깝습니다. AI 스키마 자동 생성은 NDX PRO의 핵심 차별화 기능이 될 수 있으나, MVP 범위를 벗어납니다.</div>
+                </div>
+                <!-- Conflict -->
+                <div class="cb">
+                  <div class="cb-title">의견 충돌 · 결정 필요</div>
+                  <div class="cb-issue">도메인 템플릿을 P0으로 올릴 것인가</div>
+                  <div class="cb-context">PM은 Hyundai 도메인 대응을 위해 템플릿이 P0이어야 한다는 입장. 개발자는 인라인 힌트 구현만으로도 일정이 빡빡하다는 의견.</div>
+                  <div class="cb-current">
+                    <div class="cb-current-title">OnPlan AI 현재 권고</div>
+                    <div class="cb-current-body">템플릿 1종(Hyundai 기본 Vehicle Model)만 P0에 포함하고 나머지 2종은 P1으로 분류하면 <strong>일정 영향 없이 절충 가능</strong>합니다.</div>
+                  </div>
+                  <div class="cb-input-area">
+                    <input class="cb-input" placeholder="의견을 입력하세요...">
+                    <button class="cb-submit">AI에게 묻기</button>
+                  </div>
+                </div>
+                <!-- AI Revision -->
+                <div class="rev">
+                  <div class="rev-title">AI 수정 제안</div>
+                  <div class="rev-body">템플릿 1종을 P0에 포함하면 <strong>인라인 힌트 구현과 병렬 진행 가능</strong>합니다.<br><br>정리하면:<br>— 안 A: 템플릿 없음 · P0 3개 = 2개월<br>— 안 B: 템플릿 1종 포함 · P0 4개 = 2개월 (병렬)<br>— 안 C: 템플릿 3종 포함 · P0 5개 = 3개월<br><br><strong>안 B를 권장합니다. 어떻게 하시겠습니까?</strong></div>
+                  <div class="rev-actions">
+                    <button class="btn-sm btn-sm-y">안 B 반영</button>
+                    <button class="btn-sm btn-sm-n">현행 유지</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEC 05 -->
+            <div class="prd-section" id="sec-05">
+              <div class="prd-sec-hd">
+                <div style="display:flex;align-items:center">
+                  <span class="prd-sec-num">05</span>
+                  <span class="prd-sec-title">IA 설계</span>
+                </div>
+                <span class="prd-sec-cat">설계</span>
+              </div>
+              <div class="prd-sec-body">
+                <div class="sec-content">
+                  <h3>페이지 맵</h3>
+                  <table>
+                    <tr><th>Depth 1</th><th>Depth 2</th><th>유형</th></tr>
+                    <tr><td>온보딩 투어</td><td>Step 1~3 (오버레이)</td><td>가이드</td></tr>
+                    <tr><td>Data Model</td><td>목록 / 생성 / 상세</td><td>목록 / 입력 / 상세</td></tr>
+                    <tr><td>Ingest</td><td>Translator / Job</td><td>설정 / 실행</td></tr>
+                    <tr><td>Entity</td><td>목록 / 상세</td><td>목록 / 상세</td></tr>
+                    <tr><td>관리자</td><td>온보딩 현황</td><td>대시보드</td></tr>
+                  </table>
+                  <h3>네비게이션</h3>
+                  <p>기존 좌측 패널 유지. 온보딩 완료 전까지 Data Model 외 메뉴는 비활성화(dim) 처리. 완료 후 전체 메뉴 활성화.</p>
+                </div>
+                <div class="po">
+                  <div class="po-title">OnPlan AI 기획자 의견</div>
+                  <div class="po-body">온보딩 미완료 시 메뉴 비활성화는 <strong>초기 집중 유도에 효과적</strong>이나, 강압적으로 느껴질 수 있습니다. 비활성화 대신 <strong>온보딩 완료 배지/진행률을 상단에 고정</strong>하는 소프트 유도 방식을 권장합니다.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEC 06 -->
+            <div class="prd-section" id="sec-06">
+              <div class="prd-sec-hd">
+                <div style="display:flex;align-items:center">
+                  <span class="prd-sec-num">06</span>
+                  <span class="prd-sec-title">사용자 플로우</span>
+                </div>
+                <span class="prd-sec-cat">설계</span>
+              </div>
+              <div class="prd-sec-body">
+                <div class="sec-content">
+                  <h3>플로우 1: 첫 온보딩 (신규 사용자)</h3>
+                  <p>첫 로그인 → 온보딩 투어 시작 (Step 1: Data Model 소개) → Step 2: Schema 생성 실습 → Step 3: Ingest 연결 안내 → 완료 → 대시보드</p>
+                  <h3>플로우 2: Data Model 생성</h3>
+                  <p>Data Model 메뉴 → [+ 새 모델] → 이름/설명 입력 → Schema 편집 (인라인 힌트 활성) → 저장 → Ingest 연결 유도 배너 노출</p>
+                  <h3>플로우 3: 관리자 온보딩 현황 확인</h3>
+                  <p>관리자 로그인 → 온보딩 현황 메뉴 → 사용자별 단계 진행률 → 미완료 사용자 리마인드 발송</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEC 07 -->
+            <div class="prd-section" id="sec-07">
+              <div class="prd-sec-hd">
+                <div style="display:flex;align-items:center">
+                  <span class="prd-sec-num">07</span>
+                  <span class="prd-sec-title">배포 계획</span>
+                </div>
+                <span class="prd-sec-cat">실행</span>
+              </div>
+              <div class="prd-sec-body">
+                <div class="sec-content">
+                  <h3>Phase 1 — MVP (1개월)</h3>
+                  <p>@context 인라인 힌트, Ingest 연결 유도 배너. Hyundai 파일럿 적용.</p>
+                  <h3>Phase 2 — 온보딩 투어 (2개월)</h3>
+                  <p>3단계 가이드 투어, 도메인 템플릿 1종. 완료율 측정 시작.</p>
+                  <h3>Phase 3 — 관리자 대시보드 (3개월)</h3>
+                  <p>온보딩 완료율 대시보드, 템플릿 라이브러리 3종. 정식 배포.</p>
+                </div>
+                <div class="po">
+                  <div class="po-title">OnPlan AI 기획자 의견</div>
+                  <div class="po-body"><strong>Phase 1이 가장 중요합니다.</strong> 인라인 힌트 하나로 완료율이 얼마나 오르는지 먼저 측정하고, 그 데이터로 Phase 2~3 우선순위를 재조정하는 것을 권장합니다. 투어 없이도 힌트만으로 충분할 수 있습니다.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEC 08 -->
+            <div class="prd-section" id="sec-08">
+              <div class="prd-sec-hd">
+                <div style="display:flex;align-items:center">
+                  <span class="prd-sec-num">08</span>
+                  <span class="prd-sec-title">리스크 및 관련 문서</span>
+                </div>
+                <span class="prd-sec-cat">검증</span>
+              </div>
+              <div class="prd-sec-body">
+                <div class="sec-content">
+                  <h3>리스크</h3>
+                  <table>
+                    <tr><th>리스크</th><th>영향도</th><th>대응</th></tr>
+                    <tr><td>가이드 투어 이탈 (너무 길 경우)</td><td>높음</td><td>3단계 이내 압축, 스킵 보장</td></tr>
+                    <tr><td>NGSI-LD 스펙 업데이트로 힌트 outdated</td><td>중간</td><td>힌트 콘텐츠 CMS 분리 관리</td></tr>
+                    <tr><td>Hyundai 도메인 외 범용성 부족</td><td>낮음</td><td>템플릿 확장 로드맵 명시</td></tr>
+                  </table>
+                  <h3>관련 문서</h3>
+                  <p>추후 연결: UX 플로우 (Figma), NGSI-LD 속성 타입 정의서, 온보딩 완료율 측정 쿼리, QA 체크리스트</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Role-Based Documents -->
+            <div id="rd-section" style="margin-top:32px;margin-bottom:8px;">
+              <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:6px;font-family:var(--en)">Role-Based Documents</div>
+              <div style="font-family:var(--en);font-size:16px;font-weight:800;letter-spacing:-.3px;color:var(--white);margin-bottom:4px;">역할별 문서</div>
+              <p style="font-size:12px;color:var(--g500);margin-bottom:16px;">PRD를 기반으로 각 역할에 맞게 변환된 문서입니다.</p>
+            </div>
+
+            <div class="role-doc-grid">
+              <div class="role-doc-card" id="rdc-exec" onclick="toggleRoleDoc('rd-exec','rdc-exec')">
+                <div class="rdc-num">FOR CEO</div>
+                <div class="rdc-title">사업 타당성 요약</div>
+                <div class="rdc-desc">왜 만드는지, 비용 대비 효과, 리스크</div>
+              </div>
+              <div class="role-doc-card" id="rdc-dev" onclick="toggleRoleDoc('rd-dev','rdc-dev')">
+                <div class="rdc-num">FOR DEV</div>
+                <div class="rdc-title">기술 요구사항</div>
+                <div class="rdc-desc">기능 명세, IA, 기술 제약 조건</div>
+              </div>
+              <div class="role-doc-card" id="rdc-design" onclick="toggleRoleDoc('rd-design','rdc-design')">
+                <div class="rdc-num">FOR DESIGN</div>
+                <div class="rdc-title">UX 요구사항</div>
+                <div class="rdc-desc">페르소나, 사용자 여정, 핵심 플로우</div>
+              </div>
+              <div class="role-doc-card" id="rdc-sales" onclick="toggleRoleDoc('rd-sales','rdc-sales')">
+                <div class="rdc-num">FOR SALES</div>
+                <div class="rdc-title">제품 소개 요약</div>
+                <div class="rdc-desc">해결하는 문제, 핵심 기능, 차별점</div>
+              </div>
+            </div>
+
+            <!-- Role Doc: CEO -->
+            <div id="rd-exec" class="prd-section" style="display:none">
+              <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">CEO</span><span class="prd-sec-title">사업 타당성 요약</span></div><span class="prd-sec-cat">경영 판단용</span></div>
+              <div class="prd-sec-body"><div class="sec-content">
+                <h3>요약</h3>
+                <p>신규 사용자 온보딩 개선으로 NDX PRO 초기 이탈을 줄이고 Hyundai 도메인 확장 대응. 추가 개발 인력 없이 기존 팀으로 2개월 내 구현 가능.</p>
+                <h3>투자 대비 효과</h3>
+                <table>
+                  <tr><th>항목</th><th>현재</th><th>도입 후</th></tr>
+                  <tr><td>지원 요청 건수</td><td>온보딩 관련 집중</td><td>30% 감소 목표</td></tr>
+                  <tr><td>첫 Model 생성율</td><td>미측정</td><td>70% 이상</td></tr>
+                  <tr><td>온보딩 완료 시간</td><td>미측정</td><td>20분 이내</td></tr>
+                </table>
+                <h3>의사결정 필요 사항</h3>
+                <p>1. 도메인 템플릿 P0 포함 여부 (포함 시 일정 동일, 병렬 진행 가능)<br>2. 관리자 온보딩 대시보드 우선순위 (P1 유지 vs P0 승격)</p>
+              </div></div>
+            </div>
+
+            <!-- Role Doc: DEV -->
+            <div id="rd-dev" class="prd-section" style="display:none">
+              <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">DEV</span><span class="prd-sec-title">기술 요구사항</span></div><span class="prd-sec-cat">개발 착수용</span></div>
+              <div class="prd-sec-body"><div class="sec-content">
+                <h3>P0 기능 명세</h3>
+                <table>
+                  <tr><th>기능</th><th>상세</th><th>수용 기준</th></tr>
+                  <tr><td>인라인 힌트</td><td>Schema 편집기 내 속성 타입 hover 팝오버</td><td>NGSI-LD 6종 타입 전체 커버</td></tr>
+                  <tr><td>자동완성</td><td>@context 기본값 자동 채움</td><td>입력 없이 기본값 적용 가능</td></tr>
+                  <tr><td>Ingest 유도 배너</td><td>Model 저장 완료 이벤트 트리거</td><td>저장 즉시 배너 노출</td></tr>
+                </table>
+                <h3>기술 제약</h3>
+                <p>기존 Schema 편집기 컴포넌트에 오버레이 추가 방식. MongoDB Entity 스키마와 충돌 없이 구현 필요. 힌트 콘텐츠는 JSON 파일로 외부화하여 업데이트 가능하게 관리.</p>
+              </div></div>
+            </div>
+
+            <!-- Role Doc: DESIGN -->
+            <div id="rd-design" class="prd-section" style="display:none">
+              <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">DESIGN</span><span class="prd-sec-title">UX 요구사항</span></div><span class="prd-sec-cat">디자인 착수용</span></div>
+              <div class="prd-sec-body"><div class="sec-content">
+                <h3>핵심 사용자</h3>
+                <p><strong>1차:</strong> NGSI-LD 비전공 신규 엔지니어 (주 사용 화면: Schema 편집기)<br><strong>2차:</strong> NDX PRO 관리자 (주 사용 화면: 온보딩 현황 대시보드)</p>
+                <h3>UX 원칙</h3>
+                <p>1. 스펙 학습 없이 즉시 사용 가능 (핵심)<br>2. 인라인 힌트는 방해 없이, hover 또는 포커스 시에만 노출<br>3. 가이드 투어는 3단계 이내, 각 단계 30초 이내로 완료 가능해야 함</p>
+                <h3>핵심 플로우 (우선 설계 대상)</h3>
+                <p>1. 온보딩 투어: 3단계 오버레이 → 각 단계 CTA 클릭 → 완료<br>2. Schema 편집: 속성 입력 → 타입 선택 → 힌트 팝오버 확인 → 저장<br>3. Ingest 연결 유도: 저장 완료 배너 → CTA 클릭 → Translator 설정 이동</p>
+              </div></div>
+            </div>
+
+            <!-- Role Doc: SALES -->
+            <div id="rd-sales" class="prd-section" style="display:none">
+              <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">SALES</span><span class="prd-sec-title">제품 소개 요약</span></div><span class="prd-sec-cat">고객 커뮤니케이션용</span></div>
+              <div class="prd-sec-body"><div class="sec-content">
+                <h3>한 줄 소개</h3>
+                <p>NGSI-LD 스펙을 몰라도 바로 시작할 수 있는 NDX PRO 온보딩 가이드.</p>
+                <h3>해결하는 문제</h3>
+                <p>NDX PRO는 강력하지만 첫 진입 장벽이 높습니다. @context, 속성 타입 등 NGSI-LD 고유 개념을 모르면 첫 Data Model조차 만들기 어렵습니다. 이 개선으로 누구나 20분 안에 첫 Model을 완성할 수 있습니다.</p>
+                <h3>핵심 기능 3가지</h3>
+                <p>1. 3단계 가이드 투어 — 첫 접속 즉시 시작, 스킵 가능<br>2. 인라인 힌트 — Schema 편집 시 NGSI-LD 속성 타입 자동 안내<br>3. Ingest 연결 유도 — Model 완성 후 다음 단계 자동 안내</p>
+                <h3>차별점</h3>
+                <p>단순 매뉴얼이나 영상이 아닌, 실제 작업 화면 안에서 맥락에 맞게 제공되는 인라인 가이드. 학습 없이 실무에 바로 적용 가능.</p>
+              </div></div>
+            </div>
+
+          </div><!-- /prd-doc -->
+        </div><!-- /prd-body -->
+      </div><!-- /prd-wrap -->
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const projects = {
+  p1:  { name: 'NDX PRO 온보딩 개선', step: 3, done: [1,2] },
+  p2:  { name: '파라미터 DB v2',       step: 4, done: [1,2,3] },
+  p3:  { name: 'Data Model Studio',   step: 1, done: [] },
+  p4:  { name: 'Hyundai R&D Dashboard', step: 4, done: [1,2,3] },
+  new: { name: '새 프로젝트',           step: 1, done: [] },
+};
+
+let current = null;
+
+function selectProject(id) {
+  // panel highlight
+  document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
+  const el = document.querySelector(`.proj-item[onclick="selectProject('${id}')"]`);
+  if (el) el.classList.add('active');
+
+  current = id;
+  const p = projects[id] || { name: '새 프로젝트', step: 1, done: [] };
+
+  document.getElementById('topbar').classList.remove('hidden');
+  document.getElementById('proj-title').textContent = p.name;
+
+  renderStepper(p.step, p.done);
+  showView(p.step);
+}
+
+function renderStepper(active, done) {
+  [1,2,3,4].forEach(n => {
+    const s  = document.getElementById('s'  + n);
+    const sc = document.getElementById('sc' + n);
+    const sl = document.getElementById('sl' + n);
+
+    s.className = 'step';
+    if (done.includes(n)) {
+      s.classList.add('done');
+      sc.innerHTML = `<svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    } else if (n === active) {
+      s.classList.add('active');
+      sc.textContent = n;
+    } else {
+      s.classList.add('idle');
+      sc.textContent = n;
+    }
+
+    if (sl) {
+      sl.className = 'step-line';
+      if (done.includes(n)) sl.classList.add('done');
+    }
+  });
+}
+
+function goStep(n) {
+  const p = projects[current] || { done: [] };
+  const done = [];
+  for (let i = 1; i < n; i++) done.push(i);
+  p.done.forEach(d => { if (!done.includes(d)) done.push(d); });
+
+  renderStepper(n, done);
+  showView(n);
+}
+
+function showView(n) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('visible'));
+  const v = document.getElementById('view-' + n);
+  if (v) v.classList.add('visible');
+}
+
+// Chat send
+document.getElementById('sendBtn').addEventListener('click', sendMsg);
+document.getElementById('chatInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+});
+
+function sendMsg() {
+  const inp = document.getElementById('chatInput');
+  const txt = inp.value.trim();
+  if (!txt) return;
+
+  const typing = document.getElementById('typingMsg');
+  if (typing) typing.remove();
+
+  const area = document.getElementById('chatArea');
+  const el = document.createElement('div');
+  el.className = 'msg user';
+  el.innerHTML = `
+    <div class="msg-av user-av">YJ</div>
+    <div class="msg-inner">
+      <div class="msg-sender">송윤지</div>
+      <div class="bubble">${txt.replace(/</g,'&lt;')}</div>
+    </div>`;
+  area.appendChild(el);
+  inp.value = '';
+  area.scrollTop = area.scrollHeight;
+}
+
+// PRD nav scroll
+function scrollToSec(id, el) {
+  document.querySelectorAll('.prd-nav-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const target = document.getElementById(id);
+  const body = document.getElementById('prdBody');
+  if (target && body) body.scrollTo({ top: target.offsetTop - 16, behavior: 'smooth' });
+}
+
+// Role doc toggle
+function toggleRoleDoc(docId, cardId) {
+  const doc  = document.getElementById(docId);
+  const card = document.getElementById(cardId);
+  const isOpen = doc.style.display !== 'none';
+  doc.style.display  = isOpen ? 'none' : 'block';
+  if (card) card.classList.toggle('open', !isOpen);
+}
+
+// Respondent tabs
+document.querySelectorAll(
