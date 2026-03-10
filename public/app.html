@@ -1165,6 +1165,7 @@ input, textarea, select { font-family: var(--kr); }
 .topbar.hidden { display: none; }
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -1184,56 +1185,27 @@ input, textarea, select { font-family: var(--kr); }
 
   <div class="panel-sec-label">Projects</div>
 
-  <button class="new-btn" onclick="selectProject('new')">
+  <button class="new-btn" onclick="startNewProject()">
     <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
       <path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
     새 프로젝트
   </button>
 
-  <div class="proj-list">
-    <div class="proj-item active" onclick="selectProject('p1')">
-      <div class="proj-dot dot-active"></div>
-      <div class="proj-info">
-        <div class="proj-name">NDX PRO 온보딩 개선</div>
-        <div class="proj-meta">3 members · step 3</div>
-      </div>
-      <span class="proj-badge badge-on">LIVE</span>
-    </div>
-    <div class="proj-item" onclick="selectProject('p2')">
-      <div class="proj-dot dot-done"></div>
-      <div class="proj-info">
-        <div class="proj-name">파라미터 DB v2</div>
-        <div class="proj-meta">5 members · done</div>
-      </div>
-      <span class="proj-badge badge-done">PRD</span>
-    </div>
-    <div class="proj-item" onclick="selectProject('p3')">
-      <div class="proj-dot dot-idle"></div>
-      <div class="proj-info">
-        <div class="proj-name">Data Model Studio</div>
-        <div class="proj-meta">1 member · step 1</div>
-      </div>
-      <span class="proj-badge badge-new">NEW</span>
-    </div>
-    <div class="proj-item" onclick="selectProject('p4')">
-      <div class="proj-dot dot-done"></div>
-      <div class="proj-info">
-        <div class="proj-name">Hyundai R&D Dashboard</div>
-        <div class="proj-meta">4 members · done</div>
-      </div>
-      <span class="proj-badge badge-done">PRD</span>
-    </div>
-  </div>
+  <div class="proj-list" id="proj-list"><div style="padding:12px 14px;font-size:12px;color:var(--g500)">로딩 중...</div></div>
 
-  <div class="panel-ft">
-    <div class="avatar">YJ</div>
-    <span class="user-name">송윤지</span>
-    <button class="panel-icon-btn" title="로그아웃">
+  <div class="panel-ft" id="panel-ft" style="display:none">
+    <div class="avatar" id="user-avatar-txt">?</div>
+    <span class="user-name" id="user-name-txt">—</span>
+    <button class="panel-icon-btn" title="로그아웃" onclick="logOut()">
       <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
         <path d="M5 1.5H2a1 1 0 00-1 1v8a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
+  </div>
+  <!-- Login prompt when not logged in -->
+  <div class="panel-ft" id="panel-login">
+    <button onclick="googleLogin()" style="width:100%;padding:8px;background:var(--lime);color:#0a0a0a;border:none;font-family:var(--en);font-weight:700;font-size:11px;cursor:pointer;">Sign in with Google</button>
   </div>
 </div>
 
@@ -1289,7 +1261,7 @@ input, textarea, select { font-family: var(--kr); }
         </svg>
         <div class="empty-title">프로젝트를 선택하세요</div>
         <div class="empty-desc">왼쪽에서 프로젝트를 선택하거나, 새 프로젝트를 만들어 AI 인터뷰를 시작하세요.</div>
-        <button class="btn-lime" style="margin-top:6px" onclick="selectProject('new')">
+        <button class="btn-lime" style="margin-top:6px" onclick="startNewProject()">
           <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
             <path d="M5.5 1v9M1 5.5h9" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
@@ -1308,12 +1280,12 @@ input, textarea, select { font-family: var(--kr); }
 
         <div class="field">
           <label class="fl">프로젝트명 <span class="req">*</span></label>
-          <input type="text" class="fi" placeholder="예: NDX PRO 온보딩 개선" value="NDX PRO 온보딩 개선">
+          <input type="text" class="fi" id="pj-name" placeholder="예: 발주 관리 시스템">
         </div>
 
         <div class="field">
           <label class="fl">배경 및 목표 <span class="req">*</span></label>
-          <textarea class="ft" rows="4" placeholder="어떤 문제를 해결하려 하나요?">NGSI-LD 기반 플랫폼의 신규 사용자 온보딩 경험이 복잡하여 초기 이탈이 발생하고 있습니다. Data Model → Ingest → Entity 플로우를 직관적으로 안내하는 온보딩을 설계합니다.</textarea>
+          <textarea class="ft" id="pj-desc" rows="4" placeholder="어떤 문제를 해결하려 하나요?"></textarea>
         </div>
 
         <div class="field">
@@ -1329,7 +1301,7 @@ input, textarea, select { font-family: var(--kr); }
         </div>
 
         <div class="btn-row">
-          <button class="btn-lime" onclick="goStep(2)">
+          <button class="btn-lime" id="btn-create" onclick="createProject()">
             팀 공유로 이동
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
               <path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1395,11 +1367,11 @@ input, textarea, select { font-family: var(--kr); }
             <path d="M5 8l3-3M4.5 5.5l-.7.7a2 2 0 002.8 2.8l.7-.7M8.5 7.5l.7-.7a2 2 0 00-2.8-2.8l-.7.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
           </svg>
           <span class="link-url">https://onplan.io/invite/ndxpro-onb-7f2a9c</span>
-          <button class="btn-copy">링크 복사</button>
+          <button class="btn-copy" onclick="copyInviteLink()">링크 복사</button>
         </div>
 
         <div class="btn-row" style="margin-top:24px">
-          <button class="btn-lime" onclick="goStep(3)">
+          <button class="btn-lime" onclick="goToInterview()">
             AI 인터뷰 시작
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
               <path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1414,87 +1386,42 @@ input, textarea, select { font-family: var(--kr); }
     <div class="view" id="view-3">
       <div class="interview-hd">
         <div>
-          <div class="ivw-title">AI 인터뷰 진행 중</div>
-          <div class="ivw-meta">NDX PRO 온보딩 개선 · 3명 참여 · 오늘 14:23 시작</div>
+          <div class="ivw-title">AI 인터뷰</div>
+          <div class="ivw-meta" id="ivw-meta">프로젝트를 선택해주세요</div>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
           <div class="live-badge">
             <div class="live-dot"></div>
-            <span>2 / 3 응답 완료</span>
+            <span>진행 중</span>
           </div>
-          <button class="btn-ghost" style="padding:5px 10px;font-size:11px" onclick="goStep(4)">결과 보기 →</button>
+          <button class="btn-ghost" style="padding:5px 10px;font-size:11px" id="btn-finish" onclick="finishInterview()">인터뷰 완료 →</button>
         </div>
       </div>
 
-      <div class="progress-row">
-        <span class="progress-label">인터뷰 진행률</span>
-        <div class="progress-track"><div class="progress-fill" style="width:66%"></div></div>
-        <span class="progress-pct">66%</span>
-      </div>
-
-      <div class="rtabs">
-        <div class="rtab active">
-          <div class="rtab-dot" style="background:var(--lime)"></div>
-          송윤지 (나)
-        </div>
-        <div class="rtab">
-          <div class="rtab-dot" style="background:var(--green)"></div>
-          김현준
-        </div>
-        <div class="rtab">
-          <div class="rtab-dot" style="background:var(--g500)"></div>
-          박지원 · 대기중
+      <!-- Role & Name selector (shown before chat starts) -->
+      <div id="role-selector" style="padding:20px 24px;border-bottom:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--g500);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--en)">참여자 정보</div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <input type="text" id="pt-name" class="fi" placeholder="참여자 이름" style="max-width:180px">
+          <select id="role-select" class="fi" style="max-width:160px" onchange="selectedRole=this.value">
+            <option value="">역할 선택</option>
+            <option value="ceo">대표 / PM</option>
+            <option value="dev">개발자</option>
+            <option value="design">디자이너</option>
+            <option value="sales">영업 / CS</option>
+            <option value="user">실사용자</option>
+            <option value="other">기타</option>
+          </select>
+          <button class="btn-lime" style="padding:8px 18px;font-size:12px" onclick="startChat(document.getElementById('pt-name').value.trim()||'참여자')">인터뷰 시작</button>
         </div>
       </div>
 
-      <div class="chat-area" id="chatArea">
-        <div class="msg ai">
-          <div class="msg-av ai-av">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/>
-              <path d="M4 6l1.5 1.5L8 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="msg-inner">
-            <div class="msg-sender">OnPlan AI</div>
-            <div class="bubble">안녕하세요, 송윤지님. NDX PRO 온보딩 개선 프로젝트 인터뷰를 시작하겠습니다. PM 관점에서 여쭤볼게요. 신규 사용자가 Data Model을 처음 생성할 때 가장 막히는 구간이 어디라고 보시나요?</div>
-          </div>
-        </div>
-
-        <div class="msg user">
-          <div class="msg-av user-av">YJ</div>
-          <div class="msg-inner">
-            <div class="msg-sender">송윤지</div>
-            <div class="bubble">Schema 작성 단계에서 NGSI-LD 스펙을 모르면 막히는 경우가 많아요. 특히 @context 설정이나 속성 타입 정의 부분에서요. Ingest 연결은 그 다음 문제고, 일단 Model 자체를 못 만드는 게 가장 큰 이슈입니다.</div>
-          </div>
-        </div>
-
-        <div class="msg ai">
-          <div class="msg-av ai-av">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/>
-              <path d="M4 6l1.5 1.5L8 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="msg-inner">
-            <div class="msg-sender">OnPlan AI</div>
-            <div class="bubble">명확한 진단 감사합니다. 그렇다면 AI 가이드나 템플릿이 있다면 그 구간을 해소할 수 있다고 보시나요? 혹은 도메인 전문가 리뷰 같은 사람 개입이 필요한 부분인가요?</div>
-          </div>
-        </div>
-
-        <div class="msg ai" id="typingMsg">
-          <div class="msg-av ai-av">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/>
-              <path d="M4 6l1.5 1.5L8 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="msg-inner">
-            <div class="msg-sender">OnPlan AI</div>
-            <div class="typing"><span></span><span></span><span></span></div>
-          </div>
-        </div>
+      <div class="finish-bar hidden" id="finish-bar" style="padding:8px 24px;background:var(--lime-bg);border-bottom:1px solid var(--lime-border);display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12px;color:var(--lime)">충분한 답변이 수집되었습니다.</span>
+        <button class="btn-lime" style="padding:6px 14px;font-size:11px" onclick="finishInterview()">PRD 생성하기 →</button>
       </div>
+
+      <div class="chat-area" id="chatArea"></div>
 
       <div class="chat-in">
         <div class="chat-in-box">
@@ -1535,8 +1462,8 @@ input, textarea, select { font-family: var(--kr); }
           <div class="prd-top">
             <div>
               <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:4px;font-family:var(--en)">Product Requirements Document</div>
-              <div class="prd-doc-title">NDX PRO 온보딩 개선</div>
-              <div class="prd-doc-meta">생성일 2026.03.10 · OnPlan AI v1.0 · 참여자 3명의 인터뷰 기반</div>
+              <div class="prd-doc-title" id="prd-doc-title">—</div>
+              <div class="prd-doc-meta" id="prd-doc-meta"></div>
             </div>
             <div class="prd-actions">
               <button class="btn-export">저장</button>
@@ -1551,379 +1478,8 @@ input, textarea, select { font-family: var(--kr); }
             </div>
           </div>
 
-          <div class="prd-doc">
-
-            <!-- SEC 01 -->
-            <div class="prd-section" id="sec-01">
-              <div class="prd-sec-hd">
-                <div style="display:flex;align-items:center">
-                  <span class="prd-sec-num">01</span>
-                  <span class="prd-sec-title">요약과 배경</span>
-                </div>
-                <span class="prd-sec-cat">맥락</span>
-              </div>
-              <div class="prd-sec-body">
-                <div class="sec-content">
-                  <h3>문제 정의</h3>
-                  <p>NDX PRO 신규 사용자는 NGSI-LD 기반의 Data Model 생성 단계에서 높은 이탈률을 보입니다. @context 설정, 속성 타입 정의 등 플랫폼 고유 개념에 대한 사전 지식 없이는 첫 Model 생성이 불가능한 구조입니다.</p>
-                  <h3>왜 지금인가</h3>
-                  <p>Hyundai 도메인 확장에 따른 신규 사용자 온보딩 건수 증가 예정. 현재 온보딩 가이드 부재로 지원 요청이 집중되고 있으며, Data Model Studio 출시 전 온보딩 경험 정비가 필수입니다.</p>
-                  <h3>목표 지표</h3>
-                  <table>
-                    <tr><th>지표</th><th>현재</th><th>목표</th></tr>
-                    <tr><td>첫 Model 생성 완료율</td><td>미측정</td><td>70% 이상</td></tr>
-                    <tr><td>온보딩 완료 시간</td><td>미측정</td><td>20분 이내</td></tr>
-                    <tr><td>지원 요청 건수</td><td>기준치 설정 필요</td><td>30% 감소</td></tr>
-                  </table>
-                </div>
-                <div class="po">
-                  <div class="po-title">OnPlan AI 기획자 의견</div>
-                  <div class="po-body"><strong>PM과 개발자의 문제 인식이 다릅니다.</strong> PM은 UX 복잡도(온보딩 경험)를 강조한 반면, 개발자는 Translator 연결 구조의 분리가 근본 원인이라 봤습니다. 둘 다 유효하나 온보딩 개선은 <strong>UX 레이어에서 먼저 해결</strong>하고, 구조 개선은 Data Model Studio에서 병행하는 것을 권장합니다.</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SEC 02 -->
-            <div class="prd-section" id="sec-02">
-              <div class="prd-sec-hd">
-                <div style="display:flex;align-items:center">
-                  <span class="prd-sec-num">02</span>
-                  <span class="prd-sec-title">주요 사용자</span>
-                </div>
-                <span class="prd-sec-cat">맥락</span>
-              </div>
-              <div class="prd-sec-body">
-                <div class="sec-content">
-                  <h3>Persona A — 신규 도메인 엔지니어</h3>
-                  <table>
-                    <tr><th>항목</th><th>내용</th></tr>
-                    <tr><td>역할</td><td>Hyundai 섀시해석팀, NGSI-LD 비전공</td></tr>
-                    <tr><td>페인포인트</td><td>@context 개념 미숙. 속성 타입(Property vs Relationship) 구분 불명확. 오류 메시지 의미 파악 불가.</td></tr>
-                    <tr><td>원하는 것</td><td>스펙 학습 없이 첫 Model 완성. 실수해도 되돌릴 수 있는 환경.</td></tr>
-                  </table>
-                  <h3>Persona B — NDX PRO 관리자</h3>
-                  <table>
-                    <tr><th>항목</th><th>내용</th></tr>
-                    <tr><td>역할</td><td>플랫폼 운영, 신규 사용자 교육 담당</td></tr>
-                    <tr><td>페인포인트</td><td>온보딩 가이드 부재로 반복 지원 필요. 사용자별 진행 현황 파악 불가.</td></tr>
-                    <tr><td>원하는 것</td><td>자동화된 온보딩 플로우, 완료율 대시보드.</td></tr>
-                  </table>
-                </div>
-                <!-- Conflict -->
-                <div class="cb">
-                  <div class="cb-title">의견 충돌 · 결정 필요</div>
-                  <div class="cb-issue">온보딩 가이드를 강제할 것인가, 선택으로 할 것인가</div>
-                  <div class="cb-context">PM은 "첫 진입 시 강제 가이드"를 선호. 개발자는 "숙련 사용자가 불편하다"는 이유로 스킵 가능한 선택형을 주장. 디자이너는 아직 의견 없음.</div>
-                  <div class="cb-current">
-                    <div class="cb-current-title">OnPlan AI 현재 권고</div>
-                    <div class="cb-current-body"><strong>첫 진입 1회만 강제, 이후 스킵 가능</strong>으로 절충 권고. 강제 가이드는 첫 Model 생성 완료율을 높이는 데 효과적이나, 반복 노출은 숙련 사용자 이탈 원인이 됩니다.</div>
-                  </div>
-                  <div class="cb-input-area">
-                    <input class="cb-input" placeholder="의견을 입력하세요...">
-                    <button class="cb-submit">AI에게 묻기</button>
-                  </div>
-                </div>
-                <!-- Comments -->
-                <div class="cmt-area">
-                  <div class="cmt-title">팀 코멘트</div>
-                  <div class="cmt">
-                    <div class="cmt-hd">
-                      <span class="cmt-name">송윤지</span>
-                      <span class="cmt-role">PM</span>
-                      <span class="cmt-time">10분 전</span>
-                    </div>
-                    <div class="cmt-body">첫 진입 강제에 동의합니다. 단, 가이드 자체가 길면 역효과. 3단계 이내로 압축해야 합니다.</div>
-                  </div>
-                  <div class="cmt">
-                    <div class="cmt-hd">
-                      <span class="cmt-name">김현준</span>
-                      <span class="cmt-role">개발</span>
-                      <span class="cmt-time">5분 전</span>
-                    </div>
-                    <div class="cmt-body">강제는 괜찮은데, 관리자 계정은 제외해줘야 합니다. 매번 보면 너무 불편해요.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SEC 03 -->
-            <div class="prd-section" id="sec-03">
-              <div class="prd-sec-hd">
-                <div style="display:flex;align-items:center">
-                  <span class="prd-sec-num">03</span>
-                  <span class="prd-sec-title">핵심 사용자 여정</span>
-                </div>
-                <span class="prd-sec-cat">정의</span>
-              </div>
-              <div class="prd-sec-body">
-                <div class="sec-content">
-                  <h3>As-Is</h3>
-                  <p>NDX PRO 첫 접속 → 빈 화면 → Data Model 메뉴 탐색 → Schema 탭 발견 → @context 오류 반복 → 지원 요청 또는 이탈</p>
-                  <h3>To-Be</h3>
-                  <p>NDX PRO 첫 접속 → 온보딩 가이드 투어 시작 → Data Model 생성 (인라인 힌트 포함) → Ingest 연결 유도 → 첫 Entity 확인 → 온보딩 완료</p>
-                  <h3>사용자가 얻는 가치</h3>
-                  <p>NGSI-LD 스펙 학습 없이 첫 Model 완성. 실수 시 안전한 롤백. Data Model → Ingest → Entity 플로우 직관적 이해.</p>
-                </div>
-                <div class="po">
-                  <div class="po-title">OnPlan AI 기획자 의견</div>
-                  <div class="po-body">현재 플로우에서 <strong>가장 이탈이 많은 구간은 @context 설정</strong>입니다. 이 구간에서 인라인 설명과 기본값 자동 채움만 제공해도 완료율이 크게 오릅니다. 전체 투어보다 <strong>이 단 하나의 개선이 우선순위 1순위</strong>입니다.</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SEC 04 -->
-            <div class="prd-section" id="sec-04">
-              <div class="prd-sec-hd">
-                <div style="display:flex;align-items:center">
-                  <span class="prd-sec-num">04</span>
-                  <span class="prd-sec-title">기능적 요구사항</span>
-                </div>
-                <span class="prd-sec-cat">정의</span>
-              </div>
-              <div class="prd-sec-body">
-                <div class="sec-content">
-                  <h3>P0 — Must Have</h3>
-                  <table>
-                    <tr><th>기능</th><th>수용 기준</th></tr>
-                    <tr><td>온보딩 가이드 투어</td><td>첫 진입 시 1회 강제 실행. 3단계 이내. 스킵 가능.</td></tr>
-                    <tr><td>@context 인라인 힌트</td><td>Schema 편집 시 속성 타입 자동완성 + 설명 팝오버</td></tr>
-                    <tr><td>Ingest 연결 유도 배너</td><td>Model 생성 완료 후 Ingest 연결 CTA 노출</td></tr>
-                  </table>
-                  <h3>P1 — Should Have</h3>
-                  <table>
-                    <tr><th>기능</th><th>수용 기준</th></tr>
-                    <tr><td>온보딩 완료율 대시보드</td><td>관리자 뷰. 사용자별 단계 진행 현황.</td></tr>
-                    <tr><td>도메인 템플릿 라이브러리</td><td>Hyundai 도메인 기본 Model 템플릿 3종 이상</td></tr>
-                  </table>
-                  <h3>P2 — Nice to Have</h3>
-                  <table>
-                    <tr><th>기능</th><th>수용 기준</th></tr>
-                    <tr><td>AI 스키마 자동 생성</td><td>자연어 입력 → NGSI-LD Schema 초안 생성</td></tr>
-                    <tr><td>인터랙티브 튜토리얼 모드</td><td>샌드박스 환경에서 실습</td></tr>
-                  </table>
-                </div>
-                <div class="po">
-                  <div class="po-title">OnPlan AI 기획자 의견</div>
-                  <div class="po-body"><strong>P0 3개 기준 2개월 내 가능합니다.</strong> 도메인 템플릿은 Hyundai 케이스가 있으므로 P1이지만 실질적으로 P0에 가깝습니다. AI 스키마 자동 생성은 NDX PRO의 핵심 차별화 기능이 될 수 있으나, MVP 범위를 벗어납니다.</div>
-                </div>
-                <!-- Conflict -->
-                <div class="cb">
-                  <div class="cb-title">의견 충돌 · 결정 필요</div>
-                  <div class="cb-issue">도메인 템플릿을 P0으로 올릴 것인가</div>
-                  <div class="cb-context">PM은 Hyundai 도메인 대응을 위해 템플릿이 P0이어야 한다는 입장. 개발자는 인라인 힌트 구현만으로도 일정이 빡빡하다는 의견.</div>
-                  <div class="cb-current">
-                    <div class="cb-current-title">OnPlan AI 현재 권고</div>
-                    <div class="cb-current-body">템플릿 1종(Hyundai 기본 Vehicle Model)만 P0에 포함하고 나머지 2종은 P1으로 분류하면 <strong>일정 영향 없이 절충 가능</strong>합니다.</div>
-                  </div>
-                  <div class="cb-input-area">
-                    <input class="cb-input" placeholder="의견을 입력하세요...">
-                    <button class="cb-submit">AI에게 묻기</button>
-                  </div>
-                </div>
-                <!-- AI Revision -->
-                <div class="rev">
-                  <div class="rev-title">AI 수정 제안</div>
-                  <div class="rev-body">템플릿 1종을 P0에 포함하면 <strong>인라인 힌트 구현과 병렬 진행 가능</strong>합니다.<br><br>정리하면:<br>— 안 A: 템플릿 없음 · P0 3개 = 2개월<br>— 안 B: 템플릿 1종 포함 · P0 4개 = 2개월 (병렬)<br>— 안 C: 템플릿 3종 포함 · P0 5개 = 3개월<br><br><strong>안 B를 권장합니다. 어떻게 하시겠습니까?</strong></div>
-                  <div class="rev-actions">
-                    <button class="btn-sm btn-sm-y">안 B 반영</button>
-                    <button class="btn-sm btn-sm-n">현행 유지</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SEC 05 -->
-            <div class="prd-section" id="sec-05">
-              <div class="prd-sec-hd">
-                <div style="display:flex;align-items:center">
-                  <span class="prd-sec-num">05</span>
-                  <span class="prd-sec-title">IA 설계</span>
-                </div>
-                <span class="prd-sec-cat">설계</span>
-              </div>
-              <div class="prd-sec-body">
-                <div class="sec-content">
-                  <h3>페이지 맵</h3>
-                  <table>
-                    <tr><th>Depth 1</th><th>Depth 2</th><th>유형</th></tr>
-                    <tr><td>온보딩 투어</td><td>Step 1~3 (오버레이)</td><td>가이드</td></tr>
-                    <tr><td>Data Model</td><td>목록 / 생성 / 상세</td><td>목록 / 입력 / 상세</td></tr>
-                    <tr><td>Ingest</td><td>Translator / Job</td><td>설정 / 실행</td></tr>
-                    <tr><td>Entity</td><td>목록 / 상세</td><td>목록 / 상세</td></tr>
-                    <tr><td>관리자</td><td>온보딩 현황</td><td>대시보드</td></tr>
-                  </table>
-                  <h3>네비게이션</h3>
-                  <p>기존 좌측 패널 유지. 온보딩 완료 전까지 Data Model 외 메뉴는 비활성화(dim) 처리. 완료 후 전체 메뉴 활성화.</p>
-                </div>
-                <div class="po">
-                  <div class="po-title">OnPlan AI 기획자 의견</div>
-                  <div class="po-body">온보딩 미완료 시 메뉴 비활성화는 <strong>초기 집중 유도에 효과적</strong>이나, 강압적으로 느껴질 수 있습니다. 비활성화 대신 <strong>온보딩 완료 배지/진행률을 상단에 고정</strong>하는 소프트 유도 방식을 권장합니다.</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SEC 06 -->
-            <div class="prd-section" id="sec-06">
-              <div class="prd-sec-hd">
-                <div style="display:flex;align-items:center">
-                  <span class="prd-sec-num">06</span>
-                  <span class="prd-sec-title">사용자 플로우</span>
-                </div>
-                <span class="prd-sec-cat">설계</span>
-              </div>
-              <div class="prd-sec-body">
-                <div class="sec-content">
-                  <h3>플로우 1: 첫 온보딩 (신규 사용자)</h3>
-                  <p>첫 로그인 → 온보딩 투어 시작 (Step 1: Data Model 소개) → Step 2: Schema 생성 실습 → Step 3: Ingest 연결 안내 → 완료 → 대시보드</p>
-                  <h3>플로우 2: Data Model 생성</h3>
-                  <p>Data Model 메뉴 → [+ 새 모델] → 이름/설명 입력 → Schema 편집 (인라인 힌트 활성) → 저장 → Ingest 연결 유도 배너 노출</p>
-                  <h3>플로우 3: 관리자 온보딩 현황 확인</h3>
-                  <p>관리자 로그인 → 온보딩 현황 메뉴 → 사용자별 단계 진행률 → 미완료 사용자 리마인드 발송</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- SEC 07 -->
-            <div class="prd-section" id="sec-07">
-              <div class="prd-sec-hd">
-                <div style="display:flex;align-items:center">
-                  <span class="prd-sec-num">07</span>
-                  <span class="prd-sec-title">배포 계획</span>
-                </div>
-                <span class="prd-sec-cat">실행</span>
-              </div>
-              <div class="prd-sec-body">
-                <div class="sec-content">
-                  <h3>Phase 1 — MVP (1개월)</h3>
-                  <p>@context 인라인 힌트, Ingest 연결 유도 배너. Hyundai 파일럿 적용.</p>
-                  <h3>Phase 2 — 온보딩 투어 (2개월)</h3>
-                  <p>3단계 가이드 투어, 도메인 템플릿 1종. 완료율 측정 시작.</p>
-                  <h3>Phase 3 — 관리자 대시보드 (3개월)</h3>
-                  <p>온보딩 완료율 대시보드, 템플릿 라이브러리 3종. 정식 배포.</p>
-                </div>
-                <div class="po">
-                  <div class="po-title">OnPlan AI 기획자 의견</div>
-                  <div class="po-body"><strong>Phase 1이 가장 중요합니다.</strong> 인라인 힌트 하나로 완료율이 얼마나 오르는지 먼저 측정하고, 그 데이터로 Phase 2~3 우선순위를 재조정하는 것을 권장합니다. 투어 없이도 힌트만으로 충분할 수 있습니다.</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SEC 08 -->
-            <div class="prd-section" id="sec-08">
-              <div class="prd-sec-hd">
-                <div style="display:flex;align-items:center">
-                  <span class="prd-sec-num">08</span>
-                  <span class="prd-sec-title">리스크 및 관련 문서</span>
-                </div>
-                <span class="prd-sec-cat">검증</span>
-              </div>
-              <div class="prd-sec-body">
-                <div class="sec-content">
-                  <h3>리스크</h3>
-                  <table>
-                    <tr><th>리스크</th><th>영향도</th><th>대응</th></tr>
-                    <tr><td>가이드 투어 이탈 (너무 길 경우)</td><td>높음</td><td>3단계 이내 압축, 스킵 보장</td></tr>
-                    <tr><td>NGSI-LD 스펙 업데이트로 힌트 outdated</td><td>중간</td><td>힌트 콘텐츠 CMS 분리 관리</td></tr>
-                    <tr><td>Hyundai 도메인 외 범용성 부족</td><td>낮음</td><td>템플릿 확장 로드맵 명시</td></tr>
-                  </table>
-                  <h3>관련 문서</h3>
-                  <p>추후 연결: UX 플로우 (Figma), NGSI-LD 속성 타입 정의서, 온보딩 완료율 측정 쿼리, QA 체크리스트</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Role-Based Documents -->
-            <div id="rd-section" style="margin-top:32px;margin-bottom:8px;">
-              <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:6px;font-family:var(--en)">Role-Based Documents</div>
-              <div style="font-family:var(--en);font-size:16px;font-weight:800;letter-spacing:-.3px;color:var(--white);margin-bottom:4px;">역할별 문서</div>
-              <p style="font-size:12px;color:var(--g500);margin-bottom:16px;">PRD를 기반으로 각 역할에 맞게 변환된 문서입니다.</p>
-            </div>
-
-            <div class="role-doc-grid">
-              <div class="role-doc-card" id="rdc-exec" onclick="toggleRoleDoc('rd-exec','rdc-exec')">
-                <div class="rdc-num">FOR CEO</div>
-                <div class="rdc-title">사업 타당성 요약</div>
-                <div class="rdc-desc">왜 만드는지, 비용 대비 효과, 리스크</div>
-              </div>
-              <div class="role-doc-card" id="rdc-dev" onclick="toggleRoleDoc('rd-dev','rdc-dev')">
-                <div class="rdc-num">FOR DEV</div>
-                <div class="rdc-title">기술 요구사항</div>
-                <div class="rdc-desc">기능 명세, IA, 기술 제약 조건</div>
-              </div>
-              <div class="role-doc-card" id="rdc-design" onclick="toggleRoleDoc('rd-design','rdc-design')">
-                <div class="rdc-num">FOR DESIGN</div>
-                <div class="rdc-title">UX 요구사항</div>
-                <div class="rdc-desc">페르소나, 사용자 여정, 핵심 플로우</div>
-              </div>
-              <div class="role-doc-card" id="rdc-sales" onclick="toggleRoleDoc('rd-sales','rdc-sales')">
-                <div class="rdc-num">FOR SALES</div>
-                <div class="rdc-title">제품 소개 요약</div>
-                <div class="rdc-desc">해결하는 문제, 핵심 기능, 차별점</div>
-              </div>
-            </div>
-
-            <!-- Role Doc: CEO -->
-            <div id="rd-exec" class="prd-section" style="display:none">
-              <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">CEO</span><span class="prd-sec-title">사업 타당성 요약</span></div><span class="prd-sec-cat">경영 판단용</span></div>
-              <div class="prd-sec-body"><div class="sec-content">
-                <h3>요약</h3>
-                <p>신규 사용자 온보딩 개선으로 NDX PRO 초기 이탈을 줄이고 Hyundai 도메인 확장 대응. 추가 개발 인력 없이 기존 팀으로 2개월 내 구현 가능.</p>
-                <h3>투자 대비 효과</h3>
-                <table>
-                  <tr><th>항목</th><th>현재</th><th>도입 후</th></tr>
-                  <tr><td>지원 요청 건수</td><td>온보딩 관련 집중</td><td>30% 감소 목표</td></tr>
-                  <tr><td>첫 Model 생성율</td><td>미측정</td><td>70% 이상</td></tr>
-                  <tr><td>온보딩 완료 시간</td><td>미측정</td><td>20분 이내</td></tr>
-                </table>
-                <h3>의사결정 필요 사항</h3>
-                <p>1. 도메인 템플릿 P0 포함 여부 (포함 시 일정 동일, 병렬 진행 가능)<br>2. 관리자 온보딩 대시보드 우선순위 (P1 유지 vs P0 승격)</p>
-              </div></div>
-            </div>
-
-            <!-- Role Doc: DEV -->
-            <div id="rd-dev" class="prd-section" style="display:none">
-              <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">DEV</span><span class="prd-sec-title">기술 요구사항</span></div><span class="prd-sec-cat">개발 착수용</span></div>
-              <div class="prd-sec-body"><div class="sec-content">
-                <h3>P0 기능 명세</h3>
-                <table>
-                  <tr><th>기능</th><th>상세</th><th>수용 기준</th></tr>
-                  <tr><td>인라인 힌트</td><td>Schema 편집기 내 속성 타입 hover 팝오버</td><td>NGSI-LD 6종 타입 전체 커버</td></tr>
-                  <tr><td>자동완성</td><td>@context 기본값 자동 채움</td><td>입력 없이 기본값 적용 가능</td></tr>
-                  <tr><td>Ingest 유도 배너</td><td>Model 저장 완료 이벤트 트리거</td><td>저장 즉시 배너 노출</td></tr>
-                </table>
-                <h3>기술 제약</h3>
-                <p>기존 Schema 편집기 컴포넌트에 오버레이 추가 방식. MongoDB Entity 스키마와 충돌 없이 구현 필요. 힌트 콘텐츠는 JSON 파일로 외부화하여 업데이트 가능하게 관리.</p>
-              </div></div>
-            </div>
-
-            <!-- Role Doc: DESIGN -->
-            <div id="rd-design" class="prd-section" style="display:none">
-              <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">DESIGN</span><span class="prd-sec-title">UX 요구사항</span></div><span class="prd-sec-cat">디자인 착수용</span></div>
-              <div class="prd-sec-body"><div class="sec-content">
-                <h3>핵심 사용자</h3>
-                <p><strong>1차:</strong> NGSI-LD 비전공 신규 엔지니어 (주 사용 화면: Schema 편집기)<br><strong>2차:</strong> NDX PRO 관리자 (주 사용 화면: 온보딩 현황 대시보드)</p>
-                <h3>UX 원칙</h3>
-                <p>1. 스펙 학습 없이 즉시 사용 가능 (핵심)<br>2. 인라인 힌트는 방해 없이, hover 또는 포커스 시에만 노출<br>3. 가이드 투어는 3단계 이내, 각 단계 30초 이내로 완료 가능해야 함</p>
-                <h3>핵심 플로우 (우선 설계 대상)</h3>
-                <p>1. 온보딩 투어: 3단계 오버레이 → 각 단계 CTA 클릭 → 완료<br>2. Schema 편집: 속성 입력 → 타입 선택 → 힌트 팝오버 확인 → 저장<br>3. Ingest 연결 유도: 저장 완료 배너 → CTA 클릭 → Translator 설정 이동</p>
-              </div></div>
-            </div>
-
-            <!-- Role Doc: SALES -->
-            <div id="rd-sales" class="prd-section" style="display:none">
-              <div class="prd-sec-hd"><div style="display:flex;align-items:center"><span class="prd-sec-num">SALES</span><span class="prd-sec-title">제품 소개 요약</span></div><span class="prd-sec-cat">고객 커뮤니케이션용</span></div>
-              <div class="prd-sec-body"><div class="sec-content">
-                <h3>한 줄 소개</h3>
-                <p>NGSI-LD 스펙을 몰라도 바로 시작할 수 있는 NDX PRO 온보딩 가이드.</p>
-                <h3>해결하는 문제</h3>
-                <p>NDX PRO는 강력하지만 첫 진입 장벽이 높습니다. @context, 속성 타입 등 NGSI-LD 고유 개념을 모르면 첫 Data Model조차 만들기 어렵습니다. 이 개선으로 누구나 20분 안에 첫 Model을 완성할 수 있습니다.</p>
-                <h3>핵심 기능 3가지</h3>
-                <p>1. 3단계 가이드 투어 — 첫 접속 즉시 시작, 스킵 가능<br>2. 인라인 힌트 — Schema 편집 시 NGSI-LD 속성 타입 자동 안내<br>3. Ingest 연결 유도 — Model 완성 후 다음 단계 자동 안내</p>
-                <h3>차별점</h3>
-                <p>단순 매뉴얼이나 영상이 아닌, 실제 작업 화면 안에서 맥락에 맞게 제공되는 인라인 가이드. 학습 없이 실무에 바로 적용 가능.</p>
-              </div></div>
-            </div>
-
+          <div class="prd-doc" id="prd-detail-sections">
+            <!-- Dynamic PRD sections rendered here -->
           </div><!-- /prd-doc -->
         </div><!-- /prd-body -->
       </div><!-- /prd-wrap -->
@@ -1932,38 +1488,467 @@ input, textarea, select { font-family: var(--kr); }
   </div><!-- /content -->
 </div><!-- /main -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-const projects = {
-  p1:  { name: 'NDX PRO 온보딩 개선', step: 3, done: [1,2] },
-  p2:  { name: '파라미터 DB v2',       step: 4, done: [1,2,3] },
-  p3:  { name: 'Data Model Studio',   step: 1, done: [] },
-  p4:  { name: 'Hyundai R&D Dashboard', step: 4, done: [1,2,3] },
-  new: { name: '새 프로젝트',           step: 1, done: [] },
-};
 
-let current = null;
+<script>
+// ═══════════════════════════════════════
+// SUPABASE
+// ═══════════════════════════════════════
+const SUPABASE_URL = 'https://dtwgrxsepotwbpaqssgm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_IZ2yTDHofociWRxoYZU3pg_8MHHO9St';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function selectProject(id) {
-  // panel highlight
+let currentUser = null;
+let currentProject = null; // {id, name, status, phase}
+let selectedRole = '';
+let chatHistory = [];
+let isSending = false;
+let qIdx = 0;
+
+// ═══════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) setUser(session.user);
+  else showLoginState();
+
+  sb.auth.onAuthStateChange((ev, session) => {
+    if (session?.user) setUser(session.user);
+    else showLoginState();
+  });
+}
+
+function setUser(u) {
+  currentUser = u;
+  const initials = (u.user_metadata?.full_name || u.email || '?').substring(0, 2).toUpperCase();
+  document.getElementById('user-avatar-txt').textContent = initials;
+  document.getElementById('user-name-txt').textContent = u.user_metadata?.full_name || u.email || '';
+  document.getElementById('panel-ft').style.display = 'flex';
+  document.getElementById('panel-login').style.display = 'none';
+  loadProjects();
+}
+
+function showLoginState() {
+  currentUser = null;
+  document.getElementById('panel-ft').style.display = 'none';
+  document.getElementById('panel-login').style.display = 'flex';
+  document.getElementById('proj-list').innerHTML = '<div style="padding:12px 14px;font-size:12px;color:var(--g500)">로그인이 필요합니다</div>';
+}
+
+async function googleLogin() {
+  await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/app.html' }
+  });
+}
+
+async function logOut() {
+  await sb.auth.signOut();
+  currentUser = null;
+  currentProject = null;
+  showLoginState();
+  showView(0);
+  document.getElementById('topbar').classList.add('hidden');
+}
+
+// ═══════════════════════════════════════
+// PROJECTS — LOAD & RENDER
+// ═══════════════════════════════════════
+async function loadProjects() {
+  if (!currentUser) return;
+  const listEl = document.getElementById('proj-list');
+  listEl.innerHTML = '<div style="padding:12px 14px;font-size:12px;color:var(--g500)">로딩 중...</div>';
+
+  const { data: projects, error } = await sb.from('projects')
+    .select('id,name,status,phase,created_at')
+    .eq('owner_id', currentUser.id)
+    .order('created_at', { ascending: false });
+
+  if (error || !projects || projects.length === 0) {
+    listEl.innerHTML = '<div style="padding:12px 14px;font-size:12px;color:var(--g500)">프로젝트가 없습니다</div>';
+    return;
+  }
+
+  listEl.innerHTML = '';
+  projects.forEach(p => {
+    const isComplete = p.status === 'complete';
+    const dotClass = isComplete ? 'dot-done' : 'dot-active';
+    const badge = isComplete
+      ? '<span class="proj-badge badge-done">PRD</span>'
+      : '<span class="proj-badge badge-on">LIVE</span>';
+
+    const div = document.createElement('div');
+    div.className = 'proj-item';
+    div.dataset.id = p.id;
+    div.innerHTML = `
+      <div class="proj-dot ${dotClass}"></div>
+      <div class="proj-info">
+        <div class="proj-name">${p.name}</div>
+        <div class="proj-meta">${isComplete ? 'PRD 완성' : '인터뷰 수집 중'}</div>
+      </div>
+      ${badge}`;
+    div.onclick = () => selectProject(p);
+    listEl.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════
+// SELECT PROJECT
+// ═══════════════════════════════════════
+function selectProject(p) {
+  currentProject = p;
+
+  // highlight
   document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
-  const el = document.querySelector(`.proj-item[onclick="selectProject('${id}')"]`);
+  const el = document.querySelector(`.proj-item[data-id="${p.id}"]`);
   if (el) el.classList.add('active');
-
-  current = id;
-  const p = projects[id] || { name: '새 프로젝트', step: 1, done: [] };
 
   document.getElementById('topbar').classList.remove('hidden');
   document.getElementById('proj-title').textContent = p.name;
 
-  renderStepper(p.step, p.done);
-  showView(p.step);
+  if (p.status === 'complete') {
+    // Go to PRD view
+    renderStepper(4, [1,2,3]);
+    showView(4);
+    loadAndRenderPRD(p.id);
+  } else {
+    // Go to interview view
+    renderStepper(3, [1,2]);
+    showView(3);
+  }
 }
 
+// ═══════════════════════════════════════
+// NEW PROJECT
+// ═══════════════════════════════════════
+function startNewProject() {
+  if (!currentUser) {
+    googleLogin();
+    return;
+  }
+  currentProject = null;
+
+  document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('topbar').classList.remove('hidden');
+  document.getElementById('proj-title').textContent = '새 프로젝트';
+
+  // Clear form
+  document.getElementById('pj-name').value = '';
+  document.getElementById('pj-desc').value = '';
+
+  renderStepper(1, []);
+  showView(1);
+}
+
+async function createProject() {
+  const name = document.getElementById('pj-name').value.trim();
+  const desc = document.getElementById('pj-desc').value.trim();
+  if (!name) { alert('프로젝트명을 입력하세요.'); return; }
+  if (!currentUser) { googleLogin(); return; }
+
+  const btn = document.getElementById('btn-create');
+  btn.textContent = '저장 중...';
+  btn.disabled = true;
+
+  try {
+    const code = Math.random().toString(36).substring(2, 8);
+    const { data, error } = await sb.from('projects').insert({
+      name,
+      description: desc,
+      owner_id: currentUser.id,
+      invite_code: code,
+      phase: 'ideation',
+      status: 'collecting'
+    }).select().single();
+
+    if (error) throw new Error(error.message);
+
+    currentProject = data;
+    document.getElementById('proj-title').textContent = name;
+
+    // Update invite link display
+    const inviteUrl = `${window.location.origin}/app.html?code=${code}`;
+    document.getElementById('invite-link').textContent = inviteUrl;
+    document.getElementById('invite-link').dataset.url = inviteUrl;
+
+    await loadProjects();
+
+    // Highlight new project in list
+    setTimeout(() => {
+      const el = document.querySelector(`.proj-item[data-id="${data.id}"]`);
+      if (el) el.classList.add('active');
+    }, 300);
+
+    renderStepper(2, [1]);
+    showView(2);
+  } catch(e) {
+    alert('저장 실패: ' + e.message);
+  } finally {
+    btn.textContent = '팀 공유로 이동';
+    btn.disabled = false;
+  }
+}
+
+// ═══════════════════════════════════════
+// INVITE LINK
+// ═══════════════════════════════════════
+function copyInviteLink() {
+  const url = document.getElementById('invite-link').dataset.url
+    || document.getElementById('invite-link').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = '링크 복사', 1500);
+  });
+}
+
+function goToInterview() {
+  renderStepper(3, [1,2]);
+  showView(3);
+}
+
+// ═══════════════════════════════════════
+// INTERVIEW — ROLE SELECT & CHAT
+// ═══════════════════════════════════════
+const QUESTIONS = {
+  ceo:    ['안녕하세요. 대표님 관점에서 여쭤보겠습니다. 이 제품을 왜 지금 만들려고 하시나요?','예산과 일정은 어떻게 생각하고 계신가요? 성공 기준은 무엇인가요?','절대 피해야 할 것이 있나요?','이 제품의 첫 번째 고객은 누구라고 생각하시나요?','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
+  dev:    ['안녕하세요. 개발자 관점에서 여쭤보겠습니다. 현재 기술 스택이나 제약이 있나요?','현실적으로 몇 개월이 필요하다고 보시나요? 가장 까다로운 부분은요?','기존 기술 부채나 연동해야 할 외부 시스템이 있나요?','성능·보안 측면에서 특히 신경 써야 할 부분이 있나요?','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
+  design: ['안녕하세요. 디자인 관점에서 여쭤보겠습니다. 참고할 만한 서비스나 디자인이 있나요?','핵심 UX 원칙이 있나요? 기존 디자인 시스템이 있나요?','가장 자주 쓰이는 화면은 무엇인가요?','모바일 대응이 필요한가요?','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
+  sales:  ['안녕하세요. 영업/CS 관점에서 여쭤보겠습니다. 고객이 가장 많이 불평하는 게 무엇인가요?','이탈 원인 1순위는 무엇인가요?','고객이 \"이것만 있으면 바로 쓴다\"고 한 기능이 있나요?','고객이 가장 만족하는 부분은 무엇인가요?','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
+  user:   ['안녕하세요. 이 업무를 직접 하고 계신 분이군요. 지금 이 업무를 어떻게 처리하고 계신가요?','가장 불편한 점이 무엇인가요? 가장 시간이 오래 걸리는 작업은요?','꼭 있어야 하는 기능이 있나요?','하루 중 이 업무에 시간을 얼마나 쓰시나요?','추가로 전달하고 싶은 내용이 있으시면 말씀해주세요.'],
+  other:  ['안녕하세요. 이 프로젝트에 대해 자유롭게 의견을 말씀해주세요. 가장 중요하다고 생각하는 게 무엇인가요?','걱정되는 부분이 있나요?','다른 분들 의견 중 동의 안 하는 부분이 있나요?','추가로 꼭 전달하고 싶은 의견이 있나요?','감사합니다. 더 하실 말씀이 있으신가요?'],
+};
+
+function selectRole(role, name) {
+  selectedRole = role;
+  const ptName = document.getElementById('pt-name').value.trim() || name || '참여자';
+  startChat(ptName);
+}
+
+function startChat(ptName) {
+  if (!selectedRole) { alert('역할을 선택해주세요.'); return; }
+  if (!currentProject) { alert('프로젝트를 먼저 선택하세요.'); return; }
+
+  chatHistory = [];
+  qIdx = 0;
+  isSending = false;
+
+  const area = document.getElementById('chatArea');
+  area.innerHTML = '';
+
+  // First AI question
+  const firstQ = QUESTIONS[selectedRole]?.[0] || '프로젝트에 대해 자유롭게 말씀해주세요.';
+  chatHistory.push({ role: 'assistant', content: firstQ });
+  addMsg('assistant', firstQ);
+}
+
+async function sendChat() {
+  const inp = document.getElementById('chatInput');
+  const txt = inp.value.trim();
+  if (!txt || isSending) return;
+
+  isSending = true;
+  inp.disabled = true;
+  addMsg('user', txt);
+  chatHistory.push({ role: 'user', content: txt });
+  inp.value = '';
+  inp.style.height = 'auto';
+  qIdx++;
+
+  if (qIdx >= 3) {
+    document.getElementById('finish-bar')?.classList.remove('hidden');
+  }
+
+  // Try API, fallback to local questions
+  addTypingIndicator();
+  try {
+    const payload = {
+      role: selectedRole,
+      projectName: currentProject?.name || '',
+      projectDesc: '',
+      messages: chatHistory,
+      lang: 'ko'
+    };
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    removeTypingIndicator();
+    if (resp.ok) {
+      const data = await resp.json();
+      const reply = data.reply;
+      chatHistory.push({ role: 'assistant', content: reply });
+      addMsg('assistant', reply);
+    } else {
+      throw new Error('API error');
+    }
+  } catch(e) {
+    removeTypingIndicator();
+    const qs = QUESTIONS[selectedRole] || QUESTIONS.other;
+    const fallback = qs[Math.min(qIdx, qs.length - 1)];
+    chatHistory.push({ role: 'assistant', content: fallback });
+    addMsg('assistant', fallback);
+  }
+
+  isSending = false;
+  inp.disabled = false;
+  inp.focus();
+}
+
+async function finishInterview() {
+  if (!currentProject || chatHistory.length < 2) return;
+
+  const btn = document.getElementById('btn-finish');
+  if (btn) { btn.textContent = '저장 중...'; btn.disabled = true; }
+
+  try {
+    const ptName = document.getElementById('pt-name')?.value?.trim() || '참여자';
+    await sb.from('interviews').insert({
+      project_id: currentProject.id,
+      participant_name: ptName,
+      role: selectedRole,
+      messages: chatHistory,
+      summary: chatHistory.map(m => (m.role === 'user' ? 'User: ' : 'AI: ') + m.content).join('\n').substring(0, 2000),
+      status: 'complete'
+    });
+
+    // Generate PRD
+    await generateAndSavePRD();
+  } catch(e) {
+    alert('저장 실패: ' + e.message);
+    if (btn) { btn.textContent = '인터뷰 완료'; btn.disabled = false; }
+  }
+}
+
+// ═══════════════════════════════════════
+// PRD GENERATION & SAVE
+// ═══════════════════════════════════════
+async function generateAndSavePRD() {
+  renderStepper(4, [1,2,3]);
+  showView(4);
+
+  const container = document.getElementById('prd-detail-sections');
+  if (container) {
+    container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">PRD 생성 중...<br><span style="font-size:11px;margin-top:6px;display:block">10~20초 소요됩니다</span></div>';
+  }
+
+  let sections = null;
+  try {
+    const log = chatHistory.map(m => (m.role === 'user' ? 'User: ' : 'AI: ') + m.content).join('\n');
+    const resp = await fetch('/api/prd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectName: currentProject.name, projectDesc: '', interviewLog: log, lang: 'ko' })
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.sections && Array.isArray(data.sections)) sections = data.sections;
+    }
+  } catch(e) {
+    console.error('PRD API fail:', e);
+  }
+
+  if (sections && currentProject) {
+    await sb.from('prds').upsert(
+      { project_id: currentProject.id, sections },
+      { onConflict: 'project_id' }
+    );
+    await sb.from('projects').update({ status: 'complete' }).eq('id', currentProject.id);
+    currentProject.status = 'complete';
+    await loadProjects();
+    // Highlight
+    setTimeout(() => {
+      const el = document.querySelector(`.proj-item[data-id="${currentProject.id}"]`);
+      if (el) { el.classList.add('active'); }
+    }, 300);
+  }
+
+  if (sections) renderPRDSections(sections, container);
+  else if (container) container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">PRD 생성에 실패했습니다.<br>잠시 후 다시 시도해주세요.</div>';
+}
+
+async function loadAndRenderPRD(projectId) {
+  const container = document.getElementById('prd-detail-sections');
+  if (!container) return;
+  container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">불러오는 중...</div>';
+
+  try {
+    const { data, error } = await sb.from('prds')
+      .select('sections,created_at')
+      .eq('project_id', projectId)
+      .single();
+
+    if (error || !data?.sections) {
+      container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">PRD가 없습니다.</div>';
+      return;
+    }
+    renderPRDSections(data.sections, container);
+  } catch(e) {
+    container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">오류: ' + e.message + '</div>';
+  }
+}
+
+function renderPRDSections(sections, container) {
+  if (!container) return;
+  container.innerHTML = '';
+  sections.forEach((s, i) => {
+    const sec = document.createElement('div');
+    sec.className = 'prd-section';
+    sec.id = 'sec-' + s.num;
+    sec.style.animationDelay = (i * 0.06) + 's';
+    sec.innerHTML = `
+      <div class="prd-sec-hd">
+        <div style="display:flex;align-items:center">
+          <span class="prd-sec-num">${s.num}</span>
+          <span class="prd-sec-title">${s.title}</span>
+        </div>
+        <span class="prd-sec-cat">${s.category || ''}</span>
+      </div>
+      <div class="prd-sec-body"><div class="sec-content">${s.body || ''}</div></div>`;
+    container.appendChild(sec);
+  });
+}
+
+// ═══════════════════════════════════════
+// CHAT UI HELPERS
+// ═══════════════════════════════════════
+function addMsg(role, text) {
+  const area = document.getElementById('chatArea');
+  const el = document.createElement('div');
+  el.className = 'msg ' + role;
+  if (role === 'assistant') {
+    el.innerHTML = `<div class="msg-av">ON</div><div class="msg-inner"><div class="msg-sender">OnPlan AI</div><div class="bubble">${text.replace(/\n/g,'<br>')}</div></div>`;
+  } else {
+    el.innerHTML = `<div class="msg-av user-av">${(currentUser?.user_metadata?.full_name || 'ME').substring(0,2).toUpperCase()}</div><div class="msg-inner"><div class="msg-sender">나</div><div class="bubble">${text.replace(/</g,'&lt;')}</div></div>`;
+  }
+  area.appendChild(el);
+  area.scrollTop = area.scrollHeight;
+}
+
+function addTypingIndicator() {
+  const area = document.getElementById('chatArea');
+  const el = document.createElement('div');
+  el.className = 'msg assistant';
+  el.id = 'typing-indicator';
+  el.innerHTML = `<div class="msg-av">ON</div><div class="msg-inner"><div class="bubble" style="padding:10px 14px"><span style="display:inline-flex;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:var(--g400);animation:blink 1s .0s infinite"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--g400);animation:blink 1s .2s infinite"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--g400);animation:blink 1s .4s infinite"></span></span></div></div>`;
+  area.appendChild(el);
+  area.scrollTop = area.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  document.getElementById('typing-indicator')?.remove();
+}
+
+// ═══════════════════════════════════════
+// STEPPER & VIEW
+// ═══════════════════════════════════════
 function renderStepper(active, done) {
   [1,2,3,4].forEach(n => {
     const s  = document.getElementById('s'  + n);
     const sc = document.getElementById('sc' + n);
     const sl = document.getElementById('sl' + n);
+    if (!s) return;
 
     s.className = 'step';
     if (done.includes(n)) {
@@ -1976,7 +1961,6 @@ function renderStepper(active, done) {
       s.classList.add('idle');
       sc.textContent = n;
     }
-
     if (sl) {
       sl.className = 'step-line';
       if (done.includes(n)) sl.classList.add('done');
@@ -1985,11 +1969,9 @@ function renderStepper(active, done) {
 }
 
 function goStep(n) {
-  const p = projects[current] || { done: [] };
+  if (n === 1) { startNewProject(); return; }
   const done = [];
   for (let i = 1; i < n; i++) done.push(i);
-  p.done.forEach(d => { if (!done.includes(d)) done.push(d); });
-
   renderStepper(n, done);
   showView(n);
 }
@@ -2000,35 +1982,9 @@ function showView(n) {
   if (v) v.classList.add('visible');
 }
 
-// Chat send
-document.getElementById('sendBtn').addEventListener('click', sendMsg);
-document.getElementById('chatInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
-});
-
-function sendMsg() {
-  const inp = document.getElementById('chatInput');
-  const txt = inp.value.trim();
-  if (!txt) return;
-
-  const typing = document.getElementById('typingMsg');
-  if (typing) typing.remove();
-
-  const area = document.getElementById('chatArea');
-  const el = document.createElement('div');
-  el.className = 'msg user';
-  el.innerHTML = `
-    <div class="msg-av user-av">YJ</div>
-    <div class="msg-inner">
-      <div class="msg-sender">송윤지</div>
-      <div class="bubble">${txt.replace(/</g,'&lt;')}</div>
-    </div>`;
-  area.appendChild(el);
-  inp.value = '';
-  area.scrollTop = area.scrollHeight;
-}
-
-// PRD nav scroll
+// ═══════════════════════════════════════
+// PRD NAV & ROLE DOCS
+// ═══════════════════════════════════════
 function scrollToSec(id, el) {
   document.querySelectorAll('.prd-nav-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
@@ -2037,7 +1993,6 @@ function scrollToSec(id, el) {
   if (target && body) body.scrollTo({ top: target.offsetTop - 16, behavior: 'smooth' });
 }
 
-// Role doc toggle
 function toggleRoleDoc(docId, cardId) {
   const doc  = document.getElementById(docId);
   const card = document.getElementById(cardId);
@@ -2046,5 +2001,40 @@ function toggleRoleDoc(docId, cardId) {
   if (card) card.classList.toggle('open', !isOpen);
 }
 
-// Respondent tabs
-document.querySelectorAll(
+// ═══════════════════════════════════════
+// EVENT LISTENERS
+// ═══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  // Chat input
+  const chatInput = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('sendBtn');
+  if (sendBtn) sendBtn.addEventListener('click', sendChat);
+  if (chatInput) {
+    chatInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+    });
+  }
+
+  // Copy link
+  const copyBtn = document.querySelector('.btn-copy');
+  if (copyBtn) copyBtn.addEventListener('click', copyInviteLink);
+
+  // Respondent tabs
+  document.querySelectorAll('.rtab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // blink animation
+  const style = document.createElement('style');
+  style.textContent = '@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}';
+  document.head.appendChild(style);
+
+  init();
+});
+
+</script>
+</body>
+</html>
