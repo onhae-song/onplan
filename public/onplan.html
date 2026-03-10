@@ -78,8 +78,18 @@ section{padding:120px 48px;max-width:1200px;margin:0 auto;}.sec-label{font-size:
 @media(max-width:900px){.nav{padding:0 20px;}.nav-links a:not(.nav-cta){display:none;}section{padding:80px 20px;}.steps{grid-template-columns:1fr 1fr;}.planner-grid{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr 1fr;}.pricing-grid{grid-template-columns:1fr 1fr;}.stats-bar{gap:40px;padding:60px 20px;flex-wrap:wrap;}.hero-visual-content{grid-template-columns:1fr;}.footer{flex-direction:column;gap:20px;text-align:center;}.footer-top{flex-direction:column;gap:20px;align-items:center;}.footer-contact{text-align:center;}.footer-bottom{flex-direction:column;gap:12px;}}
 @media(max-width:600px){.steps{grid-template-columns:1fr;}.roles-grid{grid-template-columns:1fr;}.hero{padding:120px 20px 60px;}.hero-actions{flex-direction:column;align-items:flex-start;}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
+<script>
+(async()=>{
+  try{
+    const sb=window.supabase.createClient('https://dtwgrxsepotwbpaqssgm.supabase.co','sb_publishable_IZ2yTDHofociWRxoYZU3pg_8MHHO9St');
+    const{data:{session}}=await sb.auth.getSession();
+    if(session?.user)window.location.href='/mypage.html';
+  }catch(e){}
+})();
+</script>
 <nav class="nav">
   <div class="nav-logo"><svg viewBox="0 0 232.56 84.15" xmlns="http://www.w3.org/2000/svg"><text font-size="66.39" transform="translate(0 56.73)"><tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan><tspan x="103.57" y="0" fill="#ffffff" font-family="Outfit" font-weight="500">plan</tspan></text></svg></div>
   <div class="nav-right">
