@@ -22,76 +22,87 @@ module.exports = async function handler(req, res) {
 
   const isKo = lang === 'ko';
 
-  // ===== DOCUMENT CONTEXT =====
-  let docSectionKo = '';
-  let docSectionEn = '';
+  let docSection = '';
   if (projectDoc && projectDoc.trim().length > 0) {
-    docSectionKo = `
-
-## 참고 문서
-아래는 프로젝트 생성 시 업로드된 기획 문서입니다.
-인터뷰 내용과 이 문서를 모두 종합하여 PRD를 생성하세요.
-
-문서 활용 규칙:
-- 문서에 명시된 요구사항은 PRD에 반드시 반영하세요.
-- 인터뷰에서 나온 의견이 문서와 다를 경우, 양쪽을 모두 기재하고 충돌을 명시하세요.
-- 문서에는 있지만 인터뷰에서 언급되지 않은 항목은 문서 기준으로 반영하되 "[문서 기반]"으로 표시하세요.
-- 인터뷰에서 나왔지만 문서에 없는 내용은 "[인터뷰 기반]"으로 표시하세요.
-
-<document>
-${projectDoc}
-</document>`;
-
-    docSectionEn = `
-
-## Reference Document
-Below is a planning document uploaded during project creation.
-Synthesize BOTH the interview content and this document to generate the PRD.
-
-Document usage rules:
-- Requirements stated in the document MUST be reflected in the PRD.
-- If interview opinions differ from the document, include both and mark the conflict.
-- Items in the document but not mentioned in the interview: reflect from document, mark "[From document]".
-- Items from interview but not in the document: mark "[From interview]".
-
-<document>
-${projectDoc}
-</document>`;
+    docSection = isKo
+      ? `\n\n## 참고 문서\n문서에 명시된 요구사항은 반드시 반영하세요. 인터뷰와 다를 경우 충돌로 표시하세요.\n<document>\n${projectDoc}\n</document>`
+      : `\n\n## Reference Document\nRequirements in the document MUST be reflected. Mark conflicts if interview differs.\n<document>\n${projectDoc}\n</document>`;
   }
 
   const systemPrompt = isKo
-    ? `당신은 OnPlan AI 기획자입니다. 아래 인터뷰 내용${projectDoc ? '과 참고 문서' : ''}를 기반으로 PRD(Product Requirements Document)를 JSON으로 생성하세요.
+    ? `당신은 OnPlan AI 기획자입니다. 인터뷰 내용${projectDoc ? '과 참고 문서' : ''}를 기반으로 PRD 전체를 JSON으로 생성하세요.
 
-## 출력 형식 (반드시 JSON만, 마크다운 백틱 없이)
+## 핵심 원칙
+- 단순 요약이 아닌 판단하는 기획자. 충돌을 감지하고, 우선순위를 결정하며, 빠진 관점을 짚어냅니다.
+- 이걸 정리할 수 있는 사람은 이미 기획자입니다. 팀원들이 스스로 정리하지 못하기 때문에 OnPlan이 필요합니다.
+
+## 출력 형식 (JSON만, 마크다운 백틱 없이)
 {
   "sections": [
     {
       "num": "01",
       "title": "요약과 배경",
       "category": "맥락",
-      "body": "HTML 형식 본문 (h3, p, table 태그 사용)"
-    },
-    ...8개 섹션
-  ]
+      "conflict": false,
+      "body": "HTML 본문 (h3, p, table 사용)"
+    }
+  ],
+  "opinions": {
+    "01": "섹션별 AI 기획자 의견. 충돌 지적, 누락된 관점, 우선순위 판단. strong 태그로 핵심 강조.",
+    "02": "...",
+    "03": "...",
+    "04": "...",
+    "05": "...",
+    "06": "...",
+    "07": "...",
+    "08": "..."
+  },
+  "conflicts": {
+    "섹션번호": {
+      "issue": "충돌 제목 (한 문장)",
+      "context": "어떤 참여자가 어떤 입장인지 설명",
+      "current": "AI 권장안. strong 태그로 결론 강조.",
+      "demoReply": "팀원이 의견을 입력했을 때 AI가 보낼 후속 답변"
+    }
+  },
+  "revisions": {
+    "섹션번호": "AI 수정 제안 HTML. 안 A/B/C 형식으로 선택지 제시. 마지막에 <strong>어떻게 하시겠습니까?</strong>"
+  },
+  "role_docs": {
+    "ceo": "HTML — 사업 타당성 요약: 투자 대비 효과, 리스크, 의사결정 필요 사항",
+    "dev": "HTML — 기술 요구사항: P0 기능 명세, IA 구조, 기술 제약, 일정",
+    "design": "HTML — UX 요구사항: 페르소나, 사용자 여정, 핵심 플로우, UX 원칙",
+    "sales": "HTML — 제품 소개 요약: 해결하는 문제, 핵심 기능, 차별점"
+  }
 }
 
 ## 8개 섹션 (순서 고정)
 01. 요약과 배경 — 문제 정의, 왜 지금인가, 시장 맥락
 02. 주요 사용자 — 페르소나 2개 (이름, 역할, 페인포인트, 원하는 것)
 03. 핵심 사용자 여정 — As-Is / To-Be 플로우
-04. 기능적 요구사항 — P0(Must) / P1(Should) / P2(Nice) 테이블
-05. IA 설계 — 페이지 맵 테이블 (Depth1, Depth2, 유형)
+04. 기능적 요구사항 — P0/P1/P2 테이블
+05. IA 설계 — 페이지 맵 테이블
 06. 사용자 플로우 — 핵심 시나리오 2~3개
 07. 배포 계획 — Phase 1/2/3 마일스톤
-08. 리스크 및 관련 문서 — 리스크 테이블 (리스크, 영향도, 대응)
+08. 리스크 및 관련 문서 — 리스크 테이블
+
+## conflicts 작성 규칙
+- 인터뷰에서 실제로 의견이 갈린 섹션에만 작성 (억지로 만들지 말 것)
+- 2개 이상, 4개 이하 권장
+- conflict: true인 섹션에 반드시 conflicts 항목 존재
+
+## revisions 작성 규칙
+- conflict가 있는 섹션 중 결정이 필요한 1~2개에만 작성
+- 선택지를 명확하게 제시
 
 ## 규칙
-- 인터뷰에서 언급된 내용을 최대한 반영
-- 언급되지 않은 부분은 합리적으로 추론하되 "[추론]" 표시
-- body는 HTML 태그 사용 (h3, p, table, tr, th, td, strong)
+- body는 HTML (h3, p, table, tr, th, td, strong)
 - 한국어로 작성
-- JSON만 출력. 설명 텍스트 없음.${docSectionKo}`
-    : `You are OnPlan AI. Generate a PRD from the interview${projectDoc ? ' and reference document' : ''} below as JSON.
+- JSON만 출력. 설명 없음.${docSection}`
+    : `You are OnPlan AI. Generate a complete PRD from the interview${projectDoc ? ' and reference document' : ''} as JSON.
+
+## Core Principle
+Not just a summarizer — a judging planner. Detect conflicts, decide priorities, surface missing perspectives.
 
 ## Output format (JSON only, no markdown fences)
 {
@@ -100,28 +111,62 @@ ${projectDoc}
       "num": "01",
       "title": "Summary & Background",
       "category": "Context",
-      "body": "HTML body content (use h3, p, table tags)"
-    },
-    ...8 sections
-  ]
+      "conflict": false,
+      "body": "HTML body (h3, p, table)"
+    }
+  ],
+  "opinions": {
+    "01": "Per-section AI planner opinion. Surface conflicts, missing angles, priority judgments. Use strong tags for key points.",
+    "02": "...",
+    "03": "...",
+    "04": "...",
+    "05": "...",
+    "06": "...",
+    "07": "...",
+    "08": "..."
+  },
+  "conflicts": {
+    "sectionNum": {
+      "issue": "Conflict title (one sentence)",
+      "context": "Which participant holds which position",
+      "current": "AI recommendation. Bold the conclusion.",
+      "demoReply": "AI follow-up when a team member submits an opinion"
+    }
+  },
+  "revisions": {
+    "sectionNum": "AI revision proposal HTML. Present Option A/B/C. End with <strong>Which option do you prefer?</strong>"
+  },
+  "role_docs": {
+    "ceo": "HTML — Business case summary: ROI, risks, decisions needed",
+    "dev": "HTML — Technical requirements: P0 specs, IA structure, constraints, timeline",
+    "design": "HTML — UX requirements: personas, user journey, key flows, UX principles",
+    "sales": "HTML — Product brief: problem solved, key features, differentiators"
+  }
 }
 
 ## 8 Sections (fixed order)
-01. Summary & Background — Problem, why now, market context
-02. Target Users — 2 personas (name, role, pain points, needs)
-03. User Journey — As-Is / To-Be flows
-04. Functional Requirements — P0(Must) / P1(Should) / P2(Nice) table
-05. IA Design — Page map table (Depth1, Depth2, Type)
+01. Summary & Background
+02. Target Users — 2 personas
+03. User Journey — As-Is / To-Be
+04. Functional Requirements — P0/P1/P2 table
+05. IA Design — Page map table
 06. User Flows — 2-3 key scenarios
-07. Release Plan — Phase 1/2/3 milestones
-08. Risks & References — Risk table (risk, impact, mitigation)
+07. Release Plan — Phase 1/2/3
+08. Risks & References
+
+## conflicts rules
+- Only for sections with real disagreement in the interview (don't fabricate)
+- 2-4 conflicts recommended
+- Every section with conflict:true must have a conflicts entry
+
+## revisions rules
+- Only 1-2 sections needing a decision
+- Present clear options
 
 ## Rules
-- Reflect interview content as much as possible
-- Infer unmentioned parts reasonably, mark with "[Inferred]"
 - Body uses HTML tags (h3, p, table, tr, th, td, strong)
 - English only
-- Output JSON only. No explanation text.${docSectionEn}`;
+- JSON only. No explanation.${docSection}`;
 
   const userMessage = isKo
     ? `프로젝트: ${projectName}${projectDesc ? '\n설명: ' + projectDesc : ''}\n\n인터뷰 내용:\n${interviewLog}`
@@ -137,7 +182,7 @@ ${projectDoc}
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
+        max_tokens: 8000,
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }]
       })
