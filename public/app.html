@@ -1511,7 +1511,22 @@ async function setUser(u) {
     const { data } = await sb.from('user_plans').select('plan').eq('user_id', u.id).single();
     userPlan = data?.plan || 'free';
   } catch(e) { userPlan = 'free'; }
-  loadProjects();
+  await loadProjects();
+
+  // URL 파라미터 처리: ?id=projectId (마이페이지에서 진입)
+  const params = new URLSearchParams(window.location.search);
+  const targetId = params.get('id');
+  if (targetId) {
+    const { data: p } = await sb.from('projects')
+      .select('id,name,status,phase,description,invite_code,owner_id,created_at')
+      .eq('id', targetId)
+      .single();
+    if (p) {
+      await selectProject(p);
+      // URL 정리 (히스토리 오염 방지)
+      window.history.replaceState({}, '', '/app.html');
+    }
+  }
 }
 
 function showLoginState() {
