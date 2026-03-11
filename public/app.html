@@ -1583,7 +1583,6 @@ async function setUser(u) {
   document.getElementById('user-avatar-txt').textContent = initials;
   document.getElementById('user-name-txt').textContent = u.user_metadata?.full_name || u.email || '';
   document.getElementById('panel-ft').style.display = 'flex';
-  document.getElementById('panel-login').style.display = 'none';
   // 플랜 로드
   try {
     const { data } = await sb.from('user_plans').select('plan').eq('user_id', u.id).single();
