@@ -89,6 +89,7 @@ let isLoggedIn=false;
     const{data:{session}}=await sb.auth.getSession();
     if(session?.user){
       isLoggedIn=true;
+      window.location.href='/mypage.html';return;
       // nav CTA를 앱으로
       document.querySelectorAll('.nav-cta').forEach(a=>{a.style.display='none';});
       const lb=document.getElementById('nav-login-btn');
