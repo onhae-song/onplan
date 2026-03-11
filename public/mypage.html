@@ -180,7 +180,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
     <div id="tab-projects">
       <div class="page-header">
         <div class="page-title" id="project-count">My Projects</div>
-        <a href="app.html" class="btn-new">+ New Project</a>
+        <a href="demo.html" class="btn-new">+ New Project</a>
       </div>
       <div id="project-list" class="project-list">
         <div class="loading">Loading...</div>
@@ -306,7 +306,7 @@ async function loadProjects(){
         <div class="empty-icon">+</div>
         <div class="empty-title">No projects yet</div>
         <div class="empty-desc">Create your first project and start interviewing your team.</div>
-        <a href="app.html" class="btn-new">+ New Project</a>
+        <a href="demo.html" class="btn-new">+ New Project</a>
       </div>`;
     document.getElementById('project-count').textContent='My Projects';
     return;
@@ -341,27 +341,45 @@ async function loadProjects(){
         </div>
       </div>
       <div class="project-actions">
-        ${p.status==='complete'?'<button class="btn-sm btn-sm-accent" onclick="event.stopPropagation();viewPrd(\''+p.id+'\',\''+p.name.replace(/'/g,"\\'")+'\')">View PRD</button>':''}
-        <button class="btn-sm" onclick="event.stopPropagation();deleteProject('${p.id}')">Delete</button>
+        ${p.status==='complete'?`<button class="btn-sm btn-sm-accent" id="vprd-${p.id}">View PRD</button>`:''}
+        <button class="btn-sm" id="del-${p.id}">Delete</button>
       </div>`;
+    // onclick 핸들러 직접 등록 (onclick 문자열 이스케이프 문제 방지)
+    if(p.status==='complete'){
+      const vprdBtn=div.querySelector(`#vprd-${p.id}`);
+      if(vprdBtn) vprdBtn.onclick=(e)=>{e.stopPropagation();viewPrd(p.id,p.name);};
+    }
+    const delBtn=div.querySelector(`#del-${p.id}`);
+    if(delBtn) delBtn.onclick=(e)=>{e.stopPropagation();deleteProject(p.id);};
+    div.onclick=()=>{
+      if(p.status==='complete') viewPrd(p.id,p.name);
+    };
     listEl.appendChild(div);
   });
 }
 
 async function deleteProject(id){
-  if(!confirm('Delete this project?'))return;
-  await sb.from('projects').delete().eq('id',id);
-  loadProjects();
+  if(!confirm('이 프로젝트를 삭제할까요?'))return;
+  try{
+    await sb.from('interviews').delete().eq('project_id',id);
+    await sb.from('prds').delete().eq('project_id',id);
+    const{error}=await sb.from('projects').delete()
+      .eq('id',id)
+      .eq('owner_id',currentUser.id);
+    if(error)throw new Error(error.message);
+    loadProjects();
+  }catch(e){
+    alert('삭제 실패: '+e.message);
+  }
 }
 
 // ===== PRD DETAIL =====
 async function viewPrd(projectId,projectName){
-  try{
-    const{data,error}=await sb.from('prds').select('sections,created_at').eq('project_id',projectId).single();
-    if(error||!data||!data.sections){
-      alert('PRD를 불러올 수 없습니다. 인터뷰 완료 후 PRD가 생성됩니다.');
-      return;
-    }
+  const{data}=await sb.from('prds').select('sections,created_at').eq('project_id',projectId).single();
+  if(!data||!data.sections){
+    alert('PRD not found.');
+    return;
+  }
 
   document.getElementById('tab-projects').style.display='none';
   document.getElementById('prd-detail').style.display='block';
@@ -399,10 +417,6 @@ async function viewPrd(projectId,projectName){
       ${bodyHtml}`;
     container.appendChild(sec);
   });
-  }catch(e){
-    console.error('viewPrd error:',e);
-    alert('오류가 발생했습니다: '+e.message);
-  }
 }
 
 function closePrdDetail(){
