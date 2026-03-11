@@ -287,10 +287,10 @@ input, textarea, select { font-family: var(--kr); }
 
 /* ─ User Dropdown ─ */
 .user-dropdown {
-  position: absolute;
+  position: fixed;
   bottom: 56px;
   left: 8px;
-  right: 8px;
+  width: 220px;
   background: var(--bg2);
   border: 1px solid var(--border2);
   box-shadow: 0 8px 24px rgba(0,0,0,.4);
@@ -1053,6 +1053,38 @@ input, textarea, select { font-family: var(--kr); }
   text-transform: uppercase;
   background: var(--bg3);
 }
+
+/* Section badges */
+.sc-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  font-family: var(--en);
+}
+.sc-badge-done { background: rgba(212,245,60,.1); color: var(--lime); border: 1px solid rgba(212,245,60,.2); }
+.sc-badge-conflict { background: rgba(214,48,49,.08); color: #f87171; border: 1px solid rgba(214,48,49,.2); }
+.sc-badge-lock { background: var(--bg3); color: var(--g500); border: 1px solid var(--border); }
+
+/* Conflict thread */
+.cb-thread { margin-top: 10px; }
+.cb-thread-item {
+  padding: 10px 0;
+  border-top: 1px solid var(--conflict-border);
+}
+.cb-thread-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-family: var(--en);
+}
+.cb-thread-label.is-user { color: var(--g400); }
+.cb-thread-label.is-ai { color: var(--lime); }
+.cb-thread-body { font-size: 12px; line-height: 1.7; color: var(--g300); }
+.cb-thread-body strong { color: var(--white); }
 
 /* Planner Opinion */
 .po {
@@ -2071,6 +2103,9 @@ async function generatePRD(interviews, latestPrd) {
     const { error } = await sb.from('prds').insert({
       project_id: currentProject.id,
       sections: data.sections,
+      opinions: data.opinions || {},
+      conflicts: data.conflicts || {},
+      role_docs: data.role_docs || {},
       version: newVersion,
       interview_count: fullInterviews.length,
       interviewed_by: interviewedBy,
@@ -2166,7 +2201,7 @@ async function loadAndRenderPRD(projectId) {
   try {
     // 최신 버전 PRD 로드
     const { data, error } = await sb.from('prds')
-      .select('sections, version, interview_count, interviewed_by, created_at')
+      .select('sections, opinions, conflicts, role_docs, version, interview_count, interviewed_by, created_at')
       .eq('project_id', projectId)
       .order('version', { ascending: false })
       .limit(1)
@@ -2189,66 +2224,213 @@ async function loadAndRenderPRD(projectId) {
         + (names ? ' (' + names + ')' : '');
     }
 
-    renderPRDSections(data.sections, container);
+    // sections만이 아닌 전체 prdData 전달
+    renderPRDSections(data, container);
   } catch(e) {
     container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">오류: ' + e.message + '</div>';
   }
 }
 
-function renderPRDSections(sections, container) {
+function renderPRDSections(prdData, container) {
   if (!container) return;
   container.innerHTML = '';
+
+  // prdData는 { sections, opinions, conflicts, revisions, role_docs } 또는 배열(하위호환)
+  const sections = Array.isArray(prdData) ? prdData : (prdData.sections || []);
+  const opinions = Array.isArray(prdData) ? {} : (prdData.opinions || {});
+  const conflicts = Array.isArray(prdData) ? {} : (prdData.conflicts || {});
+  const revisions = Array.isArray(prdData) ? {} : (prdData.revisions || {});
+  const role_docs = Array.isArray(prdData) ? {} : (prdData.role_docs || {});
+
   const canViewAll = userPlan !== 'free';
-  const FREE_LIMIT = 3; // Free: 섹션 3개까지 공개
+  const FREE_LIMIT = 3;
 
   sections.forEach((s, i) => {
     const locked = !canViewAll && i >= FREE_LIMIT;
+    const hasConflict = s.conflict || !!conflicts[s.num];
     const sec = document.createElement('div');
-    sec.className = 'prd-section' + (locked ? ' prd-locked-section' : '');
+    sec.className = 'prd-section';
     sec.id = 'sec-' + s.num;
     sec.style.animationDelay = (i * 0.06) + 's';
 
+    // 섹션 헤더 뱃지
+    let badge = '';
+    if (locked) badge = '<span class="sc-badge sc-badge-lock">TEAM</span>';
+    else if (hasConflict) badge = '<span class="sc-badge sc-badge-conflict">ISSUE</span>';
+    else badge = '<span class="sc-badge sc-badge-done">DONE</span>';
+
+    let html = `<div class="prd-sec-hd">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="prd-sec-num">${s.num}</span>
+        <span class="prd-sec-title">${s.title}</span>
+        ${badge}
+      </div>
+      <span class="prd-sec-cat">${s.category || ''}</span>
+    </div>`;
+
     if (locked) {
-      sec.innerHTML = `
-        <div class="prd-sec-hd" style="opacity:.4">
-          <div style="display:flex;align-items:center">
-            <span class="prd-sec-num">${s.num}</span>
-            <span class="prd-sec-title">${s.title}</span>
-          </div>
-          <span class="prd-sec-cat">${s.category || ''}</span>
+      html += `<div class="prd-sec-body" style="position:relative;min-height:80px">
+        <div style="filter:blur(4px);opacity:.25;pointer-events:none;user-select:none">${s.body || ''}</div>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><rect x="3" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 8V5.5a3 3 0 116 0V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span style="font-size:12px;color:var(--g400)">Pro 플랜에서 열람 가능합니다</span>
+          <a href="/#pricing" style="font-size:11px;color:var(--lime);text-decoration:none;font-weight:600">업그레이드 →</a>
         </div>
-        <div class="prd-sec-body" style="position:relative;min-height:80px">
-          <div style="filter:blur(4px);opacity:.3;pointer-events:none;user-select:none">${s.body || ''}</div>
-          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 8V5.5a3 3 0 116 0V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            <span style="font-size:12px;color:var(--g400)">Pro 플랜에서 열람 가능합니다</span>
-            <a href="/#pricing" style="font-size:11px;color:var(--lime);text-decoration:none;font-weight:600">업그레이드 →</a>
+      </div>`;
+    } else {
+      html += `<div class="prd-sec-body">`;
+
+      // ONPLAN OPINION
+      if (opinions[s.num]) {
+        html += `<div class="po"><div class="po-title">ONPLAN OPINION</div><div class="po-body">${opinions[s.num]}</div></div>`;
+      }
+
+      // OPEN ISSUE (충돌)
+      if (hasConflict && conflicts[s.num]) {
+        const cf = conflicts[s.num];
+        const cfId = 'cf-' + s.num;
+        html += `<div class="cb">
+          <div class="cb-title">OPEN ISSUE</div>
+          <div class="cb-issue">${cf.issue}</div>
+          <div class="cb-context">${cf.context}</div>
+          <div class="cb-current">
+            <div class="cb-current-title">ONPLAN RECOMMENDATION</div>
+            <div class="cb-current-body">${cf.current}</div>
+          </div>
+          <div class="cb-input-area">
+            <input class="cb-input" id="${cfId}-input" placeholder="이 논점에 대한 의견을 입력하세요..." onkeydown="if(event.key==='Enter')submitIssueComment('${cfId}','${s.num}')">
+            <button class="cb-submit" onclick="submitIssueComment('${cfId}','${s.num}')">전송</button>
+          </div>
+          <div class="cb-thread" id="${cfId}-thread"></div>
+        </div>`;
+      }
+
+      // 본문
+      html += `<div class="sec-content">${s.body || ''}</div>`;
+
+      // ONPLAN REVISION (수정 제안)
+      if (revisions[s.num]) {
+        html += `<div class="rev">
+          <div class="rev-title">ONPLAN REVISION</div>
+          <div class="rev-body">${revisions[s.num]}</div>
+          <div class="rev-actions">
+            <button class="btn-sm btn-sm-y" onclick="this.closest('.rev').innerHTML='<div style=\'padding:10px;font-size:12px;color:var(--lime)\'>반영되었습니다.</div>'">승인</button>
+            <button class="btn-sm btn-sm-n" onclick="this.closest('.rev').innerHTML='<div style=\'padding:10px;font-size:12px;color:var(--g500)\'>거부되었습니다.</div>'">거부</button>
           </div>
         </div>`;
-    } else {
-      sec.innerHTML = `
-        <div class="prd-sec-hd">
-          <div style="display:flex;align-items:center">
-            <span class="prd-sec-num">${s.num}</span>
-            <span class="prd-sec-title">${s.title}</span>
-          </div>
-          <span class="prd-sec-cat">${s.category || ''}</span>
-        </div>
-        <div class="prd-sec-body"><div class="sec-content">${s.body || ''}</div></div>`;
+      }
+
+      html += `</div>`;
     }
+
+    sec.innerHTML = html;
     container.appendChild(sec);
   });
 
-  // Free: 섹션 이후 업그레이드 배너
+  // Free 업그레이드 배너
   if (!canViewAll && sections.length > FREE_LIMIT) {
     const banner = document.createElement('div');
-    banner.style.cssText = 'margin-top:24px;padding:28px;border:1px solid var(--lime-border);background:var(--lime-bg);text-align:center';
-    banner.innerHTML = `
-      <div style="font-size:13px;font-weight:600;color:var(--lime);margin-bottom:6px">나머지 ${sections.length - FREE_LIMIT}개 섹션이 잠겨 있습니다</div>
-      <div style="font-size:12px;color:var(--g400);margin-bottom:14px">역할별 문서, 갈등 분석, 배포 계획 등을 확인하려면 Pro로 업그레이드하세요.</div>
+    banner.style.cssText = 'margin-top:20px;padding:28px;border:1px solid var(--lime-border);background:var(--lime-bg);text-align:center';
+    banner.innerHTML = `<div style="font-size:13px;font-weight:600;color:var(--lime);margin-bottom:6px">나머지 ${sections.length - FREE_LIMIT}개 섹션이 잠겨 있습니다</div>
+      <div style="font-size:12px;color:var(--g400);margin-bottom:14px">역할별 문서, AI 기획자 의견, 충돌 분석을 확인하려면 Pro로 업그레이드하세요.</div>
       <a href="/#pricing" style="display:inline-block;padding:10px 24px;background:var(--lime);color:#0a0a0a;font-weight:700;font-size:13px;text-decoration:none;font-family:var(--en)">Upgrade to Pro →</a>`;
     container.appendChild(banner);
   }
+
+  // 역할별 문서 렌더링
+  if (canViewAll && role_docs && Object.keys(role_docs).length > 0) {
+    renderRoleDocs(role_docs, container);
+  }
+}
+
+function submitIssueComment(cfId, secNum) {
+  const inp = document.getElementById(cfId + '-input');
+  if (!inp) return;
+  const t = inp.value.trim();
+  if (!t) return;
+  const thread = document.getElementById(cfId + '-thread');
+  const userItem = document.createElement('div');
+  userItem.className = 'cb-thread-item';
+  userItem.innerHTML = `<div class="cb-thread-label is-user">YOUR OPINION</div><div class="cb-thread-body">${t}</div>`;
+  thread.appendChild(userItem);
+  inp.value = '';
+  // AI 답변 (demoReply 또는 기본)
+  setTimeout(() => {
+    const aiItem = document.createElement('div');
+    aiItem.className = 'cb-thread-item';
+    aiItem.innerHTML = `<div class="cb-thread-label is-ai">ONPLAN FEEDBACK</div><div class="cb-thread-body">의견을 확인했습니다. 관련 섹션에 미치는 영향을 분석 중입니다.</div>`;
+    thread.appendChild(aiItem);
+    aiItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 700);
+}
+
+function renderRoleDocs(role_docs, container) {
+  const ROLES = [
+    { key: 'ceo',    label: 'FOR CEO',    sub: '사업 타당성 요약' },
+    { key: 'dev',    label: 'FOR DEV',    sub: '기술 요구사항' },
+    { key: 'design', label: 'FOR DESIGN', sub: 'UX 요구사항' },
+    { key: 'sales',  label: 'FOR SALES',  sub: '제품 소개 요약' },
+  ];
+
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'margin-top:32px;border-top:1px solid var(--border);padding-top:24px';
+
+  const heading = document.createElement('div');
+  heading.style.cssText = 'font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:14px;font-family:var(--en)';
+  heading.textContent = 'ROLE-BASED DOCUMENTS';
+  wrapper.appendChild(heading);
+
+  const tabs = document.createElement('div');
+  tabs.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px';
+
+  const panels = {};
+
+  ROLES.forEach((r, idx) => {
+    if (!role_docs[r.key]) return;
+
+    const tab = document.createElement('button');
+    tab.className = 'btn-ghost';
+    tab.style.cssText = 'font-size:11px;padding:6px 14px;font-family:var(--en);font-weight:700;letter-spacing:.06em';
+    tab.textContent = r.label;
+    tab.dataset.role = r.key;
+    tabs.appendChild(tab);
+
+    const panel = document.createElement('div');
+    panel.id = 'role-panel-' + r.key;
+    panel.style.display = idx === 0 ? 'block' : 'none';
+    panel.innerHTML = `<div class="prd-section"><div class="prd-sec-hd">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--lime);font-family:var(--en)">${r.label}</span>
+        <span class="prd-sec-title">${r.sub}</span>
+      </div>
+    </div><div class="prd-sec-body"><div class="sec-content">${role_docs[r.key]}</div></div></div>`;
+    panels[r.key] = panel;
+  });
+
+  // 탭 클릭 핸들러
+  tabs.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-role]');
+    if (!btn) return;
+    Object.keys(panels).forEach(k => {
+      panels[k].style.display = k === btn.dataset.role ? 'block' : 'none';
+    });
+    tabs.querySelectorAll('button').forEach(b => b.style.background = '');
+    btn.style.background = 'var(--bg4)';
+    btn.style.color = 'var(--lime)';
+    btn.style.borderColor = 'var(--lime)';
+  });
+
+  // 첫 탭 활성화
+  const firstBtn = tabs.querySelector('button[data-role]');
+  if (firstBtn) {
+    firstBtn.style.background = 'var(--bg4)';
+    firstBtn.style.color = 'var(--lime)';
+    firstBtn.style.borderColor = 'var(--lime)';
+  }
+
+  wrapper.appendChild(tabs);
+  Object.values(panels).forEach(p => wrapper.appendChild(p));
+  container.appendChild(wrapper);
 }
 
 // ═══════════════════════════════════════
