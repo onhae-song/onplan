@@ -2051,13 +2051,9 @@ async function generatePRD(interviews, latestPrd) {
 
     const combinedLog = fullInterviews.map(iv => {
       const roleLabel = iv.participant_name + ' (' + (iv.role) + ')';
-      const msgs = (iv.messages || []).map(m => (m.role === 'user' ? roleLabel + ': ' : 'AI: ') + m.content).join('
-');
-      return '--- ' + roleLabel + ' 인터뷰 ---
-' + msgs;
-    }).join('
-
-');
+      const msgs = (iv.messages || []).map(m => (m.role === 'user' ? roleLabel + ': ' : 'AI: ') + m.content).join('\n');
+      return '--- ' + roleLabel + ' 인터뷰 ---\n' + msgs;
+    }).join('\n\n');
 
     const resp = await fetch('/api/prd', {
       method: 'POST',
