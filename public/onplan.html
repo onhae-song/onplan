@@ -89,11 +89,11 @@ let isLoggedIn=false;
     const{data:{session}}=await sb.auth.getSession();
     if(session?.user){
       isLoggedIn=true;
-      window.location.href='/mypage.html';return;
+      window.location.href='/app.html';return;
       // nav CTA를 앱으로
       document.querySelectorAll('.nav-cta').forEach(a=>{a.style.display='none';});
       const lb=document.getElementById('nav-login-btn');
-      if(lb){lb.textContent='My Projects';lb.style.background='var(--lime)';lb.style.color='#0a0a0a';lb.style.border='none';lb.onclick=function(){window.location.href='/mypage.html';};}
+      if(lb){lb.textContent='My Projects';lb.style.background='var(--lime)';lb.style.color='#0a0a0a';lb.style.border='none';lb.onclick=function(){window.location.href='/app.html';};}
     }
   }catch(e){}
 })();
