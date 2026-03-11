@@ -135,7 +135,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
   </a>
   <div class="nav-right">
     <a href="/" class="nav-link">HOME</a>
-    <a href="demo.html" class="nav-link">DEMO</a>
+    <a href="app.html" class="nav-link">APP</a>
     <a href="mypage.html" class="nav-link" style="color:var(--black);font-weight:600;">MY</a>
   </div>
 </nav>
@@ -180,7 +180,7 @@ body{font-family:var(--kr);background:var(--bg);color:var(--black);min-height:10
     <div id="tab-projects">
       <div class="page-header">
         <div class="page-title" id="project-count">My Projects</div>
-        <a href="demo.html" class="btn-new">+ New Project</a>
+        <a href="#" onclick="checkAndCreateProject();return false;" class="btn-new">+ New Project</a>
       </div>
       <div id="project-list" class="project-list">
         <div class="loading">Loading...</div>
@@ -256,8 +256,10 @@ async function logOut(){
 // ===== PLAN =====
 async function loadPlan(){
   if(!currentUser)return;
-  const{data}=await sb.from('user_plans').select('plan').eq('user_id',currentUser.id).single();
+  const{data,error}=await sb.from('user_plans').select('plan').eq('user_id',currentUser.id).single();
+  if(error)console.warn('loadPlan error:',error.message);
   userPlan=data?.plan||'free';
+  console.log('userPlan loaded:',userPlan);
 }
 
 function showMain(){
@@ -306,7 +308,7 @@ async function loadProjects(){
         <div class="empty-icon">+</div>
         <div class="empty-title">No projects yet</div>
         <div class="empty-desc">Create your first project and start interviewing your team.</div>
-        <a href="demo.html" class="btn-new">+ New Project</a>
+        <a href="#" onclick="checkAndCreateProject();return false;" class="btn-new">+ New Project</a>
       </div>`;
     document.getElementById('project-count').textContent='My Projects';
     return;
@@ -344,15 +346,18 @@ async function loadProjects(){
         ${p.status==='complete'?`<button class="btn-sm btn-sm-accent" id="vprd-${p.id}">View PRD</button>`:''}
         <button class="btn-sm" id="del-${p.id}">Delete</button>
       </div>`;
-    // onclick 핸들러 직접 등록 (onclick 문자열 이스케이프 문제 방지)
+    // onclick 핸들러 직접 등록
     if(p.status==='complete'){
       const vprdBtn=div.querySelector(`#vprd-${p.id}`);
-      if(vprdBtn) vprdBtn.onclick=(e)=>{e.stopPropagation();viewPrd(p.id,p.name);};
+      if(vprdBtn) vprdBtn.onclick=(e)=>{e.stopPropagation();window.location.href='app.html?id='+p.id;};
     }
     const delBtn=div.querySelector(`#del-${p.id}`);
     if(delBtn) delBtn.onclick=(e)=>{e.stopPropagation();deleteProject(p.id);};
-    div.onclick=()=>{
-      if(p.status==='complete') viewPrd(p.id,p.name);
+    // 프로젝트 카드 클릭 → app.html로 이동 (상태 무관)
+    div.style.cursor='pointer';
+    div.onclick=(e)=>{
+      if(e.target.closest('button')) return; // 버튼 클릭은 제외
+      window.location.href='app.html?id='+p.id;
     };
     listEl.appendChild(div);
   });
@@ -390,18 +395,25 @@ async function viewPrd(projectId,projectName){
   container.innerHTML='';
 
   const sections=data.sections;
-  const canViewAll=userPlan==='pro'||userPlan==='max'||userPlan==='lifetime';
+  const canViewAll=userPlan!=='free';
 
+  const FREE_LIMIT=3;
   sections.forEach((s,i)=>{
-    const locked=!canViewAll&&i>=2;
+    const locked=!canViewAll&&i>=FREE_LIMIT;
     const sec=document.createElement('div');
     sec.className='prd-section fade';
     sec.style.animationDelay=i*.06+'s';
 
     let bodyHtml='';
     if(locked){
-      bodyHtml=`<div class="prd-sec-body"><div class="prd-locked">${s.body||'Content locked'}</div></div>
-        <div class="lock-msg">Upgrade to Pro to unlock all sections. <a href="/#pricing" style="color:var(--accent);">View plans →</a></div>`;
+      bodyHtml=`<div class="prd-sec-body" style="position:relative;min-height:80px">
+        <div style="filter:blur(4px);opacity:.3;pointer-events:none;user-select:none">${s.body||''}</div>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><rect x="3" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 8V5.5a3 3 0 116 0V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span style="font-size:12px;color:var(--g600)">Pro 플랜에서 열람 가능합니다</span>
+          <a href="/#pricing" style="font-size:11px;color:var(--accent);text-decoration:none;font-weight:600">업그레이드 →</a>
+        </div>
+      </div>`;
     } else {
       bodyHtml=`<div class="prd-sec-body">${s.body||''}</div>`;
     }
@@ -417,6 +429,17 @@ async function viewPrd(projectId,projectName){
       ${bodyHtml}`;
     container.appendChild(sec);
   });
+
+  // Free: 업그레이드 배너
+  if(!canViewAll&&sections.length>FREE_LIMIT){
+    const banner=document.createElement('div');
+    banner.style.cssText='margin-top:20px;padding:24px;border:1px solid var(--accent);background:rgba(168,204,0,.06);text-align:center;border-radius:6px';
+    banner.innerHTML=`
+      <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px">나머지 ${sections.length-FREE_LIMIT}개 섹션이 잠겨 있습니다</div>
+      <div style="font-size:12px;color:var(--g600);margin-bottom:14px">역할별 문서, 갈등 분석, 배포 계획을 확인하려면 Pro로 업그레이드하세요.</div>
+      <a href="/#pricing" style="display:inline-block;padding:10px 24px;background:var(--accent);color:#fff;font-weight:700;font-size:13px;text-decoration:none">Upgrade to Pro →</a>`;
+    container.appendChild(banner);
+  }
 }
 
 function closePrdDetail(){
@@ -431,6 +454,18 @@ function switchTab(tab){
   document.getElementById('tab-projects').style.display=tab==='projects'?'block':'none';
   document.getElementById('tab-settings').style.display=tab==='settings'?'block':'none';
   document.getElementById('prd-detail').style.display='none';
+}
+
+function checkAndCreateProject(){
+  if(userPlan==='free'){
+    const items=document.querySelectorAll('.project-item');
+    if(items.length>=2){
+      alert('Free 플랜은 프로젝트를 최대 2개까지 만들 수 있습니다.\nPro로 업그레이드하면 무제한으로 생성할 수 있습니다.');
+      window.location.href='/#pricing';
+      return;
+    }
+  }
+  window.location.href='app.html';
 }
 
 init();
