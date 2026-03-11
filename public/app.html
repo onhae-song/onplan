@@ -251,6 +251,20 @@ input, textarea, select { font-family: var(--kr); }
   font-family: var(--en);
 }
 
+.proj-del-btn {
+  display: none;
+  background: none;
+  border: none;
+  padding: 4px;
+  color: var(--g500);
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 3px;
+  transition: color .12s, background .12s;
+}
+.proj-del-btn:hover { color: #f87171; background: rgba(248,113,113,.1); }
+.proj-item:hover .proj-del-btn { display: flex; align-items: center; justify-content: center; }
+
 .proj-badge {
   font-size: 9px;
   font-weight: 700;
@@ -1329,7 +1343,7 @@ input, textarea, select { font-family: var(--kr); }
     </div>
 
     <!-- STEPPER -->
-    <div class="stepper">
+    <div class="stepper" id="stepper">
       <div class="step idle" id="s1" onclick="goStep(1)">
         <div class="step-circle" id="sc1">1</div>
         <span class="step-label">프로젝트 생성</span>
@@ -1716,10 +1730,47 @@ async function loadProjects() {
         <div class="proj-name">${p.name}</div>
         <div class="proj-meta">${isComplete ? 'PRD 완성' : '인터뷰 수집 중'}</div>
       </div>
-      ${badge}`;
-    div.onclick = () => selectProject(p);
+      ${badge}
+      <button class="proj-del-btn" title="삭제" data-id="${p.id}">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 2l7 7M9 2l-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>`;
+    div.onclick = (e) => {
+      if (e.target.closest('.proj-del-btn')) return;
+      selectProject(p);
+    };
+    const delBtn = div.querySelector('.proj-del-btn');
+    delBtn.onclick = (e) => { e.stopPropagation(); deleteProject(p.id, p.owner_id); };
     listEl.appendChild(div);
   });
+}
+
+
+// ═══════════════════════════════════════
+// DELETE PROJECT
+// ═══════════════════════════════════════
+async function deleteProject(id, ownerId) {
+  if (currentUser?.id !== ownerId) {
+    alert('프로젝트 소유자만 삭제할 수 있습니다.');
+    return;
+  }
+  if (!confirm('이 프로젝트를 삭제할까요? 인터뷰와 PRD도 모두 삭제됩니다.')) return;
+
+  try {
+    await sb.from('interviews').delete().eq('project_id', id);
+    await sb.from('prds').delete().eq('project_id', id);
+    const { error } = await sb.from('projects').delete().eq('id', id).eq('owner_id', currentUser.id);
+    if (error) throw new Error(error.message);
+
+    // 현재 열린 프로젝트면 초기화
+    if (currentProject?.id === id) {
+      currentProject = null;
+      document.getElementById('topbar').classList.add('hidden');
+      showView(0);
+    }
+    await loadProjects();
+  } catch(e) {
+    alert('삭제 실패: ' + e.message);
+  }
 }
 
 // ═══════════════════════════════════════
@@ -1735,7 +1786,7 @@ function goToPRD() {
 async function selectProject(p) {
   currentProject = p;
 
-  // highlight
+  // 좌패널 하이라이트
   document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
   const el = document.querySelector(`.proj-item[data-id="${p.id}"]`);
   if (el) el.classList.add('active');
@@ -1743,10 +1794,21 @@ async function selectProject(p) {
   document.getElementById('topbar').classList.remove('hidden');
   document.getElementById('proj-title').textContent = p.name;
 
-  // 항상 대시보드(view-2)로 진입
-  renderStepper(2, [1]);
-  showView(2);
-  await loadDashboard();
+  // 신규 프로젝트(방금 생성) vs 기존 프로젝트 분기
+  const isNew = p._isNew === true;
+  const stepper = document.getElementById('stepper');
+
+  if (isNew) {
+    // 신규 → 스테퍼 표시 + 프로젝트 정보 입력(view-1)
+    if (stepper) stepper.style.display = '';
+    renderStepper(1, []);
+    showView(1);
+  } else {
+    // 기존 → 스테퍼 숨기고 바로 대시보드
+    if (stepper) stepper.style.display = 'none';
+    showView(2);
+    await loadDashboard();
+  }
 }
 
 // ═══════════════════════════════════════
@@ -1805,13 +1867,14 @@ async function createProject() {
 
     if (error) throw new Error(error.message);
 
+    // 신규 플래그 설정 → selectProject에서 스테퍼 표시
+    data._isNew = true;
     currentProject = data;
     document.getElementById('proj-title').textContent = name;
 
-    // Update invite link display
-    const inviteUrl = `${window.location.origin}/app.html?code=${code}`;
-    document.getElementById('invite-link').textContent = inviteUrl;
-    document.getElementById('invite-link').dataset.url = inviteUrl;
+    // stepper 표시
+    const stepper = document.getElementById('stepper');
+    if (stepper) stepper.style.display = '';
 
     await loadProjects();
 
@@ -1823,6 +1886,7 @@ async function createProject() {
 
     renderStepper(2, [1]);
     showView(2);
+    await loadDashboard();
   } catch(e) {
     alert('저장 실패: ' + e.message);
   } finally {
@@ -1845,7 +1909,14 @@ function copyInviteLink() {
 }
 
 function goToInterview() {
-  renderStepper(3, [1,2]);
+  // 로그인 시 이름 자동 입력
+  const nameInput = document.getElementById('pt-name');
+  if (nameInput && currentUser) {
+    const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || '';
+    nameInput.value = name;
+  }
+  const stepper = document.getElementById('stepper');
+  if (stepper) stepper.style.display = 'none'; // 인터뷰 화면에서는 스테퍼 숨김
   showView(3);
 }
 
