@@ -283,7 +283,66 @@ input, textarea, select { font-family: var(--kr); }
   color: #0a0a0a;
   flex-shrink: 0;
 }
-.user-name { font-size: 12px; font-weight: 500; color: var(--g300); flex: 1; }
+.user-name { font-size: 12px; font-weight: 500; color: var(--g300); flex: 1; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px; }
+
+/* ─ User Dropdown ─ */
+.user-dropdown {
+  position: absolute;
+  bottom: 56px;
+  left: 8px;
+  right: 8px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.user-dropdown.open { display: flex; }
+.ud-header {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.ud-email { font-size: 11px; color: var(--g400); word-break:break-all; }
+.ud-plan {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 2px 8px;
+  font-size: 9px;
+  font-family: var(--en);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: var(--lime);
+  color: #0a0a0a;
+}
+.ud-plan.plan-free { background: var(--bg3); color: var(--g400); border: 1px solid var(--border); }
+.ud-plan.plan-pro  { background: var(--lime); color: #0a0a0a; }
+.ud-plan.plan-max  { background: #a78bfa; color: #0a0a0a; }
+.ud-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--g300);
+  cursor: pointer;
+  transition: background .15s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font);
+}
+.ud-item:hover { background: var(--bg3); color: var(--white); }
+.ud-item svg { flex-shrink: 0; opacity: .6; }
+.ud-item:hover svg { opacity: 1; }
+.ud-sep { height: 1px; background: var(--border); margin: 3px 0; }
+.ud-item.danger { color: var(--g500); }
+.ud-item.danger:hover { color: #f87171; background: rgba(248,113,113,.05); }
+.panel-ft { cursor: pointer; }
+.panel-ft:hover { background: var(--bg3); }
 
 /* ═══════════════════════════════════════
    MAIN
@@ -1194,19 +1253,34 @@ input, textarea, select { font-family: var(--kr); }
 
   <div class="proj-list" id="proj-list"><div style="padding:12px 14px;font-size:12px;color:var(--g500)">로딩 중...</div></div>
 
-  <div class="panel-ft" id="panel-ft" style="display:none">
-    <div class="avatar" id="user-avatar-txt">?</div>
-    <span class="user-name" id="user-name-txt">—</span>
-    <button class="panel-icon-btn" title="로그아웃" onclick="logOut()">
-      <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-        <path d="M5 1.5H2a1 1 0 00-1 1v8a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+  <!-- User dropdown -->
+  <div class="user-dropdown" id="user-dropdown">
+    <div class="ud-header">
+      <div class="ud-email" id="ud-email">—</div>
+      <span class="ud-plan plan-free" id="ud-plan-badge">FREE</span>
+    </div>
+    <button class="ud-item" onclick="openSettings()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 1v1.2M6.5 10.8V12M1 6.5h1.2M10.8 6.5H12M2.6 2.6l.85.85M9.55 9.55l.85.85M2.6 10.4l.85-.85M9.55 3.45l.85-.85" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      설정
+    </button>
+    <div class="ud-sep"></div>
+    <button class="ud-item" onclick="window.location.href='/#pricing'">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1.5 9.5l3-3 2 2 4-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      요금제 업그레이드
+    </button>
+    <div class="ud-sep"></div>
+    <button class="ud-item danger" onclick="logOut()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M5 1.5H2a1 1 0 00-1 1v8a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      로그아웃
     </button>
   </div>
-  <!-- Login prompt when not logged in -->
-  <div class="panel-ft" id="panel-login">
-    <button onclick="googleLogin()" style="width:100%;padding:8px;background:var(--lime);color:#0a0a0a;border:none;font-family:var(--en);font-weight:700;font-size:11px;cursor:pointer;">Sign in with Google</button>
+
+  <div class="panel-ft" id="panel-ft" style="display:none" onclick="toggleUserDropdown()">
+    <div class="avatar" id="user-avatar-txt">?</div>
+    <span class="user-name" id="user-name-txt">—</span>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color:var(--g500);flex-shrink:0"><path d="M3 4.5l3-3 3 3M3 7.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
+
 </div>
 
 <!-- ══════════ MAIN ══════════ -->
@@ -1490,12 +1564,16 @@ let qIdx = 0;
 // ═══════════════════════════════════════
 async function init() {
   const { data: { session } } = await sb.auth.getSession();
-  if (session?.user) setUser(session.user);
-  else showLoginState();
+  if (session?.user) {
+    await setUser(session.user);
+  } else {
+    window.location.href = '/onplan.html';
+    return;
+  }
 
   sb.auth.onAuthStateChange((ev, session) => {
     if (session?.user) setUser(session.user);
-    else showLoginState();
+    else window.location.href = '/onplan.html';
   });
 }
 
@@ -1511,6 +1589,14 @@ async function setUser(u) {
     const { data } = await sb.from('user_plans').select('plan').eq('user_id', u.id).single();
     userPlan = data?.plan || 'free';
   } catch(e) { userPlan = 'free'; }
+  // 드롭다운 정보 업데이트
+  const udEmail = document.getElementById('ud-email');
+  const udBadge = document.getElementById('ud-plan-badge');
+  if (udEmail) udEmail.textContent = u.email || '';
+  if (udBadge) {
+    udBadge.textContent = userPlan.toUpperCase();
+    udBadge.className = 'ud-plan plan-' + userPlan;
+  }
   await loadProjects();
 
   // URL 파라미터 처리: ?id=projectId (마이페이지에서 진입)
@@ -1530,18 +1616,11 @@ async function setUser(u) {
 }
 
 function showLoginState() {
-  currentUser = null;
-  document.getElementById('panel-ft').style.display = 'none';
-  document.getElementById('panel-login').style.display = 'flex';
-  document.getElementById('proj-list').innerHTML = '<div style="padding:12px 14px;font-size:12px;color:var(--g500)">로그인이 필요합니다</div>';
+  // 세션 없으면 랜딩으로 리다이렉트 (init에서 처리)
+  window.location.href = '/onplan.html';
 }
 
-async function googleLogin() {
-  await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.origin + '/app.html' }
-  });
-}
+
 
 async function logOut() {
   await sb.auth.signOut();
@@ -2271,6 +2350,29 @@ function toggleRoleDoc(docId, cardId) {
 // ═══════════════════════════════════════
 // EVENT LISTENERS
 // ═══════════════════════════════════════
+// ═══════════════════════════════════════
+// USER DROPDOWN
+// ═══════════════════════════════════════
+function toggleUserDropdown() {
+  const dd = document.getElementById('user-dropdown');
+  dd.classList.toggle('open');
+}
+
+function openSettings() {
+  document.getElementById('user-dropdown').classList.remove('open');
+  // 추후 설정 패널 구현 — 현재는 알림
+  alert('설정 기능은 준비 중입니다.');
+}
+
+// 외부 클릭 시 드롭다운 닫기
+document.addEventListener('click', (e) => {
+  const dd = document.getElementById('user-dropdown');
+  const ft = document.getElementById('panel-ft');
+  if (dd && ft && !dd.contains(e.target) && !ft.contains(e.target)) {
+    dd.classList.remove('open');
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   // Chat input
   const chatInput = document.getElementById('chatInput');
