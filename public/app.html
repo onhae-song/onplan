@@ -503,7 +503,7 @@ input, textarea, select { font-family: var(--kr); }
 .view-heading { margin-bottom: 28px; }
 .view-heading h2 {
   font-family: var(--en);
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 800;
   letter-spacing: -1px;
   color: var(--white);
@@ -511,16 +511,16 @@ input, textarea, select { font-family: var(--kr); }
   line-height: 1.15;
 }
 .view-heading h2 em { font-style: normal; color: var(--lime); }
-.view-heading p { font-size: 14px; color: var(--g300); line-height: 1.7; }
+.view-heading p { font-size: 15px; color: var(--g300); line-height: 1.7; }
 
 .fl {
   display: block;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--g400);
-  margin-bottom: 9px;
+  margin-bottom: 11px;
 }
 .req { color: var(--lime); }
 
@@ -638,29 +638,29 @@ input, textarea, select { font-family: var(--kr); }
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 16px;
+  padding: 16px 18px;
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
 }
 .m-av {
-  width: 34px; height: 34px;
+  width: 38px; height: 38px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--en);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   color: #0a0a0a;
   flex-shrink: 0;
 }
-.m-name { flex: 1; font-size: 14px; font-weight: 600; color: var(--white); }
+.m-name { flex: 1; font-size: 15px; font-weight: 600; color: var(--white); }
 .m-email { font-size: 11px; color: var(--g400); }
 .m-role {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   font-family: var(--en);
   letter-spacing: .05em;
-  padding: 4px 9px;
+  padding: 5px 10px;
   border-radius: 3px;
 }
 .role-pm     { background: var(--lime-bg); color: var(--lime); border: 1px solid var(--lime-border); }
@@ -671,7 +671,7 @@ input, textarea, select { font-family: var(--kr); }
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 16px;
+  padding: 16px 18px;
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -679,7 +679,7 @@ input, textarea, select { font-family: var(--kr); }
 }
 .link-url {
   flex: 1;
-  font-size: 13px;
+  font-size: 14px;
   font-family: var(--en);
   color: var(--g400);
   white-space: nowrap;
@@ -691,7 +691,7 @@ input, textarea, select { font-family: var(--kr); }
   background: var(--bg5);
   border: 1px solid var(--border2);
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   font-family: var(--en);
   color: var(--g300);
@@ -1568,13 +1568,13 @@ input, textarea, select { font-family: var(--kr); }
             <span class="link-url" id="invite-link" data-url="">링크 생성 중...</span>
             <button class="btn-copy" onclick="copyInviteLink()">링크 복사</button>
           </div>
-          <div style="font-size:13px;color:var(--g500);margin-top:8px">링크가 있는 누구나 로그인 후 인터뷰에 참여할 수 있습니다.</div>
+          <div style="font-size:14px;color:var(--g500);margin-top:10px">링크가 있는 누구나 로그인 후 인터뷰에 참여할 수 있습니다.</div>
         </div>
 
         <div class="field">
-          <label class="fl">완료된 인터뷰 <span id="interview-count-badge" style="font-weight:400;color:var(--g400)">0명</span></label>
+          <label class="fl">완료된 인터뷰 <span id="interview-count-badge" style="font-weight:400;color:var(--g400);font-size:13px">0명</span></label>
           <div id="interview-list" class="member-list">
-            <div style="padding:28px;text-align:center;color:var(--g500);font-size:15px">아직 완료된 인터뷰가 없습니다.</div>
+            <div style="padding:32px;text-align:center;color:var(--g500);font-size:16px">아직 완료된 인터뷰가 없습니다.</div>
           </div>
         </div>
 
@@ -2340,7 +2340,7 @@ async function loadDashboard() {
           <div class="m-av" style="background:${color};color:#0a0a0a">${initials}</div>
           <div style="flex:1">
             <div class="m-name">${iv.participant_name}</div>
-            <div style="font-size:11px;color:var(--g500);margin-top:2px">${date}</div>
+            <div style="font-size:13px;color:var(--g500);margin-top:3px">${date}</div>
           </div>
           <span class="m-role" style="background:${color}20;color:${color};border:1px solid ${color}40">${role}</span>`;
         listEl.appendChild(div);
