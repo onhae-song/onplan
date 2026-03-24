@@ -179,7 +179,7 @@ input, textarea, select { font-family: var(--kr); }
 
 .new-btn {
   margin: 0 8px 6px;
-  height: 36px;
+  height: 32px;
   padding: 0 10px;
   width: calc(100% - 16px);
   display: flex;
@@ -525,7 +525,7 @@ input, textarea, select { font-family: var(--kr); }
 
 .fi, .ft {
   width: 100%;
-  height: 36px;
+  height: 32px;
   padding: 0 13px;
   background: var(--bg3);
   border: 1px solid var(--border2);
@@ -564,7 +564,7 @@ input, textarea, select { font-family: var(--kr); }
 .btn-row { display: flex; gap: 8px; margin-top: 24px; }
 
 .btn-lime {
-  height: 36px;
+  height: 32px;
   padding: 0 20px;
   background: var(--lime);
   color: #0a0a0a;
@@ -581,7 +581,7 @@ input, textarea, select { font-family: var(--kr); }
 .btn-lime:hover { background: #e8ff5e; box-shadow: 0 4px 14px var(--lime-glow); transform: translateY(-1px); }
 
 .btn-ghost {
-  height: 36px;
+  height: 32px;
   padding: 0 16px;
   background: transparent;
   color: var(--g300);
@@ -618,7 +618,7 @@ input, textarea, select { font-family: var(--kr); }
 .invite-row .fi { flex: 1; }
 
 .role-sel {
-  height: 36px;
+  height: 32px;
   padding: 0 28px 0 12px;
   background: var(--bg3);
   border: 1px solid var(--border2);
@@ -689,7 +689,7 @@ input, textarea, select { font-family: var(--kr); }
   text-overflow: ellipsis;
 }
 .btn-copy {
-  height: 36px;
+  height: 32px;
   padding: 0 16px;
   background: var(--bg5);
   border: 1px solid var(--border2);
@@ -884,12 +884,12 @@ input, textarea, select { font-family: var(--kr); }
   font-size: 15px;
   color: var(--white);
   resize: none;
-  height: 36px;
+  height: 32px;
   line-height: 1.6;
 }
 .chat-fi::placeholder { color: var(--g500); }
 .send-btn {
-  width: 36px; height: 36px;
+  width: 32px; height: 32px;
   background: var(--lime);
   border: none;
   border-radius: 4px;
@@ -995,7 +995,7 @@ input, textarea, select { font-family: var(--kr); }
 
 .prd-actions { display: flex; gap: 6px; }
 .btn-export {
-  height: 36px;
+  height: 32px;
   padding: 0 14px;
   background: var(--bg3);
   border: 1px solid var(--border2);
@@ -1357,7 +1357,7 @@ input, textarea, select { font-family: var(--kr); }
 .trash-item-date { font-size: 14px; color: var(--g500); margin-top: 2px; font-family: var(--en); }
 .trash-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
 .btn-restore {
-  height: 36px;
+  height: 32px;
   padding: 0 14px;
   font-size: 14px;
   font-weight: 600;
@@ -1371,7 +1371,7 @@ input, textarea, select { font-family: var(--kr); }
 }
 .btn-restore:hover { color: var(--white); border-color: var(--border3); }
 .btn-hard-del {
-  height: 36px;
+  height: 32px;
   padding: 0 14px;
   font-size: 14px;
   font-weight: 600;
@@ -1590,7 +1590,7 @@ input, textarea, select { font-family: var(--kr); }
               <span style="font-size: 14px;text-transform:uppercase;letter-spacing:.08em;color:var(--lime);font-family:var(--en)">Current PRD</span>
               <div style="font-size:15px;color:var(--white);margin-top:3px" id="prd-version-label">v1 · 0개 인터뷰 기반</div>
             </div>
-            <button class="btn-ghost" style="height:36px;padding:0 14px;font-size:14px" onclick="goToPRD()">PRD 보기</button>
+            <button class="btn-ghost" style="height:32px;padding:0 14px;font-size:14px" onclick="goToPRD()">PRD 보기</button>
           </div>
         </div>
 
@@ -1627,13 +1627,13 @@ input, textarea, select { font-family: var(--kr); }
             <option value="user">실사용자</option>
             <option value="other">기타</option>
           </select>
-          <button class="btn-lime" style="height:36px;padding:0 18px;font-size:15px" onclick="startChat(document.getElementById('pt-name').value.trim()||'참여자')">인터뷰 시작</button>
+          <button class="btn-lime" style="height:32px;padding:0 18px;font-size:15px" onclick="startChat(document.getElementById('pt-name').value.trim()||'참여자')">인터뷰 시작</button>
         </div>
       </div>
 
       <div class="finish-bar hidden" id="finish-bar" style="padding:8px 24px;background:var(--lime-bg);border-bottom:1px solid var(--lime-border);align-items:center;justify-content:space-between">
         <span style="font-size:14px;color:var(--lime)">충분한 답변이 수집되었습니다.</span>
-        <button class="btn-lime" style="height:36px;padding:0 16px;font-size:14px" onclick="finishInterview()">인터뷰 완료</button>
+        <button class="btn-lime" style="height:32px;padding:0 16px;font-size:14px" onclick="finishInterview()">인터뷰 완료</button>
       </div>
 
       <div class="chat-area" id="chatArea"></div>
@@ -1720,12 +1720,6 @@ async function init() {
   if (session?.user) {
     await setUser(session.user);
   } else {
-    const pendingCode = localStorage.getItem('pending_invite_code');
-    if (pendingCode) {
-      localStorage.removeItem('pending_invite_code');
-      await handleInviteCode(pendingCode);
-      return;
-    }
     window.location.href = '/onplan.html';
     return;
   }
