@@ -486,6 +486,9 @@ input, textarea, select { font-family: var(--kr); }
 }
 .view.visible { display: flex; }
 
+.finish-bar { display: none; }
+.finish-bar:not(.hidden) { display: flex; }
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(5px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1610,7 +1613,6 @@ input, textarea, select { font-family: var(--kr); }
             <div class="live-dot"></div>
             <span>진행 중</span>
           </div>
-          <button class="btn-ghost" style="height:36px;padding:0 14px;font-size:14px" id="btn-finish" onclick="finishInterview()">인터뷰 완료 →</button>
         </div>
       </div>
 
@@ -1631,7 +1633,7 @@ input, textarea, select { font-family: var(--kr); }
         </div>
       </div>
 
-      <div class="finish-bar hidden" id="finish-bar" style="padding:8px 24px;background:var(--lime-bg);border-bottom:1px solid var(--lime-border);display:flex;align-items:center;justify-content:space-between">
+      <div class="finish-bar hidden" id="finish-bar" style="padding:8px 24px;background:var(--lime-bg);border-bottom:1px solid var(--lime-border);align-items:center;justify-content:space-between">
         <span style="font-size:14px;color:var(--lime)">충분한 답변이 수집되었습니다.</span>
         <button class="btn-lime" style="height:36px;padding:0 16px;font-size:14px" onclick="finishInterview()">인터뷰 완료</button>
       </div>
@@ -2205,9 +2207,7 @@ async function sendChat() {
   inp.style.height = 'auto';
   qIdx++;
 
-  if (qIdx >= 3) {
-    document.getElementById('finish-bar')?.classList.remove('hidden');
-  }
+
 
   addTypingIndicator();
   try {
@@ -2229,6 +2229,9 @@ async function sendChat() {
       const reply = data.reply;
       chatHistory.push({ role: 'assistant', content: reply });
       addMsg('assistant', reply);
+      if (data.is_complete) {
+        document.getElementById('finish-bar')?.classList.remove('hidden');
+      }
     } else {
       throw new Error('API error');
     }
