@@ -1007,7 +1007,7 @@ input, textarea, select { font-family: var(--kr); }
 }
 .btn-export:hover { background: var(--bg4); color: var(--white); border-color: var(--border3); }
 
-/* ─ PRD Document (demo.html style) ─ */
+/* ─ PRD Document ─ */
 .prd-doc { max-width: 100%; }
 
 .prd-section {
@@ -1040,7 +1040,6 @@ input, textarea, select { font-family: var(--kr); }
 }
 .prd-sec-body { padding: 20px 24px; }
 
-/* Section content */
 .sec-content { font-size: 13px; line-height: 1.85; color: var(--g300); }
 .sec-content h3 {
   font-size: 12px;
@@ -1068,7 +1067,6 @@ input, textarea, select { font-family: var(--kr); }
   background: var(--bg3);
 }
 
-/* Section badges */
 .sc-badge {
   font-size: 9px;
   font-weight: 700;
@@ -1081,7 +1079,6 @@ input, textarea, select { font-family: var(--kr); }
 .sc-badge-conflict { background: rgba(214,48,49,.08); color: #f87171; border: 1px solid rgba(214,48,49,.2); }
 .sc-badge-lock { background: var(--bg3); color: var(--g500); border: 1px solid var(--border); }
 
-/* Conflict thread */
 .cb-thread { margin-top: 10px; }
 .cb-thread-item {
   padding: 10px 0;
@@ -1100,7 +1097,6 @@ input, textarea, select { font-family: var(--kr); }
 .cb-thread-body { font-size: 12px; line-height: 1.7; color: var(--g300); }
 .cb-thread-body strong { color: var(--white); }
 
-/* Planner Opinion */
 .po {
   background: var(--warn-bg);
   border: 1px solid var(--warn-border);
@@ -1119,7 +1115,6 @@ input, textarea, select { font-family: var(--kr); }
 .po-body { font-size: 13px; line-height: 1.8; color: var(--g200); }
 .po-body strong { color: var(--white); font-weight: 600; }
 
-/* Conflict */
 .cb {
   background: var(--conflict-bg);
   border: 1px solid var(--conflict-border);
@@ -1181,7 +1176,6 @@ input, textarea, select { font-family: var(--kr); }
 }
 .cb-submit:hover { background: var(--white); color: #0a0a0a; }
 
-/* Comments */
 .cmt-area {
   border-top: 1px solid var(--border);
   margin-top: 18px;
@@ -1204,7 +1198,6 @@ input, textarea, select { font-family: var(--kr); }
 .cmt-time { font-size: 10px; color: var(--g500); margin-left: auto; }
 .cmt-body { font-size: 12px; line-height: 1.65; color: var(--g300); }
 
-/* AI Revision */
 .rev {
   background: var(--lime-bg);
   border: 1px solid var(--lime-border);
@@ -1237,7 +1230,6 @@ input, textarea, select { font-family: var(--kr); }
 .btn-sm-n { background: var(--bg4); color: var(--g300); border: 1px solid var(--border2); }
 .btn-sm-n:hover { background: var(--bg5); color: var(--g100); }
 
-/* Role doc cards */
 .role-doc-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1264,9 +1256,6 @@ input, textarea, select { font-family: var(--kr); }
 .rdc-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
 .rdc-desc { font-size: 11px; color: var(--g500); }
 
-/* ═══════════════════════════════════════
-   EMPTY / NO PROJECT (topbar hidden state)
-═══════════════════════════════════════ */
 .topbar.hidden { display: none; }
 
 </style>
@@ -1436,13 +1425,11 @@ input, textarea, select { font-family: var(--kr); }
     <div class="view" id="view-2">
       <div class="form-wrap" style="max-width:680px">
 
-        <!-- 인터뷰 현황 헤더 -->
         <div class="view-heading" style="margin-bottom:20px">
           <h2>인터뷰 <em>현황</em></h2>
           <p>팀원들의 인터뷰가 완료되면 PRD를 생성할 수 있습니다.</p>
         </div>
 
-        <!-- 초대 링크 -->
         <div class="field">
           <label class="fl">초대 링크</label>
           <div class="link-box">
@@ -1455,7 +1442,6 @@ input, textarea, select { font-family: var(--kr); }
           <div style="font-size:11px;color:var(--g500);margin-top:6px">링크가 있는 누구나 로그인 후 인터뷰에 참여할 수 있습니다.</div>
         </div>
 
-        <!-- 완료된 인터뷰 목록 -->
         <div class="field">
           <label class="fl">완료된 인터뷰 <span id="interview-count-badge" style="font-weight:400;color:var(--g400)">0명</span></label>
           <div id="interview-list" class="member-list">
@@ -1463,7 +1449,6 @@ input, textarea, select { font-family: var(--kr); }
           </div>
         </div>
 
-        <!-- PRD 버전 현황 (있을 때만 표시) -->
         <div id="prd-version-info" style="display:none;margin-bottom:20px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border)">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div>
@@ -1474,10 +1459,7 @@ input, textarea, select { font-family: var(--kr); }
           </div>
         </div>
 
-        <!-- 액션 버튼 -->
-        <div class="btn-row" id="dashboard-actions">
-          <!-- PM만 보임, JS로 렌더링 -->
-        </div>
+        <div class="btn-row" id="dashboard-actions"></div>
 
       </div>
     </div>
@@ -1498,7 +1480,6 @@ input, textarea, select { font-family: var(--kr); }
         </div>
       </div>
 
-      <!-- Role & Name selector (shown before chat starts) -->
       <div id="role-selector" style="padding:20px 24px;border-bottom:1px solid var(--border)">
         <div style="font-size:11px;color:var(--g500);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--en)">참여자 정보</div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -1539,26 +1520,12 @@ input, textarea, select { font-family: var(--kr); }
     <div class="view" id="view-4">
       <div class="prd-wrap">
 
-        <!-- 목차 nav -->
-        <div class="prd-nav">
+        <div class="prd-nav" id="prd-nav">
           <div class="prd-nav-title">목차</div>
-          <div class="prd-nav-item active" onclick="scrollToSec('sec-01',this)">01 요약과 배경</div>
-          <div class="prd-nav-item" onclick="scrollToSec('sec-02',this)">02 주요 사용자</div>
-          <div class="prd-nav-item" onclick="scrollToSec('sec-03',this)">03 핵심 사용자 여정</div>
-          <div class="prd-nav-item" onclick="scrollToSec('sec-04',this)">04 기능적 요구사항</div>
-          <div class="prd-nav-item" onclick="scrollToSec('sec-05',this)">05 IA 설계</div>
-          <div class="prd-nav-item" onclick="scrollToSec('sec-06',this)">06 사용자 플로우</div>
-          <div class="prd-nav-item" onclick="scrollToSec('sec-07',this)">07 배포 계획</div>
-          <div class="prd-nav-item" onclick="scrollToSec('sec-08',this)">08 리스크 및 관련 문서</div>
-          <div style="height:1px;background:var(--border);margin:12px 0;"></div>
-          <div class="prd-nav-title">역할별 문서</div>
-          <div class="prd-nav-item" onclick="scrollToSec('rd-section',this)">역할별 변환 문서</div>
+          <!-- 동적 렌더링 -->
         </div>
 
-        <!-- 본문 -->
         <div class="prd-body" id="prdBody">
-
-          <!-- 헤더 -->
           <div class="prd-top">
             <div>
               <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:4px;font-family:var(--en)">Product Requirements Document</div>
@@ -1578,11 +1545,9 @@ input, textarea, select { font-family: var(--kr); }
             </div>
           </div>
 
-          <div class="prd-doc" id="prd-detail-sections">
-            <!-- Dynamic PRD sections rendered here -->
-          </div><!-- /prd-doc -->
-        </div><!-- /prd-body -->
-      </div><!-- /prd-wrap -->
+          <div class="prd-doc" id="prd-detail-sections"></div>
+        </div>
+      </div>
     </div>
 
   </div><!-- /content -->
@@ -1598,8 +1563,8 @@ const SUPABASE_KEY = 'sb_publishable_IZ2yTDHofociWRxoYZU3pg_8MHHO9St';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
-let currentProject = null; // {id, name, status, phase}
-let userPlan = 'free'; // free | pro | max
+let currentProject = null;
+let userPlan = 'free';
 let selectedRole = '';
 let chatHistory = [];
 let isSending = false;
@@ -1609,6 +1574,14 @@ let qIdx = 0;
 // AUTH
 // ═══════════════════════════════════════
 async function init() {
+  // 초대 링크 code 보존 (로그인 전에 처리)
+  const params = new URLSearchParams(window.location.search);
+  const inviteCode = params.get('code');
+  if (inviteCode) {
+    localStorage.setItem('pending_invite_code', inviteCode);
+    window.history.replaceState({}, '', '/app.html');
+  }
+
   const { data: { session } } = await sb.auth.getSession();
   if (session?.user) {
     await setUser(session.user);
@@ -1629,12 +1602,12 @@ async function setUser(u) {
   document.getElementById('user-avatar-txt').textContent = initials;
   document.getElementById('user-name-txt').textContent = u.user_metadata?.full_name || u.email || '';
   document.getElementById('panel-ft').style.display = 'flex';
-  // 플랜 로드
+
   try {
     const { data } = await sb.from('user_plans').select('plan').eq('user_id', u.id).single();
     userPlan = data?.plan || 'free';
   } catch(e) { userPlan = 'free'; }
-  // 드롭다운 정보 업데이트
+
   const udEmail = document.getElementById('ud-email');
   const udBadge = document.getElementById('ud-plan-badge');
   if (udEmail) udEmail.textContent = u.email || '';
@@ -1642,9 +1615,18 @@ async function setUser(u) {
     udBadge.textContent = userPlan.toUpperCase();
     udBadge.className = 'ud-plan plan-' + userPlan;
   }
+
   await loadProjects();
 
-  // URL 파라미터 처리: ?id=projectId (마이페이지에서 진입)
+  // pending invite code 처리 (우선순위 1)
+  const pendingCode = localStorage.getItem('pending_invite_code');
+  if (pendingCode) {
+    localStorage.removeItem('pending_invite_code');
+    await handleInviteCode(pendingCode);
+    return;
+  }
+
+  // URL ?id= 처리 (우선순위 2)
   const params = new URLSearchParams(window.location.search);
   const targetId = params.get('id');
   if (targetId) {
@@ -1654,26 +1636,63 @@ async function setUser(u) {
       .single();
     if (p) {
       await selectProject(p);
-      // URL 정리 (히스토리 오염 방지)
       window.history.replaceState({}, '', '/app.html');
     }
   }
 }
 
-function showLoginState() {
-  // 세션 없으면 랜딩으로 리다이렉트 (init에서 처리)
-  window.location.href = '/onplan.html';
+// ═══════════════════════════════════════
+// INVITE CODE 처리
+// ═══════════════════════════════════════
+async function handleInviteCode(code) {
+  const { data: project, error } = await sb.from('projects')
+    .select('id,name,status,phase,description,invite_code,owner_id,created_at')
+    .eq('invite_code', code)
+    .single();
+
+  if (error || !project) {
+    alert('유효하지 않은 초대 링크입니다.');
+    showView(0);
+    return;
+  }
+
+  // 소유자가 자기 링크 클릭 → 대시보드로
+  if (project.owner_id === currentUser?.id) {
+    await selectProject(project);
+    return;
+  }
+
+  // 참여자 진입
+  currentProject = project;
+
+  document.getElementById('topbar').classList.remove('hidden');
+  document.getElementById('proj-title').textContent = project.name;
+  document.getElementById('stepper').style.display = 'none';
+
+  // 이름 자동 입력
+  const nameInput = document.getElementById('pt-name');
+  if (nameInput && currentUser) {
+    nameInput.value = currentUser.user_metadata?.full_name
+      || currentUser.email?.split('@')[0]
+      || '';
+  }
+
+  // 역할 select 초기화
+  const roleSelect = document.getElementById('role-select');
+  if (roleSelect) roleSelect.value = '';
+  selectedRole = '';
+
+  const metaEl = document.getElementById('ivw-meta');
+  if (metaEl) metaEl.textContent = project.name + ' · 초대 참여';
+
+  showView(3);
 }
-
-
 
 async function logOut() {
   await sb.auth.signOut();
   currentUser = null;
   currentProject = null;
-  showLoginState();
-  showView(0);
-  document.getElementById('topbar').classList.add('hidden');
+  window.location.href = '/onplan.html';
 }
 
 // ═══════════════════════════════════════
@@ -1744,7 +1763,6 @@ async function loadProjects() {
   });
 }
 
-
 // ═══════════════════════════════════════
 // DELETE PROJECT
 // ═══════════════════════════════════════
@@ -1761,7 +1779,6 @@ async function deleteProject(id, ownerId) {
     const { error } = await sb.from('projects').delete().eq('id', id).eq('owner_id', currentUser.id);
     if (error) throw new Error(error.message);
 
-    // 현재 열린 프로젝트면 초기화
     if (currentProject?.id === id) {
       currentProject = null;
       document.getElementById('topbar').classList.add('hidden');
@@ -1786,7 +1803,6 @@ function goToPRD() {
 async function selectProject(p) {
   currentProject = p;
 
-  // 좌패널 하이라이트
   document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
   const el = document.querySelector(`.proj-item[data-id="${p.id}"]`);
   if (el) el.classList.add('active');
@@ -1794,17 +1810,14 @@ async function selectProject(p) {
   document.getElementById('topbar').classList.remove('hidden');
   document.getElementById('proj-title').textContent = p.name;
 
-  // 신규 프로젝트(방금 생성) vs 기존 프로젝트 분기
   const isNew = p._isNew === true;
   const stepper = document.getElementById('stepper');
 
   if (isNew) {
-    // 신규 → 스테퍼 표시 + 프로젝트 정보 입력(view-1)
     if (stepper) stepper.style.display = '';
     renderStepper(1, []);
     showView(1);
   } else {
-    // 기존 → 스테퍼 숨기고 바로 대시보드
     if (stepper) stepper.style.display = 'none';
     showView(2);
     await loadDashboard();
@@ -1815,17 +1828,13 @@ async function selectProject(p) {
 // NEW PROJECT
 // ═══════════════════════════════════════
 function startNewProject() {
-  if (!currentUser) {
-    googleLogin();
-    return;
-  }
+  if (!currentUser) { googleLogin(); return; }
   currentProject = null;
 
   document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
   document.getElementById('topbar').classList.remove('hidden');
   document.getElementById('proj-title').textContent = '새 프로젝트';
 
-  // Clear form
   document.getElementById('pj-name').value = '';
   document.getElementById('pj-desc').value = '';
 
@@ -1839,7 +1848,6 @@ async function createProject() {
   if (!name) { alert('프로젝트명을 입력하세요.'); return; }
   if (!currentUser) { googleLogin(); return; }
 
-  // Free 플랜: 프로젝트 2개 제한
   if (userPlan === 'free') {
     const { count } = await sb.from('projects')
       .select('id', { count: 'exact', head: true })
@@ -1867,18 +1875,15 @@ async function createProject() {
 
     if (error) throw new Error(error.message);
 
-    // 신규 플래그 설정 → selectProject에서 스테퍼 표시
     data._isNew = true;
     currentProject = data;
     document.getElementById('proj-title').textContent = name;
 
-    // stepper 표시
     const stepper = document.getElementById('stepper');
     if (stepper) stepper.style.display = '';
 
     await loadProjects();
 
-    // Highlight new project in list
     setTimeout(() => {
       const el = document.querySelector(`.proj-item[data-id="${data.id}"]`);
       if (el) el.classList.add('active');
@@ -1909,14 +1914,13 @@ function copyInviteLink() {
 }
 
 function goToInterview() {
-  // 로그인 시 이름 자동 입력
   const nameInput = document.getElementById('pt-name');
   if (nameInput && currentUser) {
     const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || '';
     nameInput.value = name;
   }
   const stepper = document.getElementById('stepper');
-  if (stepper) stepper.style.display = 'none'; // 인터뷰 화면에서는 스테퍼 숨김
+  if (stepper) stepper.style.display = 'none';
   showView(3);
 }
 
@@ -1932,15 +1936,13 @@ const QUESTIONS = {
   other:  ['안녕하세요. 이 프로젝트에 대해 자유롭게 의견을 말씀해주세요. 가장 중요하다고 생각하는 게 무엇인가요?','걱정되는 부분이 있나요?','다른 분들 의견 중 동의 안 하는 부분이 있나요?','추가로 꼭 전달하고 싶은 의견이 있나요?','감사합니다. 더 하실 말씀이 있으신가요?'],
 };
 
-function selectRole(role, name) {
-  selectedRole = role;
-  const ptName = document.getElementById('pt-name').value.trim() || name || '참여자';
-  startChat(ptName);
-}
-
 function startChat(ptName) {
   if (!selectedRole) { alert('역할을 선택해주세요.'); return; }
   if (!currentProject) { alert('프로젝트를 먼저 선택하세요.'); return; }
+
+  // role-selector 숨기기
+  const rs = document.getElementById('role-selector');
+  if (rs) rs.style.display = 'none';
 
   chatHistory = [];
   qIdx = 0;
@@ -1949,7 +1951,6 @@ function startChat(ptName) {
   const area = document.getElementById('chatArea');
   area.innerHTML = '';
 
-  // First AI question
   const firstQ = QUESTIONS[selectedRole]?.[0] || '프로젝트에 대해 자유롭게 말씀해주세요.';
   chatHistory.push({ role: 'assistant', content: firstQ });
   addMsg('assistant', firstQ);
@@ -1972,7 +1973,6 @@ async function sendChat() {
     document.getElementById('finish-bar')?.classList.remove('hidden');
   }
 
-  // Try API, fallback to local questions
   addTypingIndicator();
   try {
     const payload = {
@@ -2026,33 +2026,60 @@ async function finishInterview() {
       status: 'complete'
     });
 
-    // 인터뷰 저장 완료 → 대시보드(view-2)로 복귀
     chatHistory = [];
     selectedRole = '';
-    renderStepper(2, [1]);
-    showView(2);
-    await loadDashboard(); // 인터뷰 목록 새로고침
+
+    // role-selector 다시 표시 (다음 인터뷰를 위해)
+    const rs = document.getElementById('role-selector');
+    if (rs) rs.style.display = '';
+
+    // 소유자인 경우 대시보드로, 참여자인 경우 완료 메시지
+    const isPM = currentUser && currentProject.owner_id === currentUser.id;
+    if (isPM) {
+      renderStepper(2, [1]);
+      showView(2);
+      await loadDashboard();
+    } else {
+      // 참여자 완료 화면
+      showInterviewComplete();
+    }
   } catch(e) {
     alert('저장 실패: ' + e.message);
-    if (btn) { btn.textContent = '인터뷰 완료'; btn.disabled = false; }
+    if (btn) { btn.textContent = '인터뷰 완료 →'; btn.disabled = false; }
   } finally {
     if (btn) { btn.textContent = '인터뷰 완료 →'; btn.disabled = false; }
   }
 }
 
+function showInterviewComplete() {
+  const area = document.getElementById('chatArea');
+  if (area) {
+    area.innerHTML = `
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:60px 40px">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="color:var(--lime)">
+          <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 20l5 5 11-11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div style="font-family:var(--en);font-size:16px;font-weight:800;color:var(--white);letter-spacing:-.3px">인터뷰 완료</div>
+        <div style="font-size:13px;color:var(--g400);line-height:1.7;max-width:280px">소중한 의견을 남겨주셨습니다.<br>PM이 PRD를 생성하면 결과를 확인할 수 있습니다.</div>
+      </div>`;
+  }
+  const chatIn = document.querySelector('.chat-in');
+  if (chatIn) chatIn.style.display = 'none';
+  const finishBar = document.getElementById('finish-bar');
+  if (finishBar) finishBar.style.display = 'none';
+}
 
 // ═══════════════════════════════════════
-// DASHBOARD — 인터뷰 현황 + PRD 생성 버튼
+// DASHBOARD
 // ═══════════════════════════════════════
 async function loadDashboard() {
   if (!currentProject) return;
 
-  // 초대 링크 업데이트
   const inviteUrl = window.location.origin + '/app.html?code=' + (currentProject.invite_code || '');
   const linkEl = document.getElementById('invite-link');
   if (linkEl) { linkEl.textContent = inviteUrl; linkEl.dataset.url = inviteUrl; }
 
-  // 인터뷰 목록 로드
   const { data: interviews } = await sb.from('interviews')
     .select('id, participant_name, role, created_at, status')
     .eq('project_id', currentProject.id)
@@ -2090,7 +2117,6 @@ async function loadDashboard() {
     }
   }
 
-  // PRD 버전 현황
   const { data: latestPrd } = await sb.from('prds')
     .select('version, interview_count, created_at')
     .eq('project_id', currentProject.id)
@@ -2107,32 +2133,28 @@ async function loadDashboard() {
     versionInfo.style.display = 'none';
   }
 
-  // PM 여부 판별 → 액션 버튼
   const isPM = currentUser && currentProject.owner_id === currentUser.id;
   const actionsEl = document.getElementById('dashboard-actions');
   if (actionsEl) {
     actionsEl.innerHTML = '';
     if (isPM) {
       const hasPrd = !!latestPrd;
-      const btnLabel = hasPrd ? 'PRD 재생성' : 'PRD 생성하기';
       const btnDisabled = count === 0;
       const btn = document.createElement('button');
       btn.className = 'btn-lime';
       btn.disabled = btnDisabled;
       btn.style.opacity = btnDisabled ? '0.4' : '1';
       btn.style.cursor = btnDisabled ? 'not-allowed' : 'pointer';
-      btn.innerHTML = btnLabel + (hasPrd ? ' <span style="font-size:10px;font-weight:400;margin-left:4px">새 버전 생성</span>' : '');
+      btn.innerHTML = (hasPrd ? 'PRD 재생성' : 'PRD 생성하기') + (hasPrd ? ' <span style="font-size:10px;font-weight:400;margin-left:4px">새 버전 생성</span>' : '');
       btn.onclick = () => generatePRD(interviews, latestPrd);
       actionsEl.appendChild(btn);
 
-      // 인터뷰 하기 버튼 (PM도 인터뷰 가능)
       const interviewBtn = document.createElement('button');
       interviewBtn.className = 'btn-ghost';
       interviewBtn.textContent = '내 인터뷰 하기';
       interviewBtn.onclick = goToInterview;
       actionsEl.appendChild(interviewBtn);
     } else {
-      // 참여자 — 인터뷰 버튼만
       const btn = document.createElement('button');
       btn.className = 'btn-lime';
       btn.textContent = '인터뷰 참여하기';
@@ -2143,17 +2165,15 @@ async function loadDashboard() {
 }
 
 // ═══════════════════════════════════════
-// PRD 생성 (버전 관리)
+// PRD 생성
 // ═══════════════════════════════════════
 async function generatePRD(interviews, latestPrd) {
   if (!currentProject || !interviews || interviews.length === 0) return;
 
-  // 생성 중 상태
   const actionsEl = document.getElementById('dashboard-actions');
   if (actionsEl) actionsEl.innerHTML = '<div style="font-size:13px;color:var(--g400);padding:12px 0">PRD 생성 중... (10~20초)</div>';
 
   try {
-    // 전체 인터뷰 메시지 로드
     const { data: fullInterviews } = await sb.from('interviews')
       .select('participant_name, role, messages')
       .eq('project_id', currentProject.id)
@@ -2177,7 +2197,6 @@ async function generatePRD(interviews, latestPrd) {
     const newVersion = (latestPrd?.version || 0) + 1;
     const interviewedBy = fullInterviews.map(iv => ({ name: iv.participant_name, role: iv.role }));
 
-    // 새 버전으로 INSERT (upsert 아님)
     const { error } = await sb.from('prds').insert({
       project_id: currentProject.id,
       sections: data.sections,
@@ -2191,12 +2210,10 @@ async function generatePRD(interviews, latestPrd) {
     });
     if (error) throw new Error(error.message);
 
-    // projects 상태 업데이트
     await sb.from('projects').update({ status: 'complete' }).eq('id', currentProject.id);
     currentProject.status = 'complete';
     await loadProjects();
 
-    // PRD 뷰로 이동
     renderStepper(4, [1,2,3]);
     showView(4);
     loadAndRenderPRD(currentProject.id);
@@ -2208,76 +2225,14 @@ async function generatePRD(interviews, latestPrd) {
 }
 
 // ═══════════════════════════════════════
-// PRD GENERATION & SAVE
+// PRD 로드 & 렌더링
 // ═══════════════════════════════════════
-async function generateAndSavePRD() {
-  renderStepper(4, [1,2,3]);
-  showView(4);
-
-  const container = document.getElementById('prd-detail-sections');
-  if (container) {
-    container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">PRD 생성 중...<br><span style="font-size:11px;margin-top:6px;display:block">10~20초 소요됩니다</span></div>';
-  }
-
-  let sections = null;
-  try {
-    // DB에서 해당 프로젝트의 전체 인터뷰 로그 조합
-    const { data: allInterviews } = await sb.from('interviews')
-      .select('participant_name, role, messages')
-      .eq('project_id', currentProject.id)
-      .order('created_at', { ascending: true });
-
-    let combinedLog = '';
-    if (allInterviews && allInterviews.length > 0) {
-      combinedLog = allInterviews.map(iv => {
-        const roleLabel = iv.participant_name + ' (' + iv.role + ')';
-        const msgs = (iv.messages || []).map(m => (m.role === 'user' ? roleLabel + ': ' : 'AI: ') + m.content).join('\n');
-        return '--- ' + roleLabel + ' 인터뷰 ---\n' + msgs;
-      }).join('\n\n');
-    } else {
-      // fallback: 현재 세션 chatHistory
-      combinedLog = chatHistory.map(m => (m.role === 'user' ? 'User: ' : 'AI: ') + m.content).join('\n');
-    }
-
-    const resp = await fetch('/api/prd', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ projectName: currentProject.name, projectDesc: '', interviewLog: combinedLog, lang: 'ko' })
-    });
-    if (resp.ok) {
-      const data = await resp.json();
-      if (data.sections && Array.isArray(data.sections)) sections = data.sections;
-    }
-  } catch(e) {
-    console.error('PRD API fail:', e);
-  }
-
-  if (sections && currentProject) {
-    await sb.from('prds').upsert(
-      { project_id: currentProject.id, sections },
-      { onConflict: 'project_id' }
-    );
-    await sb.from('projects').update({ status: 'complete' }).eq('id', currentProject.id);
-    currentProject.status = 'complete';
-    await loadProjects();
-    // Highlight
-    setTimeout(() => {
-      const el = document.querySelector(`.proj-item[data-id="${currentProject.id}"]`);
-      if (el) { el.classList.add('active'); }
-    }, 300);
-  }
-
-  if (sections) renderPRDSections(sections, container);
-  else if (container) container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">PRD 생성에 실패했습니다.<br>잠시 후 다시 시도해주세요.</div>';
-}
-
 async function loadAndRenderPRD(projectId) {
   const container = document.getElementById('prd-detail-sections');
   if (!container) return;
   container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">불러오는 중...</div>';
 
   try {
-    // 최신 버전 PRD 로드
     const { data, error } = await sb.from('prds')
       .select('sections, opinions, conflicts, role_docs, version, interview_count, interviewed_by, created_at')
       .eq('project_id', projectId)
@@ -2290,7 +2245,6 @@ async function loadAndRenderPRD(projectId) {
       return;
     }
 
-    // PRD 헤더 업데이트
     const titleEl = document.getElementById('prd-doc-title');
     const metaEl = document.getElementById('prd-doc-meta');
     if (titleEl) titleEl.textContent = currentProject?.name || '';
@@ -2302,7 +2256,6 @@ async function loadAndRenderPRD(projectId) {
         + (names ? ' (' + names + ')' : '');
     }
 
-    // sections만이 아닌 전체 prdData 전달
     renderPRDSections(data, container);
   } catch(e) {
     container.innerHTML = '<div style="padding:60px;text-align:center;color:var(--g400);font-size:13px;">오류: ' + e.message + '</div>';
@@ -2313,15 +2266,41 @@ function renderPRDSections(prdData, container) {
   if (!container) return;
   container.innerHTML = '';
 
-  // prdData는 { sections, opinions, conflicts, revisions, role_docs } 또는 배열(하위호환)
   const sections = Array.isArray(prdData) ? prdData : (prdData.sections || []);
   const opinions = Array.isArray(prdData) ? {} : (prdData.opinions || {});
   const conflicts = Array.isArray(prdData) ? {} : (prdData.conflicts || {});
   const revisions = Array.isArray(prdData) ? {} : (prdData.revisions || {});
-  const role_docs = Array.isArray(prdData) ? {} : (prdData.role_docs || {});
+  const role_docs  = Array.isArray(prdData) ? {} : (prdData.role_docs || {});
 
   const canViewAll = userPlan !== 'free';
   const FREE_LIMIT = 3;
+
+  // PRD nav 동적 렌더링
+  const navEl = document.getElementById('prd-nav');
+  if (navEl) {
+    navEl.innerHTML = '<div class="prd-nav-title">목차</div>';
+    sections.forEach((s, i) => {
+      const item = document.createElement('div');
+      item.className = 'prd-nav-item' + (i === 0 ? ' active' : '');
+      item.textContent = s.num + ' ' + s.title;
+      item.onclick = function() { scrollToSec('sec-' + s.num, this); };
+      navEl.appendChild(item);
+    });
+    if (canViewAll && role_docs && Object.keys(role_docs).length > 0) {
+      const sep = document.createElement('div');
+      sep.style.cssText = 'height:1px;background:var(--border);margin:12px 0';
+      navEl.appendChild(sep);
+      const rdTitle = document.createElement('div');
+      rdTitle.className = 'prd-nav-title';
+      rdTitle.textContent = '역할별 문서';
+      navEl.appendChild(rdTitle);
+      const rdItem = document.createElement('div');
+      rdItem.className = 'prd-nav-item';
+      rdItem.textContent = '역할별 변환 문서';
+      rdItem.onclick = function() { scrollToSec('rd-section', this); };
+      navEl.appendChild(rdItem);
+    }
+  }
 
   sections.forEach((s, i) => {
     const locked = !canViewAll && i >= FREE_LIMIT;
@@ -2331,7 +2310,6 @@ function renderPRDSections(prdData, container) {
     sec.id = 'sec-' + s.num;
     sec.style.animationDelay = (i * 0.06) + 's';
 
-    // 섹션 헤더 뱃지
     let badge = '';
     if (locked) badge = '<span class="sc-badge sc-badge-lock">TEAM</span>';
     else if (hasConflict) badge = '<span class="sc-badge sc-badge-conflict">ISSUE</span>';
@@ -2358,12 +2336,10 @@ function renderPRDSections(prdData, container) {
     } else {
       html += `<div class="prd-sec-body">`;
 
-      // ONPLAN OPINION
       if (opinions[s.num]) {
         html += `<div class="po"><div class="po-title">ONPLAN OPINION</div><div class="po-body">${opinions[s.num]}</div></div>`;
       }
 
-      // OPEN ISSUE (충돌)
       if (hasConflict && conflicts[s.num]) {
         const cf = conflicts[s.num];
         const cfId = 'cf-' + s.num;
@@ -2383,17 +2359,15 @@ function renderPRDSections(prdData, container) {
         </div>`;
       }
 
-      // 본문
       html += `<div class="sec-content">${s.body || ''}</div>`;
 
-      // ONPLAN REVISION (수정 제안)
       if (revisions[s.num]) {
         html += `<div class="rev">
           <div class="rev-title">ONPLAN REVISION</div>
           <div class="rev-body">${revisions[s.num]}</div>
           <div class="rev-actions">
-            <button class="btn-sm btn-sm-y" onclick="this.closest('.rev').innerHTML='<div style=\'padding:10px;font-size:12px;color:var(--lime)\'>반영되었습니다.</div>'">승인</button>
-            <button class="btn-sm btn-sm-n" onclick="this.closest('.rev').innerHTML='<div style=\'padding:10px;font-size:12px;color:var(--g500)\'>거부되었습니다.</div>'">거부</button>
+            <button class="btn-sm btn-sm-y" onclick="this.closest('.rev').innerHTML='<div style=\\'padding:10px;font-size:12px;color:var(--lime)\\'>반영되었습니다.</div>'">승인</button>
+            <button class="btn-sm btn-sm-n" onclick="this.closest('.rev').innerHTML='<div style=\\'padding:10px;font-size:12px;color:var(--g500)\\'>거부되었습니다.</div>'">거부</button>
           </div>
         </div>`;
       }
@@ -2405,7 +2379,6 @@ function renderPRDSections(prdData, container) {
     container.appendChild(sec);
   });
 
-  // Free 업그레이드 배너
   if (!canViewAll && sections.length > FREE_LIMIT) {
     const banner = document.createElement('div');
     banner.style.cssText = 'margin-top:20px;padding:28px;border:1px solid var(--lime-border);background:var(--lime-bg);text-align:center';
@@ -2415,7 +2388,6 @@ function renderPRDSections(prdData, container) {
     container.appendChild(banner);
   }
 
-  // 역할별 문서 렌더링
   if (canViewAll && role_docs && Object.keys(role_docs).length > 0) {
     renderRoleDocs(role_docs, container);
   }
@@ -2432,7 +2404,6 @@ function submitIssueComment(cfId, secNum) {
   userItem.innerHTML = `<div class="cb-thread-label is-user">YOUR OPINION</div><div class="cb-thread-body">${t}</div>`;
   thread.appendChild(userItem);
   inp.value = '';
-  // AI 답변 (demoReply 또는 기본)
   setTimeout(() => {
     const aiItem = document.createElement('div');
     aiItem.className = 'cb-thread-item';
@@ -2451,6 +2422,7 @@ function renderRoleDocs(role_docs, container) {
   ];
 
   const wrapper = document.createElement('div');
+  wrapper.id = 'rd-section';
   wrapper.style.cssText = 'margin-top:32px;border-top:1px solid var(--border);padding-top:24px';
 
   const heading = document.createElement('div');
@@ -2485,25 +2457,27 @@ function renderRoleDocs(role_docs, container) {
     panels[r.key] = panel;
   });
 
-  // 탭 클릭 핸들러
   tabs.addEventListener('click', e => {
     const btn = e.target.closest('button[data-role]');
     if (!btn) return;
     Object.keys(panels).forEach(k => {
       panels[k].style.display = k === btn.dataset.role ? 'block' : 'none';
     });
-    tabs.querySelectorAll('button').forEach(b => b.style.background = '');
+    tabs.querySelectorAll('button').forEach(b => {
+      b.style.background = '';
+      b.style.color = '';
+      b.style.borderColor = '';
+    });
     btn.style.background = 'var(--bg4)';
     btn.style.color = 'var(--lime)';
-    btn.style.borderColor = 'var(--lime)';
+    btn.style.borderColor = 'var(--lime-border)';
   });
 
-  // 첫 탭 활성화
   const firstBtn = tabs.querySelector('button[data-role]');
   if (firstBtn) {
     firstBtn.style.background = 'var(--bg4)';
     firstBtn.style.color = 'var(--lime)';
-    firstBtn.style.borderColor = 'var(--lime)';
+    firstBtn.style.borderColor = 'var(--lime-border)';
   }
 
   wrapper.appendChild(tabs);
@@ -2570,6 +2544,7 @@ function renderStepper(active, done) {
 }
 
 function goStep(n) {
+  if (!currentProject) return;
   if (n === 1) { startNewProject(); return; }
   const done = [];
   for (let i = 1; i < n; i++) done.push(i);
@@ -2584,7 +2559,7 @@ function showView(n) {
 }
 
 // ═══════════════════════════════════════
-// PRD NAV & ROLE DOCS
+// PRD NAV
 // ═══════════════════════════════════════
 function scrollToSec(id, el) {
   document.querySelectorAll('.prd-nav-item').forEach(i => i.classList.remove('active'));
@@ -2594,17 +2569,6 @@ function scrollToSec(id, el) {
   if (target && body) body.scrollTo({ top: target.offsetTop - 16, behavior: 'smooth' });
 }
 
-function toggleRoleDoc(docId, cardId) {
-  const doc  = document.getElementById(docId);
-  const card = document.getElementById(cardId);
-  const isOpen = doc.style.display !== 'none';
-  doc.style.display  = isOpen ? 'none' : 'block';
-  if (card) card.classList.toggle('open', !isOpen);
-}
-
-// ═══════════════════════════════════════
-// EVENT LISTENERS
-// ═══════════════════════════════════════
 // ═══════════════════════════════════════
 // USER DROPDOWN
 // ═══════════════════════════════════════
@@ -2615,11 +2579,9 @@ function toggleUserDropdown() {
 
 function openSettings() {
   document.getElementById('user-dropdown').classList.remove('open');
-  // 추후 설정 패널 구현 — 현재는 알림
   alert('설정 기능은 준비 중입니다.');
 }
 
-// 외부 클릭 시 드롭다운 닫기 (input/textarea 포커스는 방해하지 않음)
 document.addEventListener('click', (e) => {
   if (e.target.closest('input, textarea, select')) return;
   const dd = document.getElementById('user-dropdown');
@@ -2629,8 +2591,10 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// ═══════════════════════════════════════
+// EVENT LISTENERS
+// ═══════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  // Chat input
   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendBtn');
   if (sendBtn) sendBtn.addEventListener('click', sendChat);
@@ -2640,9 +2604,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Copy link — btn-copy는 HTML onclick으로 처리
-
-  // Respondent tabs
   document.querySelectorAll('.rtab').forEach(tab => {
     tab.addEventListener('click', function() {
       document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
@@ -2650,14 +2611,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // blink animation
   const style = document.createElement('style');
   style.textContent = '@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}';
   document.head.appendChild(style);
 
   init();
 });
-
 </script>
 </body>
 </html>
