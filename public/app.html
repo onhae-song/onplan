@@ -212,7 +212,7 @@ input, textarea, select { font-family: var(--kr); }
   margin-bottom: 1px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   position: relative;
 }
 .proj-item:hover { background: var(--bg3); }
@@ -226,14 +226,7 @@ input, textarea, select { font-family: var(--kr); }
   border-radius: 0 2px 2px 0;
 }
 
-.proj-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.dot-active { background: var(--lime); box-shadow: 0 0 5px var(--lime); }
-.dot-done   { background: var(--green); }
-.dot-idle   { background: var(--g500); }
+.proj-dot { display: none; }
 
 .proj-info { flex: 1; min-width: 0; }
 .proj-name {
@@ -267,13 +260,15 @@ input, textarea, select { font-family: var(--kr); }
 .proj-item:hover .proj-del-btn { display: flex; align-items: center; justify-content: center; }
 
 .proj-badge {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 700;
   font-family: var(--en);
   letter-spacing: .04em;
-  padding: 2px 6px;
+  padding: 3px 8px;
   border-radius: 3px;
   flex-shrink: 0;
+  min-width: 42px;
+  text-align: center;
 }
 .badge-on     { background: var(--lime-bg); color: var(--lime); border: 1px solid var(--lime-border); }
 .badge-done   { background: var(--green-bg); color: var(--green); }
@@ -1981,12 +1976,11 @@ async function loadProjects() {
     div.className = 'proj-item';
     div.dataset.id = p.id;
     div.innerHTML = `
-      <div class="proj-dot ${dotClass}"></div>
+      ${badge}
       <div class="proj-info">
         <div class="proj-name">${p.name}</div>
         <div class="proj-meta">${isComplete ? 'PRD 완성' : '인터뷰 수집 중'}</div>
       </div>
-      ${badge}
       <button class="proj-del-btn" title="삭제" data-id="${p.id}">
         <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 2l7 7M9 2l-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
       </button>`;
