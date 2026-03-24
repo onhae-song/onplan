@@ -179,7 +179,8 @@ input, textarea, select { font-family: var(--kr); }
 
 .new-btn {
   margin: 0 8px 6px;
-  padding: 8px 10px;
+  height: 36px;
+  padding: 0 10px;
   width: calc(100% - 16px);
   display: flex;
   align-items: center;
@@ -526,11 +527,12 @@ input, textarea, select { font-family: var(--kr); }
 
 .fi, .ft {
   width: 100%;
-  padding: 11px 13px;
+  height: 36px;
+  padding: 0 13px;
   background: var(--bg3);
   border: 1px solid var(--border2);
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--white);
   outline: none;
   transition: border-color .15s, box-shadow .15s;
@@ -540,7 +542,7 @@ input, textarea, select { font-family: var(--kr); }
   box-shadow: 0 0 0 2px var(--lime-glow);
 }
 .fi::placeholder, .ft::placeholder { color: var(--g500); }
-.ft { resize: none; line-height: 1.65; }
+.ft { height: auto !important; resize: none; line-height: 1.65; }
 
 .field { margin-bottom: 24px; }
 
@@ -564,13 +566,14 @@ input, textarea, select { font-family: var(--kr); }
 .btn-row { display: flex; gap: 8px; margin-top: 24px; }
 
 .btn-lime {
-  padding: 10px 20px;
+  height: 36px;
+  padding: 0 20px;
   background: var(--lime);
   color: #0a0a0a;
   border: none;
   border-radius: var(--radius-sm);
   font-family: var(--en);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -580,12 +583,13 @@ input, textarea, select { font-family: var(--kr); }
 .btn-lime:hover { background: #e8ff5e; box-shadow: 0 4px 14px var(--lime-glow); transform: translateY(-1px); }
 
 .btn-ghost {
-  padding: 10px 16px;
+  height: 36px;
+  padding: 0 16px;
   background: transparent;
   color: var(--g300);
   border: 1px solid var(--border2);
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   transition: all .15s;
 }
@@ -616,11 +620,12 @@ input, textarea, select { font-family: var(--kr); }
 .invite-row .fi { flex: 1; }
 
 .role-sel {
-  padding: 11px 12px;
+  height: 36px;
+  padding: 0 28px 0 12px;
   background: var(--bg3);
   border: 1px solid var(--border2);
   border-radius: var(--radius-sm);
-  font-size: 13px;
+  font-size: 15px;
   color: var(--g300);
   outline: none;
   min-width: 100px;
@@ -628,7 +633,6 @@ input, textarea, select { font-family: var(--kr); }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
-  padding-right: 28px;
   cursor: pointer;
 }
 .role-sel option { background: var(--bg3); }
@@ -687,7 +691,8 @@ input, textarea, select { font-family: var(--kr); }
   text-overflow: ellipsis;
 }
 .btn-copy {
-  padding: 5px 10px;
+  height: 36px;
+  padding: 0 14px;
   background: var(--bg5);
   border: 1px solid var(--border2);
   border-radius: 3px;
@@ -704,7 +709,7 @@ input, textarea, select { font-family: var(--kr); }
    VIEW 3 — AI INTERVIEW
 ═══════════════════════════════════════ */
 .interview-hd {
-  padding: 14px 24px;
+  padding: 18px 28px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -712,14 +717,14 @@ input, textarea, select { font-family: var(--kr); }
   flex-shrink: 0;
   background: var(--bg2);
 }
-.ivw-title { font-size: 14px; font-weight: 700; color: var(--white); }
-.ivw-meta  { font-size: 10px; color: var(--g400); margin-top: 2px; font-family: var(--en); }
+.ivw-title { font-size: 16px; font-weight: 700; color: var(--white); }
+.ivw-meta  { font-size: 13px; color: var(--g400); margin-top: 3px; font-family: var(--en); }
 
 .live-badge {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 10px;
+  font-size: 12px;
   font-family: var(--en);
   font-weight: 700;
   color: var(--g300);
@@ -771,10 +776,10 @@ input, textarea, select { font-family: var(--kr); }
 .chat-area {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 24px;
+  padding: 24px 28px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   background: var(--bg);
 }
 
@@ -783,11 +788,11 @@ input, textarea, select { font-family: var(--kr); }
 .msg.user { align-self: flex-end; flex-direction: row-reverse; max-width: 78%; }
 
 .msg-av {
-  width: 28px; height: 28px;
+  width: 34px; height: 34px;
   border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: center;
   font-family: var(--en);
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 800;
   flex-shrink: 0;
   margin-top: 2px;
@@ -804,7 +809,7 @@ input, textarea, select { font-family: var(--kr); }
 
 .msg-inner { display: flex; flex-direction: column; gap: 3px; }
 .msg-sender {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -815,8 +820,8 @@ input, textarea, select { font-family: var(--kr); }
 
 .bubble {
   padding: 10px 13px;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.75;
   border-radius: var(--radius-sm);
 }
 .msg.ai   .bubble {
@@ -854,7 +859,7 @@ input, textarea, select { font-family: var(--kr); }
 
 /* chat input */
 .chat-in {
-  padding: 12px 24px 16px;
+  padding: 16px 28px 20px;
   border-top: 1px solid var(--border);
   flex-shrink: 0;
   background: var(--bg2);
@@ -877,7 +882,7 @@ input, textarea, select { font-family: var(--kr); }
   background: transparent;
   border: none;
   outline: none;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--white);
   resize: none;
   height: 36px;
@@ -885,7 +890,7 @@ input, textarea, select { font-family: var(--kr); }
 }
 .chat-fi::placeholder { color: var(--g500); }
 .send-btn {
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   background: var(--lime);
   border: none;
   border-radius: 4px;
@@ -991,11 +996,12 @@ input, textarea, select { font-family: var(--kr); }
 
 .prd-actions { display: flex; gap: 6px; }
 .btn-export {
-  padding: 7px 12px;
+  height: 36px;
+  padding: 0 14px;
   background: var(--bg3);
   border: 1px solid var(--border2);
   border-radius: var(--radius-sm);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   font-family: var(--en);
   color: var(--g300);
@@ -1350,8 +1356,9 @@ input, textarea, select { font-family: var(--kr); }
 .trash-item-date { font-size: 11px; color: var(--g500); margin-top: 2px; font-family: var(--en); }
 .trash-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
 .btn-restore {
-  padding: 5px 10px;
-  font-size: 11px;
+  height: 36px;
+  padding: 0 14px;
+  font-size: 13px;
   font-weight: 600;
   font-family: var(--en);
   background: var(--bg5);
@@ -1363,8 +1370,9 @@ input, textarea, select { font-family: var(--kr); }
 }
 .btn-restore:hover { color: var(--white); border-color: var(--border3); }
 .btn-hard-del {
-  padding: 5px 10px;
-  font-size: 11px;
+  height: 36px;
+  padding: 0 14px;
+  font-size: 13px;
   font-weight: 600;
   font-family: var(--en);
   background: transparent;
@@ -1584,7 +1592,7 @@ input, textarea, select { font-family: var(--kr); }
               <span style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--lime);font-family:var(--en)">Current PRD</span>
               <div style="font-size:15px;color:var(--white);margin-top:3px" id="prd-version-label">v1 · 0개 인터뷰 기반</div>
             </div>
-            <button class="btn-ghost" style="font-size:11px;padding:5px 12px" onclick="goToPRD()">PRD 보기 →</button>
+            <button class="btn-ghost" style="height:36px;padding:0 14px;font-size:14px" onclick="goToPRD()">PRD 보기 →</button>
           </div>
         </div>
 
@@ -1605,15 +1613,15 @@ input, textarea, select { font-family: var(--kr); }
             <div class="live-dot"></div>
             <span>진행 중</span>
           </div>
-          <button class="btn-ghost" style="padding:5px 10px;font-size:11px" id="btn-finish" onclick="finishInterview()">인터뷰 완료 →</button>
+          <button class="btn-ghost" style="height:36px;padding:0 14px;font-size:14px" id="btn-finish" onclick="finishInterview()">인터뷰 완료 →</button>
         </div>
       </div>
 
-      <div id="role-selector" style="padding:20px 24px;border-bottom:1px solid var(--border)">
-        <div style="font-size:11px;color:var(--g500);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--en)">참여자 정보</div>
+      <div id="role-selector" style="padding:24px 28px;border-bottom:1px solid var(--border)">
+        <div style="font-size:13px;color:var(--g500);margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--en)">참여자 정보</div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <input type="text" id="pt-name" class="fi" placeholder="참여자 이름" style="max-width:180px">
-          <select id="role-select" class="fi" style="max-width:160px" onchange="selectedRole=this.value">
+          <input type="text" id="pt-name" class="fi" placeholder="참여자 이름" style="max-width:200px;font-size:15px">
+          <select id="role-select" class="fi" style="max-width:180px;font-size:15px" onchange="selectedRole=this.value">
             <option value="">역할 선택</option>
             <option value="ceo">대표 / PM</option>
             <option value="dev">개발자</option>
@@ -1622,13 +1630,13 @@ input, textarea, select { font-family: var(--kr); }
             <option value="user">실사용자</option>
             <option value="other">기타</option>
           </select>
-          <button class="btn-lime" style="padding:8px 18px;font-size:12px" onclick="startChat(document.getElementById('pt-name').value.trim()||'참여자')">인터뷰 시작</button>
+          <button class="btn-lime" style="height:36px;padding:0 18px;font-size:15px" onclick="startChat(document.getElementById('pt-name').value.trim()||'참여자')">인터뷰 시작</button>
         </div>
       </div>
 
       <div class="finish-bar hidden" id="finish-bar" style="padding:8px 24px;background:var(--lime-bg);border-bottom:1px solid var(--lime-border);display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:12px;color:var(--lime)">충분한 답변이 수집되었습니다.</span>
-        <button class="btn-lime" style="padding:6px 14px;font-size:11px" onclick="finishInterview()">PRD 생성하기 →</button>
+        <span style="font-size:14px;color:var(--lime)">충분한 답변이 수집되었습니다.</span>
+        <button class="btn-lime" style="height:36px;padding:0 16px;font-size:14px" onclick="finishInterview()">PRD 생성하기 →</button>
       </div>
 
       <div class="chat-area" id="chatArea"></div>
