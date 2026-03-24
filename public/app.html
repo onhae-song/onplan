@@ -672,25 +672,25 @@ input, textarea, select { font-family: var(--kr); }
 .link-box {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 16px 18px;
+  gap: 10px;
+  padding: 12px 14px;
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  margin-top: 16px;
+  margin-top: 8px;
 }
 .link-url {
   flex: 1;
-  font-size: 14px;
+  font-size: 15px;
   font-family: var(--en);
-  color: var(--g400);
+  color: var(--g300);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .btn-copy {
   height: 36px;
-  padding: 0 14px;
+  padding: 0 16px;
   background: var(--bg5);
   border: 1px solid var(--border2);
   border-radius: 3px;
@@ -700,6 +700,7 @@ input, textarea, select { font-family: var(--kr); }
   color: var(--g300);
   flex-shrink: 0;
   transition: all .12s;
+  cursor: pointer;
 }
 .btn-copy:hover { color: var(--white); border-color: var(--border3); }
 
@@ -1571,7 +1572,7 @@ input, textarea, select { font-family: var(--kr); }
             <span class="link-url" id="invite-link" data-url="">링크 생성 중...</span>
             <button class="btn-copy" onclick="copyInviteLink()">링크 복사</button>
           </div>
-          <div style="font-size:14px;color:var(--g500);margin-top:10px">링크가 있는 누구나 로그인 후 인터뷰에 참여할 수 있습니다.</div>
+          <div style="font-size:15px;color:var(--g500);margin-top:8px">링크가 있는 누구나 로그인 후 인터뷰에 참여할 수 있습니다.</div>
         </div>
 
         <div class="field">
