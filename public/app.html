@@ -134,6 +134,70 @@ input, textarea, select { font-family: var(--kr); }
   flex-direction: column;
   overflow: hidden;
   flex-shrink: 0;
+  transition: width .22s ease, min-width .22s ease;
+  position: relative;
+  z-index: 50;
+}
+#panel.collapsed {
+  width: 0;
+  min-width: 0;
+  border-right: none;
+}
+#panel.collapsed > * { opacity: 0; pointer-events: none; }
+
+/* 패널 토글 버튼 — 패널 바깥에 고정 */
+#panel-toggle {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 200;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  color: var(--g400);
+  cursor: pointer;
+  transition: all .12s;
+}
+#panel-toggle:hover { background: var(--bg3); color: var(--g200); }
+#panel-toggle.open { left: calc(var(--panel-w) + 14px); }
+
+/* 모바일 오버레이 */
+#panel-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 40;
+  backdrop-filter: blur(2px);
+}
+#panel-overlay.visible { display: block; }
+
+/* 모바일: 패널 overlay 방식 */
+@media (max-width: 768px) {
+  #panel {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 50;
+    width: var(--panel-w) !important;
+    min-width: var(--panel-w) !important;
+    transform: translateX(0);
+    transition: transform .22s ease;
+  }
+  #panel.collapsed {
+    width: var(--panel-w) !important;
+    min-width: var(--panel-w) !important;
+    transform: translateX(calc(-1 * var(--panel-w)));
+    border-right: 1px solid var(--border);
+  }
+  #panel.collapsed > * { opacity: 1; pointer-events: auto; }
+  #main { margin-left: 0 !important; }
+  #panel-toggle { left: 14px !important; }
+  #panel-toggle.open { left: calc(var(--panel-w) + 14px); }
 }
 
 .panel-hd {
@@ -365,6 +429,7 @@ input, textarea, select { font-family: var(--kr); }
   flex-direction: column;
   overflow: hidden;
   min-width: 0;
+  transition: margin-left .22s ease;
 }
 
 /* ─ TOP BAR ─ */
@@ -1394,9 +1459,18 @@ input, textarea, select { font-family: var(--kr); }
 </head>
 <body>
 
+<!-- 패널 토글 버튼 -->
+<button id="panel-toggle" class="open" onclick="togglePanel()" title="패널 열기/닫기">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path id="toggle-icon-path" d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>
+</button>
+<!-- 모바일 오버레이 -->
+<div id="panel-overlay" onclick="togglePanel()"></div>
+
 <!-- ══════════ LEFT PANEL ══════════ -->
 <div id="panel">
-  <div class="panel-hd">
+  <div class="panel-hd" style="padding-left:48px;">
     <div class="logo">
       <span class="logo-on">ON</span><span class="logo-plan">plan</span>
     </div>
@@ -2631,24 +2705,204 @@ function renderPRDSections(prdData, container) {
   }
 }
 
-function submitIssueComment(cfId, secNum) {
+// 섹션별 논의 히스토리 저장
+const issueDiscussions = {};
+
+async function submitIssueComment(cfId, secNum) {
   const inp = document.getElementById(cfId + '-input');
   if (!inp) return;
   const t = inp.value.trim();
   if (!t) return;
+
   const thread = document.getElementById(cfId + '-thread');
+  inp.value = '';
+  inp.disabled = true;
+
+  // 유저 의견 렌더
   const userItem = document.createElement('div');
   userItem.className = 'cb-thread-item';
   userItem.innerHTML = `<div class="cb-thread-label is-user">YOUR OPINION</div><div class="cb-thread-body">${t}</div>`;
   thread.appendChild(userItem);
-  inp.value = '';
-  setTimeout(() => {
+  userItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // 히스토리 초기화
+  if (!issueDiscussions[secNum]) issueDiscussions[secNum] = [];
+  issueDiscussions[secNum].push({ role: 'user', content: t });
+
+  // 타이핑 인디케이터
+  const typingEl = document.createElement('div');
+  typingEl.className = 'cb-thread-item';
+  typingEl.id = cfId + '-typing';
+  typingEl.innerHTML = `<div class="cb-thread-label is-ai">ONPLAN FEEDBACK</div><div class="cb-thread-body" style="color:var(--g500)">분석 중...</div>`;
+  thread.appendChild(typingEl);
+
+  try {
+    // 충돌 컨텍스트 수집
+    const cbEl = document.getElementById(cfId + '-input')?.closest('.cb');
+    const conflictIssue = cbEl?.querySelector('.cb-issue')?.textContent || '';
+    const conflictContext = cbEl?.querySelector('.cb-context')?.textContent || '';
+    const conflictFull = `이슈: ${conflictIssue}\n맥락: ${conflictContext}`;
+
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        role: 'other',
+        projectName: currentProject?.name || '',
+        messages: [
+          ...issueDiscussions[secNum].slice(0, -1).map(m => ({ role: m.role, content: m.content })),
+          {
+            role: 'user',
+            content: `PRD의 OPEN ISSUE에 대한 팀 의견입니다.\n\n${conflictFull}\n\n팀원 의견: ${t}\n\n이 의견에 대해 간결하게 피드백하고, 결정에 도움이 되는 질문이나 관점을 1개만 제시하세요. 2~3문장으로 짧게.`
+          }
+        ],
+        lang: 'ko'
+      })
+    });
+
+    typingEl.remove();
+
+    let aiText = '의견을 확인했습니다.';
+    if (resp.ok) {
+      const data = await resp.json();
+      aiText = data.reply || aiText;
+    }
+
+    issueDiscussions[secNum].push({ role: 'assistant', content: aiText });
+
     const aiItem = document.createElement('div');
     aiItem.className = 'cb-thread-item';
-    aiItem.innerHTML = `<div class="cb-thread-label is-ai">ONPLAN FEEDBACK</div><div class="cb-thread-body">의견을 확인했습니다. 관련 섹션에 미치는 영향을 분석 중입니다.</div>`;
+    aiItem.innerHTML = `<div class="cb-thread-label is-ai">ONPLAN FEEDBACK</div><div class="cb-thread-body">${aiText}</div>`;
     thread.appendChild(aiItem);
     aiItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 700);
+
+    // 1회 이상 대화 후 확정 버튼 노출
+    const confirmBtnId = cfId + '-confirm';
+    if (!document.getElementById(confirmBtnId)) {
+      const confirmBtn = document.createElement('button');
+      confirmBtn.id = confirmBtnId;
+      confirmBtn.className = 'btn-lime';
+      confirmBtn.style.cssText = 'margin-top:14px;width:100%;justify-content:center;font-size:14px;';
+      confirmBtn.textContent = '이 방향으로 섹션 재생성';
+      confirmBtn.onclick = () => confirmAndRegenSection(cfId, secNum);
+      thread.appendChild(confirmBtn);
+    }
+
+  } catch(e) {
+    typingEl.remove();
+    const errItem = document.createElement('div');
+    errItem.className = 'cb-thread-item';
+    errItem.innerHTML = `<div class="cb-thread-label is-ai">ONPLAN FEEDBACK</div><div class="cb-thread-body">의견을 확인했습니다. 결정이 준비되면 아래 버튼으로 섹션을 재생성하세요.</div>`;
+    thread.appendChild(errItem);
+
+    const confirmBtnId = cfId + '-confirm';
+    if (!document.getElementById(confirmBtnId)) {
+      const confirmBtn = document.createElement('button');
+      confirmBtn.id = confirmBtnId;
+      confirmBtn.className = 'btn-lime';
+      confirmBtn.style.cssText = 'margin-top:14px;width:100%;justify-content:center;font-size:14px;';
+      confirmBtn.textContent = '이 방향으로 섹션 재생성';
+      confirmBtn.onclick = () => confirmAndRegenSection(cfId, secNum);
+      thread.appendChild(confirmBtn);
+    }
+  } finally {
+    inp.disabled = false;
+    inp.focus();
+  }
+}
+
+async function confirmAndRegenSection(cfId, secNum) {
+  if (!currentProject) return;
+
+  const confirmBtn = document.getElementById(cfId + '-confirm');
+  if (confirmBtn) { confirmBtn.textContent = '재생성 중...'; confirmBtn.disabled = true; }
+
+  try {
+    // 현재 PRD에서 해당 섹션 정보 가져오기
+    const { data: prdData } = await sb.from('prds')
+      .select('sections, opinions, conflicts, role_docs, version, interview_count, interviewed_by')
+      .eq('project_id', currentProject.id)
+      .order('version', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (!prdData) throw new Error('PRD 데이터 없음');
+
+    const section = prdData.sections?.find(s => s.num === secNum);
+    const conflict = prdData.conflicts?.[secNum];
+    const conflictContext = conflict
+      ? `이슈: ${conflict.issue}\n맥락: ${conflict.context}\nAI 권장안: ${conflict.current}`
+      : '';
+
+    const resp = await fetch('/api/prd-section', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        projectName: currentProject.name,
+        sectionNum: secNum,
+        sectionTitle: section?.title || '',
+        originalBody: section?.body || '',
+        conflictContext,
+        discussion: issueDiscussions[secNum] || [],
+        lang: 'ko'
+      })
+    });
+
+    if (!resp.ok) throw new Error('섹션 재생성 API 오류');
+    const result = await resp.json();
+
+    // sections 업데이트
+    const updatedSections = prdData.sections.map(s => {
+      if (s.num !== secNum) return s;
+      return { ...s, body: result.body, conflict: false };
+    });
+
+    // conflicts에서 해당 섹션 제거
+    const updatedConflicts = { ...(prdData.conflicts || {}) };
+    delete updatedConflicts[secNum];
+
+    // opinions 업데이트
+    const updatedOpinions = { ...(prdData.opinions || {}) };
+    if (result.opinion) updatedOpinions[secNum] = result.opinion;
+
+    // Supabase 업데이트
+    await sb.from('prds')
+      .update({
+        sections: updatedSections,
+        conflicts: updatedConflicts,
+        opinions: updatedOpinions
+      })
+      .eq('project_id', currentProject.id)
+      .order('version', { ascending: false })
+      .limit(1);
+
+    // UI 즉시 반영
+    const secEl = document.getElementById('sec-' + secNum);
+    if (secEl) {
+      // 섹션 본문 업데이트
+      const bodyEl = secEl.querySelector('.prd-sec-body');
+      if (bodyEl) {
+        bodyEl.innerHTML = `<div class="sec-content">${result.body}</div>`;
+        if (result.opinion) {
+          bodyEl.innerHTML = `<div class="po"><div class="po-t">ONPLAN OPINION</div><div class="po-b">${result.opinion}</div></div>` + bodyEl.innerHTML;
+        }
+      }
+      // 뱃지 ISSUE → DONE
+      const badgeEl = secEl.querySelector('.sc-badge-conflict');
+      if (badgeEl) {
+        badgeEl.className = 'sc-badge sc-badge-done';
+        badgeEl.textContent = 'DONE';
+      }
+      secEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // 논의 히스토리 정리
+    delete issueDiscussions[secNum];
+
+  } catch(e) {
+    alert('섹션 재생성 실패: ' + e.message);
+    if (confirmBtn) { confirmBtn.textContent = '이 방향으로 섹션 재생성'; confirmBtn.disabled = false; }
+  }
 }
 
 function renderRoleDocs(role_docs, container) {
@@ -2808,6 +3062,42 @@ function scrollToSec(id, el) {
 }
 
 // ═══════════════════════════════════════
+// PANEL TOGGLE
+// ═══════════════════════════════════════
+function togglePanel() {
+  const panel = document.getElementById('panel');
+  const btn = document.getElementById('panel-toggle');
+  const overlay = document.getElementById('panel-overlay');
+  const isMobile = window.innerWidth <= 768;
+  const isCollapsed = panel.classList.contains('collapsed');
+
+  if (isCollapsed) {
+    panel.classList.remove('collapsed');
+    btn.classList.add('open');
+    if (isMobile) overlay.classList.add('visible');
+    localStorage.setItem('onplan-panel', 'open');
+  } else {
+    panel.classList.add('collapsed');
+    btn.classList.remove('open');
+    overlay.classList.remove('visible');
+    localStorage.setItem('onplan-panel', 'closed');
+  }
+}
+
+function initPanel() {
+  const isMobile = window.innerWidth <= 768;
+  const saved = localStorage.getItem('onplan-panel');
+  const panel = document.getElementById('panel');
+  const btn = document.getElementById('panel-toggle');
+
+  // 모바일은 기본 닫힘
+  if (isMobile || saved === 'closed') {
+    panel.classList.add('collapsed');
+    btn.classList.remove('open');
+  }
+}
+
+// ═══════════════════════════════════════
 // THEME TOGGLE
 // ═══════════════════════════════════════
 function toggleTheme() {
@@ -2883,6 +3173,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.head.appendChild(style);
 
   initTheme();
+  initPanel();
   init();
 });
 </script>
