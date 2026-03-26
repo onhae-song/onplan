@@ -1688,30 +1688,6 @@ input, textarea, select { font-family: var(--kr); }
       <div class="form-wrap" style="max-width:680px">
 
         <!-- 프로젝트 정보 -->
-        <div id="proj-info-block" style="margin-bottom:28px">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
-            <div style="flex:1;min-width:0">
-              <div id="proj-info-view">
-                <div style="font-family:var(--en);font-size:26px;font-weight:800;letter-spacing:-1px;color:var(--white);margin-bottom:6px;line-height:1.15" id="proj-info-name">—</div>
-                <div style="font-size:15px;color:var(--g300);line-height:1.7;white-space:pre-wrap" id="proj-info-desc"></div>
-              </div>
-              <div id="proj-info-edit" style="display:none">
-                <input class="fi" id="proj-edit-name" style="margin-bottom:8px;font-size:16px;font-weight:700" placeholder="프로젝트명">
-                <textarea class="ft" id="proj-edit-desc" rows="3" placeholder="배경 및 목표"></textarea>
-                <div style="display:flex;gap:8px;margin-top:10px">
-                  <button class="btn-lime" style="font-size:13px;height:32px;padding:0 16px" onclick="saveProjectInfo()">저장</button>
-                  <button class="btn-ghost" style="font-size:13px;height:32px;padding:0 14px" onclick="cancelProjectInfoEdit()">취소</button>
-                </div>
-              </div>
-            </div>
-            <button id="proj-edit-btn" class="panel-icon-btn" title="프로젝트 정보 수정" onclick="startProjectInfoEdit()" style="flex-shrink:0;margin-top:4px">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M11 2.5l2.5 2.5-8 8H3v-2.5l8-8z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
         <div class="view-heading" style="margin-bottom:20px">
           <h2>인터뷰 <em>현황</em></h2>
           <p>팀원들의 인터뷰가 완료되면 PRD를 생성할 수 있습니다.</p>
