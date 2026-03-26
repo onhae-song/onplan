@@ -97,12 +97,9 @@ let isLoggedIn=false;
     }
   }catch(e){}
 })();
-function goToApp(){window.location.href=isLoggedIn?'/app.html':'/demo.html';}
+function goToApp(){window.location.href='/app.html';}
 
-function handleGetStarted(){
-  if(isLoggedIn){ window.location.href='/app.html'; return; }
-  showLoginModal();
-}
+function handleGetStarted(){ window.location.href='/app.html'; }
 
 function showLoginModal(){
   const overlay=document.createElement('div');
@@ -119,9 +116,7 @@ function showLoginModal(){
         <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#0a0a0a" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#0a0a0a" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#0a0a0a" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#0a0a0a" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Sign in with Google
       </button>
-      <div style="text-align:center;margin-top:16px">
-        <a href="/demo.html" style="font-size:12px;color:var(--g500);text-decoration:none" onmouseover="this.style.color='var(--g300)'" onmouseout="this.style.color='var(--g500)'">로그인 없이 데모 체험 →</a>
-      </div>
+
     </div>`;
   document.body.appendChild(overlay);
 }
@@ -148,7 +143,7 @@ async function googleSignIn(){
 
     </div>
     <div id="nav-auth">
-      <button onclick="handleGetStarted()" id="nav-login-btn" style="padding:7px 18px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--g200);font-family:var(--en);font-weight:600;font-size:12px;cursor:pointer;border-radius:6px;transition:all .2s;letter-spacing:.3px;" onmouseover="this.style.borderColor='rgba(255,255,255,.5)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--g200)'" data-ko="로그인" data-en="Sign In">Sign In</button>
+      <button onclick="window.location.href='/app.html'" id="nav-login-btn" style="padding:7px 18px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--g200);font-family:var(--en);font-weight:600;font-size:12px;cursor:pointer;border-radius:6px;transition:all .2s;letter-spacing:.3px;" onmouseover="this.style.borderColor='rgba(255,255,255,.5)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--g200)'" data-ko="로그인" data-en="Sign In">Sign In</button>
     </div>
     <div class="lang-toggle">
       <button class="lang-btn" id="btn-ko" onclick="setLang('ko')">KO</button>
@@ -162,8 +157,7 @@ async function googleSignIn(){
   <h1 class="reveal reveal-d1" data-ko="기획자 없이,<br><em>기획서를.</em>" data-en="Skip the PM.<br><em>Ship the PRD.</em>">기획자 없이,<br><em>기획서를.</em></h1>
   <p class="hero-sub reveal reveal-d2" data-ko="팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지." data-en="Your team shares opinions. OnPlan AI judges, synthesizes, and delivers a PRD — with role-specific documents for everyone.">팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지.</p>
   <div class="hero-actions reveal reveal-d3">
-    <a href="#" onclick="handleGetStarted();return false;" class="btn-primary" data-ko="시작하기 →" data-en="Get Started →">Get Started →</a>
-    <a href="/demo.html" class="btn-ghost" data-ko="데모 체험 →" data-en="Try Demo →">Try Demo →</a>
+    <a href="/app.html" class="btn-primary" data-ko="무료로 시작하기 →" data-en="Free Start →">Free Start →</a>
   </div>
   <div class="hero-visual reveal reveal-d4">
     <div class="hero-visual-bar"><div class="hero-visual-dot"></div><div class="hero-visual-dot"></div><div class="hero-visual-dot"></div></div>
@@ -337,7 +331,7 @@ async function googleSignIn(){
   </div>
 
   <div style="text-align:center;margin-top:40px;">
-    <a href="#" onclick="goToApp();return false;" class="btn-primary reveal" data-ko="직접 써보기 →" data-en="Try It Now →">Try It Now →</a>
+    <a href="/app.html" class="btn-primary reveal" data-ko="무료로 시작하기 →" data-en="Free Start →">Free Start →</a>
   </div>
 </section>
 
@@ -357,7 +351,7 @@ async function googleSignIn(){
         <li data-ko="PRD 1~2섹션 미리보기" data-en="PRD preview (1-2 sections)">PRD preview (1-2 sections)</li>
         <li data-ko="ONPLAN OPINION 맛보기" data-en="ONPLAN OPINION sample">ONPLAN OPINION sample</li>
       </ul>
-      <a href="#" onclick="goToApp();return false;" class="price-btn price-btn-outline" data-ko="시작하기" data-en="Get Started">Get Started</a>
+      <a href="/app.html" class="price-btn price-btn-outline" data-ko="무료로 시작하기" data-en="Free Start">Free Start</a>
     </div>
     <!-- PRO -->
     <div class="price-card featured reveal reveal-d1">
@@ -417,7 +411,7 @@ async function googleSignIn(){
   <div class="final-glow"></div>
   <h2 class="reveal" data-ko="기획서, <em>의견만 모으면</em><br>나머지는 AI가." data-en="Just collect opinions.<br><em>AI handles the rest.</em>">기획서, <em>의견만 모으면</em><br>나머지는 AI가.</h2>
   <p class="reveal reveal-d1" data-ko="지금 바로 프로젝트를 만들고 팀에 공유하세요." data-en="Create a project now and share with your team.">지금 바로 프로젝트를 만들고 팀에 공유하세요.</p>
-  <a href="#" onclick="goToApp();return false;" class="btn-primary reveal reveal-d2" data-ko="지금 시작하기 →" data-en="Get Started →">Get Started →</a>
+  <a href="/app.html" class="btn-primary reveal reveal-d2" data-ko="지금 시작하기 →" data-en="Free Start →">Free Start →</a>
 </div>
 
 <!-- CONTACT -->
@@ -465,7 +459,7 @@ function setLang(lang){
   document.documentElement.lang=lang;
   document.title='OnPlan';
   // Update app links with lang param
-  document.querySelectorAll('a[href^="demo.html"]').forEach(a=>{a.href='demo.html?lang='+lang;});
+
 }
 setLang('en');
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.15});
