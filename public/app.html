@@ -2781,7 +2781,6 @@ async function submitIssueComment(cfId, secNum) {
 
   // 히스토리 초기화
   if (!issueDiscussions[secNum]) issueDiscussions[secNum] = [];
-  issueDiscussions[secNum].push({ role: 'user', content: t });
 
   // 타이핑 인디케이터
   const typingEl = document.createElement('div');
@@ -2794,13 +2793,22 @@ async function submitIssueComment(cfId, secNum) {
     // 충돌 컨텍스트 수집
     const cbEl = document.getElementById(cfId + '-input')?.closest('.cb');
     const conflictIssue = cbEl?.querySelector('.cb-issue')?.textContent || '';
-    const conflictContext = cbEl?.querySelector('.cb-context')?.textContent || '';
+    const conflictCtx = cbEl?.querySelector('.cb-context')?.textContent || '';
     const recommendText = cbEl?.querySelector('.cb-current-body')?.textContent || '';
-    const conflictFull = `이슈: ${conflictIssue}\n맥락: ${conflictContext}\nAI 권장안: ${recommendText}`;
+    const conflictFull = `이슈: ${conflictIssue}\n맥락: ${conflictCtx}\nAI 권장안: ${recommendText}`;
 
-    // 대화 히스토리 구성
-    const discussion = issueDiscussions[secNum] || [];
-    const messages = discussion.map(m => ({ role: m.role, content: m.content }));
+    // 대화 히스토리 구성 — 첫 메시지에 이슈 맥락 포함
+    const prevDiscussion = [...issueDiscussions[secNum]];
+    const messages = prevDiscussion.length === 0
+      ? [{ role: 'user', content: `[이슈 맥락]\n${conflictFull}\n\n[팀원 의견]\n${t}` }]
+      : [
+          { role: 'user', content: `[이슈 맥락]\n${conflictFull}\n\n[팀원 의견]\n${prevDiscussion[0].content}` },
+          ...prevDiscussion.slice(1).map(m => ({ role: m.role, content: m.content })),
+          { role: 'user', content: t }
+        ];
+
+    // 히스토리에 현재 메시지 추가
+    issueDiscussions[secNum].push({ role: 'user', content: t });
 
     const resp = await fetch('/api/chat', {
       method: 'POST',
