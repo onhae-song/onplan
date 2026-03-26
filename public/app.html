@@ -2795,21 +2795,20 @@ async function submitIssueComment(cfId, secNum) {
     const cbEl = document.getElementById(cfId + '-input')?.closest('.cb');
     const conflictIssue = cbEl?.querySelector('.cb-issue')?.textContent || '';
     const conflictContext = cbEl?.querySelector('.cb-context')?.textContent || '';
-    const conflictFull = `이슈: ${conflictIssue}\n맥락: ${conflictContext}`;
+    const recommendText = cbEl?.querySelector('.cb-current-body')?.textContent || '';
+    const conflictFull = `이슈: ${conflictIssue}\n맥락: ${conflictContext}\nAI 권장안: ${recommendText}`;
+
+    // 대화 히스토리 구성
+    const discussion = issueDiscussions[secNum] || [];
+    const messages = discussion.map(m => ({ role: m.role, content: m.content }));
 
     const resp = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        role: 'other',
-        projectName: currentProject?.name || '',
-        messages: [
-          ...issueDiscussions[secNum].slice(0, -1).map(m => ({ role: m.role, content: m.content })),
-          {
-            role: 'user',
-            content: `PRD의 OPEN ISSUE에 대한 팀 의견입니다.\n\n${conflictFull}\n\n팀원 의견: ${t}\n\n이 의견에 대해 간결하게 피드백하고, 결정에 도움이 되는 질문이나 관점을 1개만 제시하세요. 2~3문장으로 짧게.`
-          }
-        ],
+        mode: 'conflict',
+        conflictContext: conflictFull,
+        messages,
         lang: 'ko'
       })
     });
