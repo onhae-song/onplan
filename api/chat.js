@@ -16,7 +16,59 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'no_body' });
   }
 
-  const { role, projectName, projectDesc, projectPhase, projectDoc, messages, lang } = body;
+  const { role, projectName, projectDesc, projectPhase, projectDoc, messages, lang, mode, conflictContext } = body;
+
+  // ── CONFLICT MODE ──────────────────────────────────────────
+  if (mode === 'conflict') {
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ error: 'validation' });
+    }
+    const conflictSystemPrompt = `당신은 OnPlan AI 기획자입니다. PRD의 OPEN ISSUE에 대해 팀원과 논의하고 있습니다.
+
+## 역할
+- 팀원의 의견을 경청하고 그 논리를 검토합니다.
+- 단순히 동의하거나 칭찬하지 마세요. 팀원 의견의 타당성과 한계를 함께 짚어주세요.
+- 팀원이 미처 생각하지 못한 관점이나 리스크를 제시하세요.
+- 결국 팀원이 스스로 결정을 내릴 수 있도록 돕는 것이 목표입니다.
+
+## 현재 이슈 맥락
+${conflictContext || ''}
+
+## 대화 규칙
+- 2~3문장으로 간결하게 답변하세요.
+- 물음표는 1개만 사용하세요.
+- 기획 전문 용어 금지. 쉬운 말로 이야기하세요.
+- 이모지 사용 금지.
+- 존댓말 사용.`;
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 300,
+          system: conflictSystemPrompt,
+          messages
+        })
+      });
+      if (!response.ok) {
+        const errText = await response.text();
+        return res.status(502).json({ error: 'anthropic_fail', detail: errText.slice(0, 500) });
+      }
+      const data = await response.json();
+      const text = (data.content?.[0]?.text || '').trim();
+      return res.status(200).json({ reply: text });
+    } catch (err) {
+      return res.status(500).json({ error: 'server_error', message: err.message });
+    }
+  }
+  // ───────────────────────────────────────────────────────────
+
   if (!role || !Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'validation' });
   }
