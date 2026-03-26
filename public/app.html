@@ -1454,6 +1454,48 @@ input, textarea, select { font-family: var(--kr); }
 
 .topbar.hidden { display: none; }
 
+/* ─ Project Edit Popover ─ */
+.proj-popover {
+  position: absolute;
+  top: calc(var(--top-h) + 6px);
+  left: 0;
+  z-index: 300;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  padding: 16px;
+  width: 320px;
+  display: none;
+}
+.proj-popover.open { display: block; }
+.proj-title-wrap { position: relative; cursor: pointer; }
+.proj-title-wrap:hover .proj-title { color: var(--lime); }
+
+/* ─ Proj desc tooltip ─ */
+.proj-item { position: relative; }
+.proj-tooltip {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--g300);
+  line-height: 1.6;
+  width: 220px;
+  z-index: 400;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.proj-item:hover .proj-tooltip { opacity: 1; }
+
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -3088,6 +3130,59 @@ function scrollToSec(id, el) {
   if (target && body) body.scrollTo({ top: target.offsetTop - 16, behavior: 'smooth' });
 }
 
+
+// ═══════════════════════════════════════
+// TOPBAR PROJECT POPOVER
+// ═══════════════════════════════════════
+function toggleProjPopover() {
+  const pop = document.getElementById('proj-popover');
+  if (!pop) return;
+  const isOpen = pop.classList.contains('open');
+  if (isOpen) { closeProjPopover(); return; }
+  // 현재 값 채우기
+  document.getElementById('popover-name').value = currentProject?.name || '';
+  document.getElementById('popover-desc').value = currentProject?.description || '';
+  pop.classList.add('open');
+  setTimeout(() => document.getElementById('popover-name').focus(), 50);
+}
+
+function closeProjPopover(e) {
+  if (e) e.stopPropagation();
+  document.getElementById('proj-popover')?.classList.remove('open');
+}
+
+async function saveProjPopover(e) {
+  e.stopPropagation();
+  const name = document.getElementById('popover-name').value.trim();
+  const desc = document.getElementById('popover-desc').value.trim();
+  if (!name) { alert('프로젝트명을 입력하세요.'); return; }
+
+  try {
+    const { error } = await sb.from('projects')
+      .update({ name, description: desc })
+      .eq('id', currentProject.id)
+      .eq('owner_id', currentUser.id);
+    if (error) throw new Error(error.message);
+
+    currentProject.name = name;
+    currentProject.description = desc;
+    document.getElementById('proj-title').textContent = name;
+
+    // 패널 목록 업데이트
+    await loadProjects();
+    setTimeout(() => {
+      const el = document.querySelector(`.proj-item[data-id="${currentProject.id}"]`);
+      if (el) el.classList.add('active');
+    }, 100);
+
+    // 대시보드 정보도 업데이트
+    renderProjectInfo();
+    closeProjPopover();
+  } catch(err) {
+    alert('저장 실패: ' + err.message);
+  }
+}
+
 // ═══════════════════════════════════════
 // PROJECT INFO DISPLAY & EDIT
 // ═══════════════════════════════════════
@@ -3232,6 +3327,11 @@ document.addEventListener('click', (e) => {
   const ft = document.getElementById('panel-ft');
   if (dd && ft && !dd.contains(e.target) && !ft.contains(e.target)) {
     dd.classList.remove('open');
+  }
+  const pop = document.getElementById('proj-popover');
+  const titleWrap = document.querySelector('.proj-title-wrap');
+  if (pop && titleWrap && !titleWrap.contains(e.target)) {
+    pop.classList.remove('open');
   }
 });
 
