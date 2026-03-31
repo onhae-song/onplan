@@ -2625,7 +2625,7 @@ async function generatePRD(interviews, latestPrd) {
       sections: data.sections,
       opinions: data.opinions || {},
       conflicts: data.conflicts || {},
-      role_docs: data.role_docs || {},
+      role_docs: {},
       version: newVersion,
       interview_count: fullInterviews.length,
       interviewed_by: interviewedBy,
@@ -2644,12 +2644,51 @@ async function generatePRD(interviews, latestPrd) {
       loadAndRenderPRD(currentProject.id);
     }, 400);
 
+    // 역할별 문서 백그라운드 생성
+    generateRoleDocs(combinedLog, data, newVersion);
+
   } catch(e) {
     finishPRDProgress();
     alert('PRD 생성 실패: ' + e.message);
     await loadDashboard();
   }
 }
+
+async function generateRoleDocs(combinedLog, prdData, version) {
+  try {
+    const prdSummary = (prdData.sections || [])
+      .slice(0, 4)
+      .map(s => `[${s.num} ${s.title}]\n${(s.body || '').replace(/<[^>]+>/g, '').slice(0, 300)}`)
+      .join('\n\n');
+
+    const resp = await fetch('/api/role-docs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        projectName: currentProject.name,
+        projectDesc: currentProject.description || '',
+        interviewLog: combinedLog,
+        prdSummary,
+        lang: 'ko'
+      })
+    });
+    if (!resp.ok) return;
+    const roleDocs = await resp.json();
+
+    // Supabase role_docs 업데이트
+    await sb.from('prds')
+      .update({ role_docs: roleDocs })
+      .eq('project_id', currentProject.id)
+      .eq('version', version);
+
+    // 현재 PRD 화면이 열려있으면 역할별 문서 영역 갱신
+    const rdSection = document.getElementById('rd-section');
+    if (rdSection && currentProject) {
+      renderRoleDocs(roleDocs, document.getElementById('prd-container'));
+    }
+  } catch(e) {
+    console.warn('역할별 문서 생성 실패:', e.message);
+  }
 
 // ═══════════════════════════════════════
 // PRD 로드 & 렌더링
