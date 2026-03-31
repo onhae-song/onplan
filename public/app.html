@@ -2579,19 +2579,19 @@ async function generatePRD(interviews, latestPrd) {
 
   const actionsEl = document.getElementById('dashboard-actions');
   if (actionsEl) actionsEl.innerHTML = `
-    <div id="prd-progress-wrap" style="padding:16px 0">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span style="font-size:13px;color:var(--g400)" id="prd-progress-msg">인터뷰 데이터 분석 중...</span>
+    <div id="prd-progress-wrap" style="padding:16px 0;width:100%;box-sizing:border-box">
+      <div style="height:18px;margin-bottom:8px;overflow:hidden">
+        <span style="font-size:13px;color:var(--g400);white-space:nowrap;display:block" id="prd-progress-msg">인터뷰 데이터 분석 중...</span>
       </div>
-      <div style="height:3px;background:var(--bg3);border-radius:2px;overflow:hidden">
-        <div id="prd-progress-bar" style="height:100%;width:30%;background:var(--lime);border-radius:2px;animation:prd-indeterminate 1.8s ease-in-out infinite"></div>
+      <div style="height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;width:100%">
+        <div id="prd-progress-bar" style="height:100%;background:var(--lime);border-radius:2px;animation:prd-indeterminate 1.8s ease-in-out infinite"></div>
       </div>
     </div>
     <style>
       @keyframes prd-indeterminate {
-        0%   { transform: translateX(-100%); width: 40%; }
-        50%  { transform: translateX(80%);  width: 60%; }
-        100% { transform: translateX(200%); width: 40%; }
+        0%   { transform: translateX(-150%); width: 40%; }
+        50%  { transform: translateX(100%);  width: 60%; }
+        100% { transform: translateX(300%);  width: 40%; }
       }
     </style>`;
   startPRDProgress();
