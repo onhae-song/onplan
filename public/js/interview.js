@@ -17,8 +17,14 @@ function startChat(ptName) {
   document.getElementById('role-selector').style.display = 'none';
   chatHistory = []; qIdx = 0; isSending = false;
 
+  // 프로그레스바 초기화 & 표시
+  const progressWrap = document.getElementById('interview-progress-wrap');
+  if (progressWrap) progressWrap.style.display = 'block';
+  updateInterviewProgress(0);
+
   const area = document.getElementById('chatArea');
   area.innerHTML = '';
+  area.style.background = '';
   const firstQ = QUESTIONS[selectedRole]?.[0] || '프로젝트에 대해 자유롭게 말씀해주세요.';
   chatHistory.push({ role: 'assistant', content: firstQ });
   addMsg('assistant', firstQ);
@@ -62,9 +68,17 @@ async function sendChat() {
 
 function updateInterviewProgress(pct) {
   const bar = document.getElementById('interview-progress-bar');
-  const pctEl = document.getElementById('interview-progress-pct');
-  if (bar) bar.style.width = Math.min(100, pct) + '%';
-  if (pctEl) pctEl.textContent = Math.min(100, pct) + '%';
+  const pctEl = document.getElementById('progress-pct');
+  const hint = document.getElementById('progress-hint');
+  const val = Math.min(100, pct);
+  if (bar) bar.style.width = val + '%';
+  if (pctEl) pctEl.textContent = val + '%';
+  if (hint) {
+    if (val >= 80) hint.textContent = '핵심 인사이트 수집 완료';
+    else if (val >= 60) hint.textContent = '조금 더 이야기해주세요.';
+    else if (val >= 40) hint.textContent = '좋은 인사이트가 쌓이고 있습니다.';
+    else hint.textContent = '답변을 이어가면 AI가 인사이트를 수집합니다.';
+  }
 }
 
 function triggerInterviewComplete() {
