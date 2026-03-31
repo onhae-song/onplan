@@ -1,6 +1,7 @@
 {
+  "outputDirectory": "public",
   "rewrites": [
-    { "source": "/", "destination": "/app.html" }
+    { "source": "/", "destination": "/onplan.html" }
   ],
   "functions": {
     "api/prd.js": { "maxDuration": 60 },
