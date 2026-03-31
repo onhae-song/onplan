@@ -92,12 +92,6 @@ module.exports = async function handler(req, res) {
   "revisions": {
     "섹션번호": "AI 수정 제안 HTML. 안 A/B/C 형식으로 선택지 제시. 마지막에 <strong>어떻게 하시겠습니까?</strong>"
   },
-  "role_docs": {
-    "ceo": "HTML",
-    "dev": "HTML",
-    "design": "HTML",
-    "sales": "HTML"
-  }
 }
 
 ## 8개 섹션 (순서 고정)
@@ -109,41 +103,6 @@ module.exports = async function handler(req, res) {
 06. 사용자 플로우 — 핵심 시나리오 2~3개
 07. 배포 계획 — Phase 1/2/3 마일스톤
 08. 리스크 및 관련 문서 — 리스크 테이블
-
-## role_docs 작성 기준
-
-각 역할 문서는 해당 역할이 실제 업무에 바로 활용할 수 있는 수준으로 작성합니다.
-요약 나열이 아니라 판단 근거와 구체적 수치/기준을 포함하세요.
-
-### ceo (사업 타당성 요약)
-경영 판단에 필요한 정보만 담습니다. 기술 용어 없이.
-- 왜 만드는가: 현재 문제와 비용(손실액, 비효율 수치)
-- 투자 대비 효과: 도입 전/후 비교 테이블 (수치 포함)
-- 리스크 TOP 3: 사업적 관점에서 가장 큰 리스크와 대응 방향
-- 의사결정 필요 사항: 지금 결정하지 않으면 진행이 막히는 것들 (구체적 선택지 제시)
-
-### dev (기술 요구사항)
-개발 착수에 필요한 정보를 명세 수준으로 작성합니다.
-- P0 기능 명세: 기능명 / 상세 동작 / 수용 기준 테이블
-- IA 구조: Depth 1~2 페이지 맵 테이블
-- 기술 제약: 연동 필요 외부 시스템, 성능 기준, 보안 고려사항
-- 일정 기획자 의견: P0 기준 현실적 소요 기간과 근거
-
-### design (UX 요구사항)
-디자인 착수에 필요한 정보를 구체적으로 작성합니다.
-- 핵심 사용자: 1차/2차 페르소나 (역할, 사용 빈도, 페인포인트)
-- UX 원칙: 이 제품에서 절대 타협하면 안 되는 UX 기준 3가지
-- 핵심 플로우 (우선 설계 대상): 가장 빈번한 액션 TOP 3, 각 플로우 단계
-- 사용자 여정: As-Is / To-Be 비교
-- 사용 환경: 모바일/데스크탑 비중, 주 사용 맥락
-
-### sales (제품 소개 요약)
-고객에게 바로 설명할 수 있는 언어로 작성합니다. 기술/기획 용어 없이.
-- 한 줄 소개: 누구를 위한, 무엇을 해결하는 제품인가
-- 해결하는 문제: 고객이 지금 어떻게 버티고 있는지, 왜 그게 부족한지
-- 핵심 기능 3가지: 고객이 이해할 수 있는 언어로
-- 경쟁 대비 차별점: 기존 대안(엑셀, ERP, 경쟁사)과 비교
-- 타겟 고객: 규모, 직군, 현재 상황 기준으로 구체적으로
 
 ## conflicts 작성 규칙
 - 인터뷰에서 실제로 의견이 갈린 섹션에만 작성 (억지로 만들지 말 것)
@@ -196,7 +155,6 @@ You are not a summarizer. You are a critical UX planner reviewing this interview
     }
   },
   "revisions": {"sectionNum": "HTML with Option A/B/C"},
-  "role_docs": {"ceo": "HTML", "dev": "HTML", "design": "HTML", "sales": "HTML"}
 }
 
 ## 8 Sections (fixed order)
@@ -208,40 +166,6 @@ You are not a summarizer. You are a critical UX planner reviewing this interview
 06. User Flows — 2-3 key scenarios
 07. Release Plan — Phase 1/2/3
 08. Risks & References
-
-## role_docs standards
-
-Write each role doc at a level where that role can immediately use it. Include specific numbers and criteria, not just summaries.
-
-### ceo — Business Case Summary
-No technical jargon. Executive judgment only.
-- Why build this: current problem with cost figures (loss amounts, inefficiency metrics)
-- ROI: before/after comparison table with numbers
-- Top 3 risks: business perspective with mitigation directions
-- Decisions needed: specific choices blocking progress right now
-
-### dev — Technical Spec
-Specification-level detail for development kickoff.
-- P0 feature spec: feature / behavior / acceptance criteria table
-- IA structure: depth 1-2 page map table
-- Technical constraints: external integrations, performance targets, security considerations
-- Timeline opinion: realistic estimate for P0 with reasoning
-
-### design — UX Requirements
-Specific enough for design kickoff.
-- Key users: primary/secondary personas with role, frequency, pain points
-- UX principles: 3 non-negotiable UX standards for this product
-- Key flows (design priority): top 3 most frequent actions, step by step
-- User journey: As-Is / To-Be comparison
-- Usage environment: mobile/desktop ratio, primary usage context
-
-### sales — Product Brief
-Language a customer understands immediately. No technical or planning jargon.
-- One-liner: who it's for, what problem it solves
-- Problem: how customers cope now, why that's insufficient
-- 3 key features: in customer language
-- Competitive edge: vs. current alternatives (spreadsheets, ERP, competitors)
-- Target customer: specific by size, role, current situation
 
 ## Rules
 - Body uses HTML (h3, p, table, tr, th, td, strong)
