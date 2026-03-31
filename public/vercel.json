@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/onplan.html" }
+    { "source": "/", "destination": "/app.html" }
   ],
   "functions": {
     "api/prd.js": { "maxDuration": 60 },
