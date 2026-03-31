@@ -2536,29 +2536,22 @@ async function loadDashboard() {
 let _prdProgressTimer = null;
 
 function startPRDProgress() {
-  const steps = [
-    { pct: 8,  msg: '인터뷰 데이터 분석 중...', delay: 800 },
-    { pct: 18, msg: '역할별 발언 교차 분석 중...', delay: 2000 },
-    { pct: 30, msg: '충돌 지점 감지 중...', delay: 3500 },
-    { pct: 42, msg: '우선순위 판단 중...', delay: 5500 },
-    { pct: 54, msg: '빠진 관점 검토 중...', delay: 8000 },
-    { pct: 65, msg: 'PRD 섹션 작성 중...', delay: 11000 },
-    { pct: 75, msg: 'ONPLAN OPINION 생성 중...', delay: 16000 },
-    { pct: 83, msg: '역할별 문서 변환 중...', delay: 21000 },
-    { pct: 90, msg: '충돌 권장안 작성 중...', delay: 26000 },
-    { pct: 95, msg: '마무리 중...', delay: 32000 },
+  const messages = [
+    { msg: '인터뷰 데이터 분석 중...', delay: 0 },
+    { msg: '역할별 발언 교차 분석 중...', delay: 5000 },
+    { msg: '충돌 지점 감지 중...', delay: 12000 },
+    { msg: 'PRD 섹션 작성 중...', delay: 20000 },
+    { msg: 'ONPLAN OPINION 생성 중...', delay: 30000 },
+    { msg: '역할별 문서 변환 중...', delay: 40000 },
+    { msg: '마무리 중...', delay: 50000 },
   ];
 
-  steps.forEach(({ pct, msg, delay }) => {
+  if (!_prdProgressTimer) _prdProgressTimer = [];
+  messages.forEach(({ msg, delay }) => {
     const t = setTimeout(() => {
-      const bar = document.getElementById('prd-progress-bar');
       const msgEl = document.getElementById('prd-progress-msg');
-      const pctEl = document.getElementById('prd-progress-pct');
-      if (bar) bar.style.width = pct + '%';
       if (msgEl) msgEl.textContent = msg;
-      if (pctEl) pctEl.textContent = pct + '%';
     }, delay);
-    if (!_prdProgressTimer) _prdProgressTimer = [];
     _prdProgressTimer.push(t);
   });
 }
@@ -2570,10 +2563,12 @@ function finishPRDProgress() {
   }
   const bar = document.getElementById('prd-progress-bar');
   const msgEl = document.getElementById('prd-progress-msg');
-  const pctEl = document.getElementById('prd-progress-pct');
-  if (bar) bar.style.width = '100%';
+  if (bar) {
+    bar.style.animation = 'none';
+    bar.style.width = '100%';
+    bar.style.transition = 'width .3s ease';
+  }
   if (msgEl) msgEl.textContent = '완료!';
-  if (pctEl) pctEl.textContent = '100%';
 }
 
 // ═══════════════════════════════════════
@@ -2587,12 +2582,18 @@ async function generatePRD(interviews, latestPrd) {
     <div id="prd-progress-wrap" style="padding:16px 0">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
         <span style="font-size:13px;color:var(--g400)" id="prd-progress-msg">인터뷰 데이터 분석 중...</span>
-        <span style="font-size:12px;color:var(--g500);font-family:var(--en)" id="prd-progress-pct">0%</span>
       </div>
       <div style="height:3px;background:var(--bg3);border-radius:2px;overflow:hidden">
-        <div id="prd-progress-bar" style="height:100%;width:0%;background:var(--lime);border-radius:2px;transition:width .4s ease"></div>
+        <div id="prd-progress-bar" style="height:100%;width:30%;background:var(--lime);border-radius:2px;animation:prd-indeterminate 1.8s ease-in-out infinite"></div>
       </div>
-    </div>`;
+    </div>
+    <style>
+      @keyframes prd-indeterminate {
+        0%   { transform: translateX(-100%); width: 40%; }
+        50%  { transform: translateX(80%);  width: 60%; }
+        100% { transform: translateX(200%); width: 40%; }
+      }
+    </style>`;
   startPRDProgress();
 
   try {
