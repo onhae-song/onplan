@@ -1454,6 +1454,36 @@ input, textarea, select { font-family: var(--kr); }
 
 .topbar.hidden { display: none; }
 
+/* ─ Settings ─ */
+.settings-tab {
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--g400);
+  cursor: pointer;
+  transition: all .15s;
+  margin-bottom: -1px;
+}
+.settings-tab:hover { color: var(--white); }
+.settings-tab.active { color: var(--lime); border-bottom-color: var(--lime); }
+.settings-panel { animation: fadeIn .2s ease; }
+.settings-panel.hidden { display: none; }
+.btn-lang {
+  padding: 8px 20px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--g300);
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-lang:hover { border-color: var(--g400); color: var(--white); }
+.btn-lang.active { background: var(--lime-bg); border-color: var(--lime-border); color: var(--lime); font-weight: 600; }
+
 /* ─ Project Edit Popover ─ */
 .proj-popover {
   position: absolute;
@@ -1512,10 +1542,10 @@ input, textarea, select { font-family: var(--kr); }
 
 <!-- ══════════ LEFT PANEL ══════════ -->
 <div id="panel">
-  <div class="panel-hd" style="padding-left:48px;">
-    <div class="logo">
+  <div class="panel-hd">
+    <a href="https://onhae.studio" style="text-decoration:none;display:flex;align-items:baseline" title="onhae.studio">
       <span class="logo-on">ON</span><span class="logo-plan">plan</span>
-    </div>
+    </a>
     <button class="panel-icon-btn" id="theme-btn" title="테마 전환" onclick="toggleTheme()">
       <svg id="theme-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
         <circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.3"/>
@@ -1532,6 +1562,18 @@ input, textarea, select { font-family: var(--kr); }
     </svg>
     새 프로젝트
   </button>
+
+  <div style="padding:6px 10px 4px">
+    <div style="position:relative">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--g500);pointer-events:none">
+        <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M9 9l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <input id="proj-search" type="text" placeholder="검색..." oninput="filterProjects(this.value)"
+        style="width:100%;height:28px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0 8px 0 26px;font-size:13px;font-family:inherit;color:var(--white);outline:none;"
+        onfocus="this.style.borderColor='var(--lime)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+  </div>
 
   <div class="proj-list" id="proj-list"><div style="padding:12px 14px;font-size: 14px;color:var(--g500)">로딩 중...</div></div>
 
@@ -1555,7 +1597,7 @@ input, textarea, select { font-family: var(--kr); }
       설정
     </button>
     <div class="ud-sep"></div>
-    <button class="ud-item" onclick="window.location.href='/#pricing'">
+    <button class="ud-item" onclick="openSettings('billing')">
       <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M1.5 9.5l3-3 2 2 4-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       요금제 업그레이드
     </button>
@@ -1808,6 +1850,69 @@ input, textarea, select { font-family: var(--kr); }
           </div>
 
           <div class="prd-doc" id="prd-detail-sections"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ VIEW 5: SETTINGS ══════════ -->
+    <div class="view" id="view-5">
+      <div class="form-wrap" style="max-width:600px">
+        <div class="view-heading" style="margin-bottom:32px">
+          <h2>설정 <em>Settings</em></h2>
+        </div>
+
+        <!-- 탭 -->
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:28px">
+          <button class="settings-tab active" data-tab="general" onclick="switchSettingsTab('general')">일반</button>
+          <button class="settings-tab" data-tab="account" onclick="switchSettingsTab('account')">계정</button>
+          <button class="settings-tab" data-tab="billing" onclick="switchSettingsTab('billing')">결제</button>
+        </div>
+
+        <!-- 일반 -->
+        <div id="settings-general" class="settings-panel">
+          <div class="field">
+            <label class="fl">언어 Language</label>
+            <div style="display:flex;gap:10px;margin-top:6px">
+              <button id="lang-ko-btn" class="btn-lang active" onclick="setAppLang('ko')">한국어</button>
+              <button id="lang-en-btn" class="btn-lang" onclick="setAppLang('en')">English</button>
+            </div>
+          </div>
+          <div class="field" style="margin-top:24px">
+            <label class="fl">테마 Theme</label>
+            <div style="display:flex;gap:10px;margin-top:6px">
+              <button id="theme-dark-btn" class="btn-lang active" onclick="setTheme('dark')">Dark</button>
+              <button id="theme-light-btn" class="btn-lang" onclick="setTheme('light')">Light</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 계정 -->
+        <div id="settings-account" class="settings-panel hidden">
+          <div class="field">
+            <label class="fl">로그인 계정</label>
+            <div style="font-size:15px;color:var(--g300);margin-top:6px" id="settings-email">—</div>
+          </div>
+          <div class="field" style="margin-top:24px">
+            <label class="fl">세션</label>
+            <button class="btn-ghost" style="margin-top:6px;height:36px;padding:0 18px;font-size:14px" onclick="googleLogout()">모든 기기에서 로그아웃</button>
+          </div>
+          <div class="field" style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border)">
+            <label class="fl" style="color:var(--conflict)">위험 구역</label>
+            <button class="btn-ghost" style="margin-top:6px;height:36px;padding:0 18px;font-size:14px;border-color:var(--conflict);color:var(--conflict)" onclick="confirmDeleteAccount()">계정 삭제</button>
+            <div style="font-size:13px;color:var(--g500);margin-top:6px">계정을 삭제하면 모든 프로젝트와 데이터가 영구 삭제됩니다.</div>
+          </div>
+        </div>
+
+        <!-- 결제 -->
+        <div id="settings-billing" class="settings-panel hidden">
+          <div class="field">
+            <label class="fl">현재 플랜</label>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+              <span id="settings-plan-badge" class="ud-plan plan-free">FREE</span>
+              <span id="settings-plan-desc" style="font-size:14px;color:var(--g400)">—</span>
+            </div>
+          </div>
+          <div id="settings-billing-actions" style="margin-top:24px"></div>
         </div>
       </div>
     </div>
@@ -3394,6 +3499,89 @@ function initPanel() {
   }
 }
 
+function filterProjects(query) {
+  const q = query.trim().toLowerCase();
+  document.querySelectorAll('#proj-list .proj-item').forEach(item => {
+    const name = item.querySelector('.proj-name')?.textContent?.toLowerCase() || '';
+    item.style.display = (!q || name.includes(q)) ? '' : 'none';
+  });
+}
+
+// ═══════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════
+let currentAppLang = localStorage.getItem('onplan-lang') || 'ko';
+
+function openSettings(tab) {
+  tab = tab || 'general';
+  document.getElementById('user-dropdown')?.classList.remove('open');
+  showView(5);
+  switchSettingsTab(tab);
+  renderSettingsBilling();
+  document.getElementById('settings-email').textContent = currentUser?.email || '—';
+  updateLangBtns(currentAppLang);
+  const theme = localStorage.getItem('onplan-theme') || 'dark';
+  document.getElementById('theme-dark-btn')?.classList.toggle('active', theme === 'dark');
+  document.getElementById('theme-light-btn')?.classList.toggle('active', theme === 'light');
+}
+
+function switchSettingsTab(tab) {
+  document.querySelectorAll('.settings-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.settings-panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById('settings-' + tab)?.classList.remove('hidden');
+}
+
+function setAppLang(lang) {
+  currentAppLang = lang;
+  localStorage.setItem('onplan-lang', lang);
+  updateLangBtns(lang);
+}
+
+function updateLangBtns(lang) {
+  document.getElementById('lang-ko-btn')?.classList.toggle('active', lang === 'ko');
+  document.getElementById('lang-en-btn')?.classList.toggle('active', lang === 'en');
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('onplan-theme', theme);
+  updateThemeIcon(theme);
+  document.getElementById('theme-dark-btn')?.classList.toggle('active', theme === 'dark');
+  document.getElementById('theme-light-btn')?.classList.toggle('active', theme === 'light');
+}
+
+function renderSettingsBilling() {
+  const plan = userPlan || 'free';
+  const badge = document.getElementById('settings-plan-badge');
+  const desc = document.getElementById('settings-plan-desc');
+  const actions = document.getElementById('settings-billing-actions');
+  if (badge) { badge.textContent = plan.toUpperCase(); badge.className = 'ud-plan plan-' + plan; }
+  const planDesc = {
+    free: '무료 플랜 — PRD 미리보기 제공',
+    pro: 'Pro $29/월 — 전체 PRD, 역할별 문서',
+    max: 'Max $79/월 — API 연동, 화이트라벨',
+    lifetime: 'Early Bird Lifetime — 평생 Max 플랜'
+  };
+  if (desc) desc.textContent = planDesc[plan] || '—';
+  if (!actions) return;
+  if (plan === 'free') {
+    actions.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <a href="https://onhae.lemonsqueezy.com/checkout/buy/d841a6c5-454f-4d05-a3d4-cb9d9806042b" target="_blank" class="btn-lime" style="text-align:center;text-decoration:none;justify-content:center">Pro로 업그레이드 — $29/월</a>
+        <a href="https://onhae.lemonsqueezy.com/checkout/buy/089c9937-219b-4b63-a14d-f82375df84f3" target="_blank" class="btn-ghost" style="text-align:center;text-decoration:none;font-size:13px">Early Bird Lifetime — $79 (한정)</a>
+      </div>`;
+  } else {
+    actions.innerHTML = `<a href="https://app.lemonsqueezy.com/my-orders" target="_blank" class="btn-ghost" style="font-size:14px;text-decoration:none;display:inline-flex;align-items:center;height:36px;padding:0 18px">구독 관리 (Lemon Squeezy)</a>`;
+  }
+}
+
+async function confirmDeleteAccount() {
+  if (!confirm('정말로 계정을 삭제하시겠습니까?\n모든 프로젝트와 데이터가 영구 삭제됩니다.')) return;
+  const code = prompt('확인을 위해 "DELETE"를 입력하세요:');
+  if (code !== 'DELETE') return;
+  alert('계정 삭제는 현재 지원되지 않습니다. onhaesong@gmail.com으로 문의해주세요.');
+}
+
 // ═══════════════════════════════════════
 // THEME TOGGLE
 // ═══════════════════════════════════════
@@ -3429,11 +3617,6 @@ function initTheme() {
 function toggleUserDropdown() {
   const dd = document.getElementById('user-dropdown');
   dd.classList.toggle('open');
-}
-
-function openSettings() {
-  document.getElementById('user-dropdown').classList.remove('open');
-  alert('설정 기능은 준비 중입니다.');
 }
 
 document.addEventListener('click', (e) => {
