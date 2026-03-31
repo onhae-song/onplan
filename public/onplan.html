@@ -89,17 +89,11 @@ let isLoggedIn=false;
     const{data:{session}}=await sb.auth.getSession();
     if(session?.user){
       isLoggedIn=true;
-      window.location.href='/app.html';return;
-      // nav CTA를 앱으로
-      document.querySelectorAll('.nav-cta').forEach(a=>{a.style.display='none';});
-      const lb=document.getElementById('nav-login-btn');
-      if(lb){lb.textContent='My Projects';lb.style.background='var(--lime)';lb.style.color='#0a0a0a';lb.style.border='none';lb.onclick=function(){window.location.href='/app.html';};}
+      window.location.href='/app.html';
+      return;
     }
   }catch(e){}
 })();
-function goToApp(){window.location.href='/app.html';}
-
-function handleGetStarted(){ window.location.href='/app.html'; }
 
 function showLoginModal(){
   const overlay=document.createElement('div');
@@ -116,7 +110,6 @@ function showLoginModal(){
         <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#0a0a0a" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#0a0a0a" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#0a0a0a" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#0a0a0a" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Sign in with Google
       </button>
-
     </div>`;
   document.body.appendChild(overlay);
 }
@@ -132,6 +125,7 @@ async function googleSignIn(){
   }catch(e){ console.error(e); }
 }
 </script>
+
 <nav class="nav">
   <div class="nav-logo"><svg viewBox="0 0 232.56 84.15" xmlns="http://www.w3.org/2000/svg"><text font-size="66.39" transform="translate(0 56.73)"><tspan x="0" y="0" fill="#d4f53c" font-family="Outfit" font-weight="700">ON</tspan><tspan x="103.57" y="0" fill="#ffffff" font-family="Outfit" font-weight="500">plan</tspan></text></svg></div>
   <div class="nav-right">
@@ -140,10 +134,10 @@ async function googleSignIn(){
       <a href="#planner" data-ko="AI 기획자" data-en="OnPlan AI">AI 기획자</a>
       <a href="#pricing" data-ko="가격" data-en="Pricing">가격</a>
       <a href="#contact" data-ko="문의" data-en="Contact">Contact</a>
-
     </div>
     <div id="nav-auth">
-      <button onclick="window.location.href='/app.html'" id="nav-login-btn" style="padding:7px 18px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--g200);font-family:var(--en);font-weight:600;font-size:12px;cursor:pointer;border-radius:6px;transition:all .2s;letter-spacing:.3px;" onmouseover="this.style.borderColor='rgba(255,255,255,.5)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--g200)'" data-ko="로그인" data-en="Sign In">Sign In</button>
+      <!-- ★ 변경: showLoginModal() -->
+      <button onclick="showLoginModal()" id="nav-login-btn" style="padding:7px 18px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--g200);font-family:var(--en);font-weight:600;font-size:12px;cursor:pointer;border-radius:6px;transition:all .2s;letter-spacing:.3px;" onmouseover="this.style.borderColor='rgba(255,255,255,.5)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,.2)';this.style.color='var(--g200)'" data-ko="로그인" data-en="Sign In">Sign In</button>
     </div>
     <div class="lang-toggle">
       <button class="lang-btn" id="btn-ko" onclick="setLang('ko')">KO</button>
@@ -157,7 +151,8 @@ async function googleSignIn(){
   <h1 class="reveal reveal-d1" data-ko="기획자 없이,<br><em>기획서를.</em>" data-en="Skip the PM.<br><em>Ship the PRD.</em>">기획자 없이,<br><em>기획서를.</em></h1>
   <p class="hero-sub reveal reveal-d2" data-ko="팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지." data-en="Your team shares opinions. OnPlan AI judges, synthesizes, and delivers a PRD — with role-specific documents for everyone.">팀원들이 각자 의견만 말하면, AI 기획자가 판단하고 수렴해서 기획서를 만들어줍니다. 역할별 맞춤 문서까지.</p>
   <div class="hero-actions reveal reveal-d3">
-    <a href="/app.html" class="btn-primary" data-ko="무료로 시작하기 →" data-en="Free Start →">Free Start →</a>
+    <!-- ★ 변경: showLoginModal() -->
+    <a href="#" onclick="showLoginModal()" class="btn-primary" data-ko="무료로 시작하기 →" data-en="Free Start →">Free Start →</a>
   </div>
   <div class="hero-visual reveal reveal-d4">
     <div class="hero-visual-bar"><div class="hero-visual-dot"></div><div class="hero-visual-dot"></div><div class="hero-visual-dot"></div></div>
@@ -223,13 +218,11 @@ async function googleSignIn(){
   </div>
 </section>
 
-<!-- OUTPUT PREVIEW -->
 <section id="output" style="padding:120px 48px;max-width:1000px;margin:0 auto;">
   <div class="sec-label reveal" data-ko="결과물 미리보기" data-en="Output Preview">Output Preview</div>
   <h2 class="sec-title reveal" data-ko="기획서라는 이름에<br>걸맞은 결과물." data-en="A PRD that actually<br>earns the name.">기획서라는 이름에<br>걸맞은 결과물.</h2>
   <p class="sec-desc reveal" data-ko="팀의 목소리를 구조화하고, 판단을 더하고, 의사결정까지 설계합니다." data-en="Structured from your team's voice. Layered with judgment. Designed for decisions.">팀의 목소리를 구조화하고, 판단을 더하고, 의사결정까지 설계합니다.</p>
 
-  <!-- STEP 1: 8 Section Cards -->
   <div class="op-step reveal">
     <div class="op-step-num">01</div>
     <div class="op-step-label" data-ko="8개 섹션이 자동으로 구성됩니다" data-en="8 PRD sections are auto-generated">8 PRD sections are auto-generated</div>
@@ -250,7 +243,6 @@ async function googleSignIn(){
     </div>
   </div>
 
-  <!-- STEP 2: Section Body Content -->
   <div class="op-step reveal">
     <div class="op-step-num">02</div>
     <div class="op-step-label" data-ko="각 섹션에 완성된 기획 내용이 담깁니다" data-en="Each section contains a complete write-up">Each section contains a complete write-up</div>
@@ -260,16 +252,15 @@ async function googleSignIn(){
     <div class="op-body">
       <div class="op-section-content">
         <h4 class="op-h4" data-ko="문제 정의" data-en="Problem Definition">Problem Definition</h4>
-        <p class="op-p" data-ko="중소 제조업체의 발주 관리는 여전히 엑셀과 메신저에 의존하고 있습니다. 거래처가 10곳을 넘어가면 발주 누락, 단가 착오, 납기 지연이 반복 발생하며, 담당자 교체 시 인수인계 단절이 심각한 운영 리스크입니다." data-en="SMB manufacturers still manage purchase orders via spreadsheets and messaging apps. Beyond 10 vendors, missed orders, pricing errors, and delivery delays become recurring issues, and staff turnover causes critical handoff failures.">SMB manufacturers still manage purchase orders via spreadsheets and messaging apps. Beyond 10 vendors, missed orders, pricing errors, and delivery delays become recurring issues, and staff turnover causes critical handoff failures.</p>
+        <p class="op-p" data-ko="중소 제조업체의 발주 관리는 여전히 엑셀과 메신저에 의존하고 있습니다." data-en="SMB manufacturers still manage purchase orders via spreadsheets and messaging apps. Beyond 10 vendors, missed orders, pricing errors, and delivery delays become recurring issues, and staff turnover causes critical handoff failures.">SMB manufacturers still manage purchase orders via spreadsheets and messaging apps. Beyond 10 vendors, missed orders, pricing errors, and delivery delays become recurring issues, and staff turnover causes critical handoff failures.</p>
         <h4 class="op-h4" data-ko="왜 지금인가" data-en="Why Now">Why Now</h4>
-        <p class="op-p" data-ko="거래처 확장으로 월 3~4건의 발주 누락 발생 중. 월간 손실 약 500만원 추산. 기존 ERP 도입은 비용(3,000만원+)과 학습 곡선으로 비현실적이며, 핵심 발주 프로세스에 특화된 경량 솔루션이 필요합니다." data-en="Vendor expansion causing 3-4 missed orders monthly. Estimated $5K monthly loss. Traditional ERP adoption is unrealistic due to cost ($300K+) and learning curve. A lightweight solution focused on the core ordering process is needed.">Vendor expansion causing 3-4 missed orders monthly. Estimated $5K monthly loss. Traditional ERP adoption is unrealistic due to cost ($300K+) and learning curve. A lightweight solution focused on the core ordering process is needed.</p>
+        <p class="op-p" data-ko="거래처 확장으로 월 3~4건의 발주 누락 발생 중." data-en="Vendor expansion causing 3-4 missed orders monthly. Estimated $5K monthly loss. Traditional ERP adoption is unrealistic due to cost ($300K+) and learning curve. A lightweight solution focused on the core ordering process is needed.">Vendor expansion causing 3-4 missed orders monthly. Estimated $5K monthly loss. Traditional ERP adoption is unrealistic due to cost ($300K+) and learning curve. A lightweight solution focused on the core ordering process is needed.</p>
         <h4 class="op-h4" data-ko="시장 맥락" data-en="Market Context">Market Context</h4>
-        <p class="op-p" data-ko="국내 중소 제조업체 약 12만 곳 중 전용 발주 시스템 사용률 15% 미만. 엑셀(68%), 수기(12%), 메신저(5%) 등으로 처리 중이며 명확한 시장 기회가 존재합니다." data-en="Among ~120K domestic SMB manufacturers, less than 15% use a dedicated ordering system. 68% use spreadsheets, 12% manual records, 5% messaging apps — a clear market opportunity.">Among ~120K domestic SMB manufacturers, less than 15% use a dedicated ordering system. 68% use spreadsheets, 12% manual records, 5% messaging apps — a clear market opportunity.</p>
+        <p class="op-p" data-ko="국내 중소 제조업체 약 12만 곳 중 전용 발주 시스템 사용률 15% 미만." data-en="Among ~120K domestic SMB manufacturers, less than 15% use a dedicated ordering system. 68% use spreadsheets, 12% manual records, 5% messaging apps — a clear market opportunity.">Among ~120K domestic SMB manufacturers, less than 15% use a dedicated ordering system. 68% use spreadsheets, 12% manual records, 5% messaging apps — a clear market opportunity.</p>
       </div>
     </div>
   </div>
 
-  <!-- STEP 3: OnPlan Opinion -->
   <div class="op-step reveal">
     <div class="op-step-num">03</div>
     <div class="op-step-label" data-ko="AI 기획자의 의견이 섹션마다 추가됩니다" data-en="OnPlan AI's opinion is added to every section">OnPlan AI's opinion is added to every section</div>
@@ -279,13 +270,12 @@ async function googleSignIn(){
     <div class="op-body">
       <div class="op-opinion">
         <div class="op-opinion-label">ONPLAN OPINION</div>
-        <div class="op-opinion-text" data-ko="<strong>대표와 영업의 문제 인식이 다릅니다.</strong> 대표는 운영 효율(발주 누락 방지), 영업은 고객 관계(납기 지연으로 인한 신뢰 하락)를 강조했습니다. 둘 다 유효하나 MVP에서는 <strong>발주 누락 방지가 우선</strong>입니다. 납기 지연은 발주가 제대로 관리되면 자연히 줄어드는 후행 지표입니다." data-en="<strong>CEO and Sales disagree on the core problem.</strong> CEO emphasizes operational efficiency (preventing missed orders), Sales highlights customer trust (delivery delays hurting credibility). Both valid, but for MVP, <strong>preventing missed orders takes priority</strong>. Delivery delays naturally decrease when orders are properly managed — it's a lagging indicator.">CEO and Sales disagree on the core problem. CEO emphasizes operational efficiency (preventing missed orders), Sales highlights customer trust (delivery delays hurting credibility). Both valid, but for MVP, <strong>preventing missed orders takes priority</strong>. Delivery delays naturally decrease when orders are properly managed — it's a lagging indicator.</div>
+        <div class="op-opinion-text" data-ko="<strong>대표와 영업의 문제 인식이 다릅니다.</strong> 대표는 운영 효율, 영업은 고객 관계를 강조했습니다. MVP에서는 <strong>발주 누락 방지가 우선</strong>입니다." data-en="<strong>CEO and Sales disagree on the core problem.</strong> CEO emphasizes operational efficiency (preventing missed orders), Sales highlights customer trust (delivery delays hurting credibility). Both valid, but for MVP, <strong>preventing missed orders takes priority</strong>. Delivery delays naturally decrease when orders are properly managed — it's a lagging indicator.">CEO and Sales disagree on the core problem. CEO emphasizes operational efficiency (preventing missed orders), Sales highlights customer trust (delivery delays hurting credibility). Both valid, but for MVP, <strong>preventing missed orders takes priority</strong>. Delivery delays naturally decrease when orders are properly managed — it's a lagging indicator.</div>
       </div>
       <div class="op-opinion-note" data-ko="단순 요약이 아닙니다. 팀 의견의 충돌을 감지하고, 우선순위를 판단합니다." data-en="This isn't a summary. It detects conflicts in team opinions and makes priority judgments.">This isn't a summary. It detects conflicts in team opinions and makes priority judgments.</div>
     </div>
   </div>
 
-  <!-- STEP 4: Open Issue + Real-time Discussion -->
   <div class="op-step reveal">
     <div class="op-step-num">04</div>
     <div class="op-step-label" data-ko="이슈에 대해 팀과 AI가 실시간으로 소통합니다" data-en="Discuss issues in real-time with your team and AI">Discuss issues in real-time with your team and AI</div>
@@ -299,17 +289,16 @@ async function googleSignIn(){
         <div class="op-issue-body" data-ko="일부 참여자는 내부 사용자만 고려하면 된다는 입장이고, 다른 참여자는 거래처도 시스템에서 직접 확인할 수 있어야 한다고 봅니다." data-en="Some participants believe only internal users need access, while others think vendors should be able to confirm orders directly in the system.">Some participants believe only internal users need access, while others think vendors should be able to confirm orders directly in the system.</div>
         <div class="op-issue-ai">
           <span class="op-issue-ai-label" data-ko="AI 기획자 권장안" data-en="ONPLAN RECOMMENDATION">ONPLAN RECOMMENDATION</span>
-          <span data-ko="MVP에서는 <strong>내부 사용자로 한정</strong>을 권장합니다. 거래처 포함 시 거래처 포털이 P0으로 올라가며 예산 +300만원, 일정 +2개월이 필요합니다. 거래처에는 이메일/SMS 알림으로 우선 대응 가능합니다." data-en="We recommend <strong>limiting to internal users</strong> for MVP. Including vendors would escalate the vendor portal to P0, adding +$30K budget and +2 months. Email/SMS alerts can cover vendor needs initially.">We recommend <strong>limiting to internal users</strong> for MVP. Including vendors would escalate the vendor portal to P0, adding +$30K budget and +2 months. Email/SMS alerts can cover vendor needs initially.</span>
+          <span data-ko="MVP에서는 내부 사용자로 한정을 권장합니다." data-en="We recommend <strong>limiting to internal users</strong> for MVP. Including vendors would escalate the vendor portal to P0, adding +$30K budget and +2 months. Email/SMS alerts can cover vendor needs initially.">We recommend <strong>limiting to internal users</strong> for MVP. Including vendors would escalate the vendor portal to P0, adding +$30K budget and +2 months. Email/SMS alerts can cover vendor needs initially.</span>
         </div>
       </div>
       <div class="op-chat-input">
-        <input type="text" class="op-chat-field" disabled data-ko-ph="이 논점에 대한 의견을 입력하세요..." data-en-ph="Share your opinion on this issue..." placeholder="Share your opinion on this issue...">
-        <button class="op-chat-btn" disabled data-ko="전송" data-en="Send">Send</button>
+        <input type="text" class="op-chat-field" disabled placeholder="Share your opinion on this issue...">
+        <button class="op-chat-btn" disabled>Send</button>
       </div>
     </div>
   </div>
 
-  <!-- STEP 5: AI Revision -->
   <div class="op-step reveal">
     <div class="op-step-num">05</div>
     <div class="op-step-label" data-ko="AI 기획자가 수정안을 제안하고, 승인/거부할 수 있습니다" data-en="OnPlan AI proposes revisions you can approve or reject">OnPlan AI proposes revisions you can approve or reject</div>
@@ -319,8 +308,8 @@ async function googleSignIn(){
     <div class="op-body">
       <div class="op-revision">
         <div class="op-revision-label" data-ko="AI 기획자 수정 제안" data-en="ONPLAN REVISION">ONPLAN REVISION</div>
-        <div class="op-revision-text" data-ko="자동 리포트를 P1으로 올리면 <strong>일정이 1개월 늘어납니다</strong> (4개월 → 5개월). 대신 납품 검수를 P2로 내리면 <strong>4개월 내 가능</strong>합니다." data-en="Moving auto-reports to P1 would <strong>extend the timeline by 1 month</strong> (4 → 5 months). However, moving delivery inspection to P2 <strong>keeps it within 4 months</strong>.">Moving auto-reports to P1 would <strong>extend the timeline by 1 month</strong> (4 → 5 months). However, moving delivery inspection to P2 <strong>keeps it within 4 months</strong>.</div>
-        <div class="op-revision-options" data-ko="정리하면:<br>— 안 A: P0 3개 + 자동 리포트(P1) = 5개월<br>— 안 B: P0 3개 + 자동 리포트(P1) - 납품 검수(→P2) = 4개월<br>— 안 C: 현행 유지 (자동 리포트 P2) = 4개월" data-en="Summary:<br>— Option A: 3 P0s + Auto-report (P1) = 5 months<br>— Option B: 3 P0s + Auto-report (P1) - Inspection (→P2) = 4 months<br>— Option C: Keep current (Auto-report P2) = 4 months">Summary:<br>— Option A: 3 P0s + Auto-report (P1) = 5 months<br>— Option B: 3 P0s + Auto-report (P1) - Inspection (→P2) = 4 months<br>— Option C: Keep current (Auto-report P2) = 4 months</div>
+        <div class="op-revision-text" data-ko="자동 리포트를 P1으로 올리면 <strong>일정이 1개월 늘어납니다</strong>." data-en="Moving auto-reports to P1 would <strong>extend the timeline by 1 month</strong> (4 → 5 months). However, moving delivery inspection to P2 <strong>keeps it within 4 months</strong>.">Moving auto-reports to P1 would <strong>extend the timeline by 1 month</strong> (4 → 5 months). However, moving delivery inspection to P2 <strong>keeps it within 4 months</strong>.</div>
+        <div class="op-revision-options" data-ko="— 안 A: 5개월<br>— 안 B: 4개월<br>— 안 C: 현행 유지" data-en="Summary:<br>— Option A: 3 P0s + Auto-report (P1) = 5 months<br>— Option B: 3 P0s + Auto-report (P1) - Inspection (→P2) = 4 months<br>— Option C: Keep current (Auto-report P2) = 4 months">Summary:<br>— Option A: 3 P0s + Auto-report (P1) = 5 months<br>— Option B: 3 P0s + Auto-report (P1) - Inspection (→P2) = 4 months<br>— Option C: Keep current (Auto-report P2) = 4 months</div>
         <div class="op-revision-question" data-ko="어떻게 하시겠습니까?" data-en="What would you like to do?">What would you like to do?</div>
         <div class="op-revision-actions">
           <button class="op-btn-approve" disabled data-ko="승인" data-en="Approve">Approve</button>
@@ -331,7 +320,8 @@ async function googleSignIn(){
   </div>
 
   <div style="text-align:center;margin-top:40px;">
-    <a href="/app.html" class="btn-primary reveal" data-ko="무료로 시작하기 →" data-en="Free Start →">Free Start →</a>
+    <!-- ★ 변경: showLoginModal() -->
+    <a href="#" onclick="showLoginModal()" class="btn-primary reveal" data-ko="무료로 시작하기 →" data-en="Free Start →">Free Start →</a>
   </div>
 </section>
 
@@ -340,7 +330,6 @@ async function googleSignIn(){
   <h2 class="sec-title reveal" data-ko="모든 팀을 위한 기획." data-en="Product direction,<br>for every team.">모든 팀을 위한 기획.</h2>
   <p class="sec-desc reveal" data-ko="팀의 규모와 단계에 맞는 플랜을 선택하세요." data-en="Choose the plan that fits your team's size and stage.">팀의 규모와 단계에 맞는 플랜을 선택하세요.</p>
   <div class="pricing-grid">
-    <!-- FREE -->
     <div class="price-card reveal">
       <div class="price-name">Free</div>
       <div class="price-amount" data-ko="$0" data-en="$0">$0</div>
@@ -351,9 +340,9 @@ async function googleSignIn(){
         <li data-ko="PRD 1~2섹션 미리보기" data-en="PRD preview (1-2 sections)">PRD preview (1-2 sections)</li>
         <li data-ko="ONPLAN OPINION 맛보기" data-en="ONPLAN OPINION sample">ONPLAN OPINION sample</li>
       </ul>
-      <a href="/app.html" class="price-btn price-btn-outline" data-ko="무료로 시작하기" data-en="Free Start">Free Start</a>
+      <!-- ★ 변경: showLoginModal() -->
+      <a href="#" onclick="showLoginModal()" class="price-btn price-btn-outline" data-ko="무료로 시작하기" data-en="Free Start">Free Start</a>
     </div>
-    <!-- PRO -->
     <div class="price-card featured reveal reveal-d1">
       <div class="price-name">Pro</div>
       <div class="price-amount" data-ko="$29<span> /월</span>" data-en="$29<span> /mo</span>">$29<span> /mo</span></div>
@@ -373,7 +362,6 @@ async function googleSignIn(){
         <a href="https://onhae.lemonsqueezy.com/checkout/buy/9b5deb85-45d8-4639-ae61-4d5e3533cabd" target="_blank" class="price-btn price-btn-outline" style="font-size:12px;" data-ko="연간 $279 (20% 할인)" data-en="Yearly $279 (Save 20%)">Yearly $279 (Save 20%)</a>
       </div>
     </div>
-    <!-- MAX -->
     <div class="price-card reveal reveal-d2">
       <div class="price-name">Max</div>
       <div class="price-amount" data-ko="$79<span> /월</span>" data-en="$79<span> /mo</span>">$79<span> /mo</span></div>
@@ -390,7 +378,6 @@ async function googleSignIn(){
         <a href="https://onhae.lemonsqueezy.com/checkout/buy/d4e4a34d-06ca-4b1a-9347-878c9803b526" target="_blank" class="price-btn price-btn-outline" style="font-size:12px;" data-ko="연간 $759 (20% 할인)" data-en="Yearly $759 (Save 20%)">Yearly $759 (Save 20%)</a>
       </div>
     </div>
-    <!-- EARLY BIRD -->
     <div class="price-card reveal reveal-d3" style="border-color:var(--lime);position:relative;">
       <div style="position:absolute;top:-12px;right:16px;background:var(--lime);color:var(--black);font-size:9px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:4px;">LIMITED 100 SEATS</div>
       <div class="price-name">Early Bird LTD</div>
@@ -411,10 +398,10 @@ async function googleSignIn(){
   <div class="final-glow"></div>
   <h2 class="reveal" data-ko="기획서, <em>의견만 모으면</em><br>나머지는 AI가." data-en="Just collect opinions.<br><em>AI handles the rest.</em>">기획서, <em>의견만 모으면</em><br>나머지는 AI가.</h2>
   <p class="reveal reveal-d1" data-ko="지금 바로 프로젝트를 만들고 팀에 공유하세요." data-en="Create a project now and share with your team.">지금 바로 프로젝트를 만들고 팀에 공유하세요.</p>
-  <a href="/app.html" class="btn-primary reveal reveal-d2" data-ko="지금 시작하기 →" data-en="Free Start →">Free Start →</a>
+  <!-- ★ 변경: showLoginModal() -->
+  <a href="#" onclick="showLoginModal()" class="btn-primary reveal reveal-d2" data-ko="지금 시작하기 →" data-en="Free Start →">Free Start →</a>
 </div>
 
-<!-- CONTACT -->
 <section id="contact" style="padding:80px 48px;max-width:640px;margin:0 auto;text-align:center;">
   <div class="sec-label reveal" data-ko="문의하기" data-en="Contact">Contact</div>
   <h2 class="reveal" style="font-size:28px;margin-bottom:8px;" data-ko="궁금한 점이 있으신가요?" data-en="Have a question?">Have a question?</h2>
@@ -435,7 +422,7 @@ async function googleSignIn(){
       <div class="footer-tagline" data-ko="AI로 일하는 방식을 바꿉니다" data-en="Changing how teams work with AI">Changing how teams work with AI</div>
     </div>
     <div class="footer-contact">
-      <div class="footer-contact-item"><span class="footer-contact-label">Email</span><a href="/cdn-cgi/l/email-protection#3e5150565f5b4d5150597e59535f5752105d5153"><span class="__cf_email__" data-cfemail="c0afaea8a1a5b3afaea780a7ada1a9aceea3afad">[email&#160;protected]</span></a></div>
+      <div class="footer-contact-item"><span class="footer-contact-label">Email</span><a href="mailto:onhaesong@gmail.com">onhaesong@gmail.com</a></div>
       <div class="footer-contact-item"><span class="footer-contact-label">Tel</span><a href="tel:+821057413556">+82 10-5741-3556</a></div>
     </div>
   </div>
@@ -445,7 +432,7 @@ async function googleSignIn(){
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 let currentLang='en';
 function setLang(lang){
   currentLang=lang;
@@ -457,15 +444,18 @@ function setLang(lang){
     else el.innerHTML=val;
   });
   document.documentElement.lang=lang;
-  document.title='OnPlan';
-  // Update app links with lang param
-
 }
 setLang('en');
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.15});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 setTimeout(()=>{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));},1200);
-document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{
+  const href=a.getAttribute('href');
+  if(href==='#')return; // showLoginModal 링크는 스크롤 방지만
+  e.preventDefault();
+  const t=document.querySelector(href);
+  if(t)t.scrollIntoView({behavior:'smooth'});
+});});
 
 function sendContact(){
   const name=document.getElementById('ct-name').value.trim();
