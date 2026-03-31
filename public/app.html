@@ -2671,6 +2671,7 @@ function renderPRDSections(prdData, container) {
   sections.forEach((s, i) => {
     const locked = !canViewAll && i >= FREE_LIMIT;
     const hasConflict = s.conflict || !!conflicts[s.num];
+    const isFirstOpinion = i === 0; // Free: 첫 번째 섹션만 opinion 공개
     const sec = document.createElement('div');
     sec.className = 'prd-section';
     sec.id = 'sec-' + s.num;
@@ -2703,11 +2704,34 @@ function renderPRDSections(prdData, container) {
       html += `<div class="prd-sec-body">`;
 
       if (opinions[s.num]) {
-        html += `<div class="po"><div class="po-title">ONPLAN OPINION</div><div class="po-body">${opinions[s.num]}</div></div>`;
+        if (!canViewAll && !isFirstOpinion) {
+          // Free: 첫 번째 이후 opinion은 잠금
+          html += `<div class="po" style="position:relative">
+            <div class="po-title">ONPLAN OPINION</div>
+            <div class="po-body" style="filter:blur(4px);opacity:.3;pointer-events:none;user-select:none">${opinions[s.num]}</div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px">
+              <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><rect x="3" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 8V5.5a3 3 0 116 0V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <a href="/#pricing" style="color:var(--lime);text-decoration:none;font-weight:600">Pro에서 열람 가능</a>
+            </div>
+          </div>`;
+        } else {
+          html += `<div class="po"><div class="po-title">ONPLAN OPINION</div><div class="po-body">${opinions[s.num]}</div></div>`;
+        }
       }
 
       if (hasConflict && conflicts[s.num]) {
-        const cf = conflicts[s.num];
+        if (!canViewAll) {
+          // Free: 충돌 건수만 표시
+          const conflictCount = Object.keys(conflicts).length;
+          html += `<div class="cb" style="opacity:.7">
+            <div class="cb-title">OPEN ISSUE</div>
+            <div style="font-size:14px;color:var(--g400);padding:8px 0">
+              이 PRD에서 <strong style="color:var(--white)">${conflictCount}건</strong>의 충돌이 감지되었습니다.
+              <a href="/#pricing" style="color:var(--lime);text-decoration:none;font-weight:600;margin-left:8px">Pro에서 확인 →</a>
+            </div>
+          </div>`;
+        } else {
+          const cf = conflicts[s.num];
         const cfId = 'cf-' + s.num;
         html += `<div class="cb">
           <div class="cb-title">OPEN ISSUE</div>
@@ -2723,6 +2747,7 @@ function renderPRDSections(prdData, container) {
           </div>
           <div class="cb-thread" id="${cfId}-thread"></div>
         </div>`;
+        } // end canViewAll else
       }
 
       html += `<div class="sec-content">${s.body || ''}</div>`;
