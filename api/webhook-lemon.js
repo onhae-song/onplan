@@ -1,24 +1,21 @@
 const crypto = require('crypto');
 
-// Raw body 필요 — Vercel body parser 비활성화
-module.exports.config = { api: { bodyParser: false } };
-
 function getRawBody(req) {
   return new Promise((resolve, reject) => {
-    let data = '';
-    req.on('data', chunk => { data += chunk; });
-    req.on('end', () => resolve(data));
+    let data = Buffer.alloc(0);
+    req.on('data', chunk => { data = Buffer.concat([data, chunk]); });
+    req.on('end', () => resolve(data.toString('utf8')));
     req.on('error', reject);
   });
 }
 
-module.exports = async function handler(req, res) {
+async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const rawBody = await getRawBody(req);
 
-  // 서명 검증 (임시 비활성화 — 테스트용)
+  // 서명 검증 (임시 비활성화)
   // const secret = process.env.LEMON_WEBHOOK_SECRET || '';
   // if (secret) {
   //   const sig = req.headers['x-signature'] || '';
@@ -39,14 +36,12 @@ module.exports = async function handler(req, res) {
   const productName = data?.data?.attributes?.first_order_item?.product_name || data?.meta?.custom_data?.product || '';
   const variantName = data?.data?.attributes?.first_order_item?.variant_name || '';
 
-  // 플랜 결정
   let plan = 'free';
   const pn = (productName + ' ' + variantName).toLowerCase();
   if (pn.includes('max')) plan = 'max';
   else if (pn.includes('pro')) plan = 'pro';
   else if (pn.includes('lifetime') || pn.includes('early')) plan = 'lifetime';
 
-  // 만료일 결정
   let expiresAt = null;
   if (plan !== 'lifetime') {
     const d = new Date();
@@ -66,7 +61,6 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // 이메일로 유저 찾기
     let userId = null;
     const allUsersRes = await fetch(`${SUPABASE_URL}/auth/v1/admin/users?page=1&per_page=1000`, {
       headers: {
@@ -124,4 +118,7 @@ module.exports = async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: 'server_error', message: err.message });
   }
-};
+}
+
+handler.config = { api: { bodyParser: false } };
+module.exports = handler;
