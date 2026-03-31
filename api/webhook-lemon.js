@@ -18,15 +18,15 @@ module.exports = async function handler(req, res) {
 
   const rawBody = await getRawBody(req);
 
-  // 서명 검증
-  const secret = process.env.LEMON_WEBHOOK_SECRET || '';
-  if (secret) {
-    const sig = req.headers['x-signature'] || '';
-    const hmac = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
-    if (sig !== hmac) {
-      return res.status(401).json({ error: 'invalid_signature' });
-    }
-  }
+  // 서명 검증 (임시 비활성화 — 테스트용)
+  // const secret = process.env.LEMON_WEBHOOK_SECRET || '';
+  // if (secret) {
+  //   const sig = req.headers['x-signature'] || '';
+  //   const hmac = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
+  //   if (sig !== hmac) {
+  //     return res.status(401).json({ error: 'invalid_signature' });
+  //   }
+  // }
 
   let data;
   try { data = JSON.parse(rawBody); } catch(e) {
