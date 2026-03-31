@@ -46,7 +46,8 @@ async function sendChat() {
       const data = await resp.json();
       chatHistory.push({ role: 'assistant', content: data.reply });
       addMsg('assistant', data.reply);
-      if (data.is_complete) document.getElementById('finish-bar')?.classList.remove('hidden');
+      if (typeof data.progress === 'number') updateInterviewProgress(data.progress);
+      if (data.is_complete) triggerInterviewComplete();
     } else throw new Error('API error');
   } catch(e) {
     removeTypingIndicator();
@@ -57,6 +58,43 @@ async function sendChat() {
   }
 
   isSending = false; inp.disabled = false; inp.focus();
+}
+
+function updateInterviewProgress(pct) {
+  const bar = document.getElementById('interview-progress-bar');
+  const pctEl = document.getElementById('interview-progress-pct');
+  if (bar) bar.style.width = Math.min(100, pct) + '%';
+  if (pctEl) pctEl.textContent = Math.min(100, pct) + '%';
+}
+
+function triggerInterviewComplete() {
+  // 프로그레스 100%
+  updateInterviewProgress(100);
+
+  // 채팅 영역 배경 lime tint
+  const chatArea = document.getElementById('chatArea');
+  if (chatArea) {
+    chatArea.style.transition = 'background .6s ease';
+    chatArea.style.background = 'rgba(212,245,60,.04)';
+
+    // 채팅 내 완료 카드
+    const card = document.createElement('div');
+    card.style.cssText = 'margin:8px 0;padding:16px 20px;background:var(--lime-bg);border:1px solid var(--lime-border);border-radius:var(--radius-sm);display:flex;align-items:center;gap:12px;';
+    card.innerHTML = `
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="flex-shrink:0;color:var(--lime)">
+        <circle cx="11" cy="11" r="10" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M7 11l3 3 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--lime);font-family:var(--en);letter-spacing:.06em;margin-bottom:2px">INTERVIEW COMPLETE</div>
+        <div style="font-size:13px;color:var(--g300)">충분한 인사이트가 수집되었습니다. 위 버튼을 눌러 완료해주세요.</div>
+      </div>`;
+    chatArea.appendChild(card);
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+
+  // 완료 버튼 배너 표시
+  document.getElementById('finish-bar')?.classList.remove('hidden');
 }
 
 async function finishInterview() {
