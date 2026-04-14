@@ -105,6 +105,7 @@ function showUpgradeModal(msg) {
 function togglePanel() {
   const panel = document.getElementById('panel');
   const btn = document.getElementById('panel-toggle');
+  const mini = document.getElementById('mini-sidebar');
   const overlay = document.getElementById('panel-overlay');
   const isMobile = window.innerWidth <= 768;
   const isCollapsed = panel.classList.contains('collapsed');
@@ -112,11 +113,13 @@ function togglePanel() {
   if (isCollapsed) {
     panel.classList.remove('collapsed');
     btn.classList.add('open');
+    if (mini) mini.classList.remove('visible');
     if (isMobile) overlay.classList.add('visible');
     localStorage.setItem('onplan-panel', 'open');
   } else {
     panel.classList.add('collapsed');
     btn.classList.remove('open');
+    if (mini) mini.classList.add('visible');
     overlay.classList.remove('visible');
     localStorage.setItem('onplan-panel', 'closed');
   }
@@ -127,10 +130,33 @@ function initPanel() {
   const saved = localStorage.getItem('onplan-panel');
   const panel = document.getElementById('panel');
   const btn = document.getElementById('panel-toggle');
+  const mini = document.getElementById('mini-sidebar');
   if (isMobile || saved === 'closed') {
     panel.classList.add('collapsed');
     btn.classList.remove('open');
+    if (mini && !isMobile) mini.classList.add('visible');
   }
+}
+
+function updateMiniSidebar() {
+  const badges = document.getElementById('mini-proj-badges');
+  if (!badges) return;
+  badges.innerHTML = '';
+  document.querySelectorAll('#proj-list .proj-item').forEach(item => {
+    const name = item.querySelector('.proj-name')?.textContent || '';
+    const isLive = item.querySelector('.badge-on') !== null;
+    const id = item.dataset.id;
+    const letter = name.charAt(0).toUpperCase();
+    const div = document.createElement('div');
+    div.className = 'mini-badge ' + (isLive ? 'mini-badge-live' : 'mini-badge-done');
+    div.textContent = letter;
+    div.title = name;
+    div.onclick = () => {
+      item.click();
+      if (document.getElementById('panel').classList.contains('collapsed')) togglePanel();
+    };
+    badges.appendChild(div);
+  });
 }
 
 function filterProjects(query) {
