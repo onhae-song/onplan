@@ -77,40 +77,42 @@
   </button>
 
   <!-- User dropdown -->
-  <div class="user-dropdown" id="user-dropdown">
-    <div class="ud-header">
-      <div class="ud-email" id="ud-email">—</div>
-      <span class="ud-plan plan-free" id="ud-plan-badge">FREE</span>
-    </div>
-    <button class="ud-item" onclick="openSettings()">
-      <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 1v1.2M6.5 10.8V12M1 6.5h1.2M10.8 6.5H12M2.6 2.6l.85.85M9.55 9.55l.85.85M2.6 10.4l.85-.85M9.55 3.45l.85-.85" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      <span data-i18n="menu-settings">설정</span>
-    </button>
-    <div class="ud-sep"></div>
-    <button class="ud-item" onclick="openSettings('billing')">
-      <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M1.5 9.5l3-3 2 2 4-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span data-i18n="menu-upgrade">요금제 업그레이드</span>
-    </button>
-    <div class="ud-sep"></div>
-    <div class="ud-lang-row">
-      <span class="ud-lang-label">Language</span>
-      <div class="ud-lang-btns">
-        <button id="dd-lang-ko-btn" class="ud-lang-btn" onclick="setAppLang('ko')">KO</button>
-        <button id="dd-lang-en-btn" class="ud-lang-btn" onclick="setAppLang('en')">EN</button>
-      </div>
-    </div>
-    <div class="ud-sep"></div>
-    <button class="ud-item danger" onclick="logOut()">
-      <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M5 1.5H2a1 1 0 00-1 1v8a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span data-i18n="menu-logout">로그아웃</span>
-    </button>
-  </div>
 
   <div class="panel-ft" id="panel-ft" style="display:none" onclick="toggleUserDropdown()">
     <div class="avatar" id="user-avatar-txt">?</div>
     <span class="user-name" id="user-name-txt">—</span>
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none" style="color:var(--g500);flex-shrink:0"><path d="M3 4.5l3-3 3 3M3 7.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
+</div>
+
+<!-- ══════════ USER DROPDOWN ══════════ -->
+<div class="user-dropdown" id="user-dropdown">
+  <div class="ud-header">
+    <div class="ud-email" id="ud-email">—</div>
+    <span class="ud-plan plan-free" id="ud-plan-badge">FREE</span>
+  </div>
+  <button class="ud-item" onclick="openSettings()">
+    <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 1v1.2M6.5 10.8V12M1 6.5h1.2M10.8 6.5H12M2.6 2.6l.85.85M9.55 9.55l.85.85M2.6 10.4l.85-.85M9.55 3.45l.85-.85" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    <span data-i18n="menu-settings">설정</span>
+  </button>
+  <div class="ud-sep"></div>
+  <button class="ud-item" onclick="openSettings('billing')">
+    <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M1.5 9.5l3-3 2 2 4-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span data-i18n="menu-upgrade">요금제 업그레이드</span>
+  </button>
+  <div class="ud-sep"></div>
+  <div class="ud-lang-row">
+    <span class="ud-lang-label">Language</span>
+    <div class="ud-lang-btns">
+      <button id="dd-lang-ko-btn" class="ud-lang-btn" onclick="setAppLang('ko')">KO</button>
+      <button id="dd-lang-en-btn" class="ud-lang-btn" onclick="setAppLang('en')">EN</button>
+    </div>
+  </div>
+  <div class="ud-sep"></div>
+  <button class="ud-item danger" onclick="logOut()">
+    <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M5 1.5H2a1 1 0 00-1 1v8a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span data-i18n="menu-logout">로그아웃</span>
+  </button>
 </div>
 
 <!-- ══════════ MINI SIDEBAR (패널 닫힌 상태) ══════════ -->
