@@ -24,6 +24,7 @@ async function loadProjects() {
 
   if (error || !projects || projects.length === 0) {
     listEl.innerHTML = '<div style="padding:12px 14px;font-size:13px;color:var(--g500)">프로젝트가 없습니다</div>';
+    updateMiniSidebar();
     return;
   }
 
@@ -49,6 +50,8 @@ async function loadProjects() {
     div.querySelector('.proj-del-btn').onclick = (e) => { e.stopPropagation(); deleteProject(p.id, p.owner_id); };
     listEl.appendChild(div);
   });
+
+  updateMiniSidebar();
 }
 
 // ═══════════════════════════════════════
