@@ -297,7 +297,10 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('input, textarea, select')) return;
   const dd = document.getElementById('user-dropdown');
   const ft = document.getElementById('panel-ft');
-  if (dd && ft && !dd.contains(e.target) && !ft.contains(e.target)) dd.classList.remove('open');
+  const miniIconBtn = e.target.closest('.mini-icon-btn');
+  if (dd && !dd.contains(e.target) && !ft?.contains(e.target) && !miniIconBtn) {
+    dd.classList.remove('open');
+  }
   const pop = document.getElementById('proj-popover');
   const titleWrap = document.querySelector('.proj-title-wrap');
   if (pop && titleWrap && !titleWrap.contains(e.target)) pop.classList.remove('open');
