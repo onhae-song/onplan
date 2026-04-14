@@ -263,7 +263,7 @@ function updateLangBtns(lang) {
 // 앱 시작 시 저장된 언어 적용
 document.addEventListener('DOMContentLoaded', () => {
   const savedLang = localStorage.getItem('onplan-lang') || 'ko';
-  if (savedLang !== 'ko') setAppLang(savedLang);
+  setAppLang(savedLang);
 });
 
 // ═══════════════════════════════════════
