@@ -161,7 +161,7 @@ async function generatePRD(interviews, latestPrd) {
 
     const resp = await fetch('/api/prd', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ projectName: currentProject.name, projectDesc: currentProject.description || '', interviewLog: combinedLog, lang: 'ko' })
+      body: JSON.stringify({ projectName: currentProject.name, projectDesc: currentProject.description || '', interviewLog: combinedLog, lang: (typeof currentAppLang !== 'undefined' ? currentAppLang : 'ko') })
     });
     if (!resp.ok) throw new Error('PRD API error: ' + resp.status);
 
@@ -212,7 +212,7 @@ async function generateRoleDocs(combinedLog, prdData, version) {
       .map(s => `[${s.num} ${s.title}]\n${(s.body || '').replace(/<[^>]+>/g, '').slice(0, 300)}`).join('\n\n');
     const resp = await fetch('/api/role-docs', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ projectName: currentProject.name, projectDesc: currentProject.description || '', interviewLog: combinedLog, prdSummary, lang: 'ko' })
+      body: JSON.stringify({ projectName: currentProject.name, projectDesc: currentProject.description || '', interviewLog: combinedLog, prdSummary, lang: (typeof currentAppLang !== 'undefined' ? currentAppLang : 'ko') })
     });
     if (!resp.ok) return;
 
@@ -448,7 +448,7 @@ async function submitIssueComment(cfId, secNum) {
 
     const resp = await fetch('/api/chat', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mode: 'conflict', conflictContext: conflictFull, messages, lang: 'ko' })
+      body: JSON.stringify({ mode: 'conflict', conflictContext: conflictFull, messages, lang: (typeof currentAppLang !== 'undefined' ? currentAppLang : 'ko') })
     });
     typingEl.remove();
     let aiText = '의견을 확인했습니다.';
@@ -495,7 +495,7 @@ async function confirmAndRegenSection(cfId, secNum) {
 
     const resp = await fetch('/api/prd-section', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ projectName: currentProject.name, sectionNum: secNum, sectionTitle: section?.title || '', originalBody: section?.body || '', conflictContext, discussion: issueDiscussions[secNum] || [], lang: 'ko' })
+      body: JSON.stringify({ projectName: currentProject.name, sectionNum: secNum, sectionTitle: section?.title || '', originalBody: section?.body || '', conflictContext, discussion: issueDiscussions[secNum] || [], lang: (typeof currentAppLang !== 'undefined' ? currentAppLang : 'ko') })
     });
     if (!resp.ok) throw new Error('섹션 재생성 API 오류');
     const result = await resp.json();
