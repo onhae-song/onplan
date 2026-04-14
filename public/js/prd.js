@@ -159,13 +159,27 @@ async function generatePRD(interviews, latestPrd) {
       return '--- ' + roleLabel + ' 인터뷰 ---\n' + msgs;
     }).join('\n\n');
 
-    const resp = await fetch('/api/prd', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ projectName: currentProject.name, projectDesc: currentProject.description || '', interviewLog: combinedLog, lang: 'ko' })
-    });
-    if (!resp.ok) throw new Error('PRD API error: ' + resp.status);
-    const data = await resp.json();
-    if (!data.sections || !Array.isArray(data.sections)) throw new Error('섹션 데이터 없음');
+const resp = await fetch('/api/prd', {
+  method: 'POST', headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ projectName: currentProject.name, projectDesc: currentProject.description || '', interviewLog: combinedLog, lang: 'ko' })
+});
+if (!resp.ok) throw new Error('PRD API error: ' + resp.status);
+
+// 스트리밍 응답 수집
+const reader = resp.body.getReader();
+const decoder = new TextDecoder();
+let rawText = '';
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  rawText += decoder.decode(value, { stream: true });
+}
+rawText = rawText.replace(/```json\s?/g, '').replace(/```/g, '').trim();
+let data;
+try { data = JSON.parse(rawText); } catch(e) {
+  throw new Error('JSON 파싱 실패: ' + rawText.slice(0, 200));
+}
+if (!data.sections || !Array.isArray(data.sections)) throw new Error('섹션 데이터 없음');
 
     const newVersion = (latestPrd?.version || 0) + 1;
     const interviewedBy = fullInterviews.map(iv => ({ name: iv.participant_name, role: iv.role }));
