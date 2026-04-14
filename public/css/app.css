@@ -124,22 +124,29 @@ input, textarea, select { font-family: var(--kr); }
 /* ═══ MINI SIDEBAR ═══ */
 #mini-sidebar {
   width: 0; min-width: 0;
-  background: var(--bg2); border-right: 1px solid var(--border);
+  background: var(--bg2);
   display: flex; flex-direction: column; align-items: center;
   padding: 10px 0; gap: 8px; overflow: hidden; flex-shrink: 0;
   transition: width .22s ease, min-width .22s ease;
 }
-#mini-sidebar.visible { width: 48px; min-width: 48px; }
+#mini-sidebar.visible { width: 48px; min-width: 48px; border-right: 1px solid var(--border); }
 .mini-toggle-btn {
-  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
   background: transparent; border: none; border-radius: var(--radius-sm);
-  color: var(--g300); cursor: pointer; transition: background .12s, color .12s; margin-bottom: 2px;
-  align-self: center; flex-shrink: 0;
+  color: var(--g300); cursor: pointer; transition: background .12s, color .12s;
+  margin: 0 auto 2px;
 }
 .mini-toggle-btn:hover { background: var(--bg3); color: var(--white); }
+.mini-toggle-btn svg { display: block; }
 .mini-sep { width: 24px; height: 1px; background: var(--border); flex-shrink: 0; }
-#mini-proj-badges { display: flex; flex-direction: column; gap: 6px; align-items: center; width: 100%; padding: 0 9px; box-sizing: border-box; }
-.mini-badge { width: 30px; height: 30px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; font-family: var(--en); letter-spacing: .04em; cursor: pointer; transition: all .12s; border: none; }
+#mini-proj-badges { display: flex; flex-direction: column; gap: 6px; align-items: center; width: 100%; }
+.mini-badge {
+  width: 30px; height: 30px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; font-family: var(--en);
+  letter-spacing: .04em; cursor: pointer; transition: all .12s; border: none;
+}
 .mini-badge-live { background: var(--lime-bg); color: var(--lime); }
 .mini-badge-live:hover { background: rgba(212,245,60,.18); }
 .mini-badge-done { background: var(--green-bg); color: var(--green); }
