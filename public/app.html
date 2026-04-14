@@ -115,11 +115,13 @@
 
 <!-- ══════════ MINI SIDEBAR (패널 닫힌 상태) ══════════ -->
 <div id="mini-sidebar">
-  <button class="mini-toggle-btn" onclick="togglePanel()" title="패널 열기">
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-      <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
-  </button>
+  <div style="width:100%;display:flex;justify-content:center">
+    <button class="mini-toggle-btn" onclick="togglePanel()" title="패널 열기">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+        <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
   <div class="mini-sep"></div>
   <div id="mini-proj-badges"></div>
 </div>
