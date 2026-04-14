@@ -15,14 +15,11 @@ async function handler(req, res) {
 
   const rawBody = await getRawBody(req);
 
-  // 서명 검증
   const secret = process.env.LEMON_WEBHOOK_SECRET || '';
   if (secret) {
     const sig = req.headers['x-signature'] || '';
     const hmac = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
-    if (sig !== hmac) {
-      return res.status(401).json({ error: 'invalid_signature' });
-    }
+    if (sig !== hmac) return res.status(401).json({ error: 'invalid_signature' });
   }
 
   let data;
@@ -31,10 +28,16 @@ async function handler(req, res) {
   }
 
   const eventName = data?.meta?.event_name;
-  const customerEmail = data?.data?.attributes?.user_email || data?.meta?.custom_data?.email || '';
+  const attrs = data?.data?.attributes || {};
+  const customerEmail = attrs.user_email || data?.meta?.custom_data?.email || '';
   const orderId = String(data?.data?.id || '');
-  const productName = data?.data?.attributes?.first_order_item?.product_name || data?.meta?.custom_data?.product || '';
-  const variantName = data?.data?.attributes?.first_order_item?.variant_name || '';
+  const productName = attrs.first_order_item?.product_name || data?.meta?.custom_data?.product || '';
+  const variantName = attrs.first_order_item?.variant_name || '';
+
+  // 카드 정보 (구독 이벤트에서 옴)
+  const cardBrand    = attrs.card_brand || null;
+  const cardLastFour = attrs.card_last_four ? String(attrs.card_last_four) : null;
+  const renewsAt     = attrs.renews_at || null;
 
   let plan = 'free';
   const pn = (productName + ' ' + variantName).toLowerCase();
@@ -50,23 +53,16 @@ async function handler(req, res) {
     expiresAt = d.toISOString();
   }
 
-  if (!customerEmail) {
-    return res.status(400).json({ error: 'no_email' });
-  }
+  if (!customerEmail) return res.status(400).json({ error: 'no_email' });
 
   const SUPABASE_URL = process.env.SUPABASE_URL || 'https://dtwgrxsepotwbpaqssgm.supabase.co';
   const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
-  if (!SUPABASE_SERVICE_KEY) {
-    return res.status(500).json({ error: 'no_service_key' });
-  }
+  if (!SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'no_service_key' });
 
   try {
     let userId = null;
     const allUsersRes = await fetch(`${SUPABASE_URL}/auth/v1/admin/users?page=1&per_page=1000`, {
-      headers: {
-        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-        'apikey': SUPABASE_SERVICE_KEY
-      }
+      headers: { 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`, 'apikey': SUPABASE_SERVICE_KEY }
     });
     if (allUsersRes.ok) {
       const allUsers = await allUsersRes.json();
@@ -91,7 +87,10 @@ async function handler(req, res) {
           lemon_order_id: orderId,
           lemon_customer_email: customerEmail,
           activated_at: new Date().toISOString(),
-          expires_at: expiresAt
+          expires_at: expiresAt,
+          card_brand: cardBrand,
+          card_last_four: cardLastFour,
+          renews_at: renewsAt
         })
       });
       if (!upsertRes.ok) {
@@ -109,7 +108,7 @@ async function handler(req, res) {
             'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
             'apikey': SUPABASE_SERVICE_KEY
           },
-          body: JSON.stringify({ plan: 'free' })
+          body: JSON.stringify({ plan: 'free', card_brand: null, card_last_four: null, renews_at: null })
         });
       }
     }
