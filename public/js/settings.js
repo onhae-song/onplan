@@ -47,8 +47,6 @@ function setAppLang(lang) {
   currentAppLang = lang;
   localStorage.setItem('onplan-lang', lang);
   updateLangBtns(lang);
-
-  // 주요 패널 텍스트 변환
   const t = I18N[lang] || I18N.ko;
   const panelLabel = document.querySelector('.panel-sec-label');
   if (panelLabel) panelLabel.textContent = t['panel-sec-label'];
@@ -66,21 +64,37 @@ function updateLangBtns(lang) {
 // ═══════════════════════════════════════
 // BILLING
 // ═══════════════════════════════════════
-function renderSettingsBilling() {
+async function renderSettingsBilling() {
   const plan = userPlan || 'free';
-  const badge = document.getElementById('settings-plan-badge');
-  if (badge) { badge.textContent = plan.toUpperCase(); badge.className = 'ud-plan plan-' + plan; }
-
   const container = document.getElementById('sp-billing');
   if (!container) return;
 
-  const planMeta = {
-    free:     { name: 'Free',           desc: '기획서 미리보기 제공', since: null },
-    pro:      { name: 'Pro',            desc: '$29/월 · 전체 PRD, 역할별 문서', since: null },
-    max:      { name: 'Max',            desc: '$79/월 · API 연동, 화이트라벨', since: null },
-    lifetime: { name: 'Early Bird LTD', desc: '평생 Max 플랜 · 1회 결제', since: null },
-  };
-  const meta = planMeta[plan] || planMeta.free;
+  const billingSection = container.querySelector('#billing-content');
+  if (!billingSection) return;
+
+  // Supabase에서 구독 정보 로드
+  let planData = {};
+  try {
+    const { data } = await sb.from('user_plans')
+      .select('plan, card_brand, card_last_four, renews_at, activated_at, lemon_customer_email')
+      .eq('user_id', currentUser.id)
+      .single();
+    if (data) planData = data;
+  } catch(e) {}
+
+  const cardInfo = planData.card_last_four
+    ? `${(planData.card_brand || '카드').toUpperCase()} •••• ${planData.card_last_four}`
+    : '—';
+
+  const renewsAt = planData.renews_at
+    ? new Date(planData.renews_at).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' })
+    : '—';
+
+  const activatedAt = planData.activated_at
+    ? new Date(planData.activated_at).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' })
+    : '—';
+
+  const billingEmail = planData.lemon_customer_email || currentUser?.email || '—';
 
   const planCards = {
     free: `
@@ -116,6 +130,7 @@ function renderSettingsBilling() {
         <div style="font-size:13px;color:var(--g400);margin-bottom:14px">100석 한정. Max 전체 기능을 1회 결제로 평생 사용.</div>
         <a href="https://onhae.lemonsqueezy.com/checkout/buy/089c9937-219b-4b63-a14d-f82375df84f3" target="_blank" class="plan-card-btn lime" style="display:inline-block;padding:10px 28px;text-decoration:none">Get It — $79</a>
       </div>`,
+
     pro: `
       <div class="plan-card current" style="margin-bottom:20px">
         <div class="plan-card-badge">CURRENT</div>
@@ -125,11 +140,13 @@ function renderSettingsBilling() {
       </div>
       <div class="settings-block">
         <div class="settings-block-title">구독 정보</div>
-        <div class="billing-info-row"><span class="billing-info-label">결제 이메일</span><span class="billing-info-value">${currentUser?.email || '—'}</span></div>
-        <div class="billing-info-row"><span class="billing-info-label">결제 주기</span><span class="billing-info-value">월간</span></div>
-        <div class="billing-info-row"><span class="billing-info-label">다음 결제일</span><span class="billing-info-value">구독 포털에서 확인</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">결제 이메일</span><span class="billing-info-value">${billingEmail}</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">결제 수단</span><span class="billing-info-value">${cardInfo}</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">다음 결제일</span><span class="billing-info-value">${renewsAt}</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">구독 시작일</span><span class="billing-info-value">${activatedAt}</span></div>
       </div>
-      <a href="https://app.lemonsqueezy.com/my-orders" target="_blank" class="plan-card-btn outline" style="display:inline-block;padding:10px 24px;text-decoration:none;max-width:280px">구독 포털에서 관리 →</a>`,
+      <a href="https://app.lemonsqueezy.com/my-orders" target="_blank" class="plan-card-btn outline" style="display:inline-block;padding:10px 24px;text-decoration:none;max-width:280px;margin-top:8px">구독 포털에서 관리 →</a>`,
+
     max: `
       <div class="plan-card current" style="margin-bottom:20px">
         <div class="plan-card-badge">CURRENT</div>
@@ -137,18 +154,31 @@ function renderSettingsBilling() {
         <div class="plan-card-price">$79<span>/월</span></div>
         <div class="plan-card-desc">조직 전체의 기획 인프라를 사용 중입니다.</div>
       </div>
-      <a href="https://app.lemonsqueezy.com/my-orders" target="_blank" class="plan-card-btn outline" style="display:inline-block;padding:10px 24px;text-decoration:none;max-width:280px">구독 포털에서 관리 →</a>`,
+      <div class="settings-block">
+        <div class="settings-block-title">구독 정보</div>
+        <div class="billing-info-row"><span class="billing-info-label">결제 이메일</span><span class="billing-info-value">${billingEmail}</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">결제 수단</span><span class="billing-info-value">${cardInfo}</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">다음 결제일</span><span class="billing-info-value">${renewsAt}</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">구독 시작일</span><span class="billing-info-value">${activatedAt}</span></div>
+      </div>
+      <a href="https://app.lemonsqueezy.com/my-orders" target="_blank" class="plan-card-btn outline" style="display:inline-block;padding:10px 24px;text-decoration:none;max-width:280px;margin-top:8px">구독 포털에서 관리 →</a>`,
+
     lifetime: `
       <div class="plan-card current" style="margin-bottom:20px">
         <div class="plan-card-badge">LIFETIME</div>
         <div class="plan-card-name">Early Bird LTD</div>
         <div class="plan-card-price">$79<span> once</span></div>
         <div class="plan-card-desc">Max 전체 기능을 평생 사용하고 있습니다.</div>
+      </div>
+      <div class="settings-block">
+        <div class="settings-block-title">결제 정보</div>
+        <div class="billing-info-row"><span class="billing-info-label">결제 이메일</span><span class="billing-info-value">${billingEmail}</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">구독 시작일</span><span class="billing-info-value">${activatedAt}</span></div>
+        <div class="billing-info-row"><span class="billing-info-label">만료일</span><span class="billing-info-value" style="color:var(--lime)">평생</span></div>
       </div>`,
   };
 
-  const billingSection = container.querySelector('#billing-content');
-  if (billingSection) billingSection.innerHTML = planCards[plan] || planCards.free;
+  billingSection.innerHTML = planCards[plan] || planCards.free;
 }
 
 async function confirmDeleteAccount() {
