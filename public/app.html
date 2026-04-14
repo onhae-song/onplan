@@ -34,7 +34,7 @@
     </button>
   </div>
 
-  <div class="panel-sec-label">Projects</div>
+  <div class="panel-sec-label" data-i18n="panel-projects">Projects</div>
 
   <div style="padding:0 10px 4px">
     <div style="position:relative">
@@ -42,7 +42,7 @@
         <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.2"/>
         <path d="M9 9l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
       </svg>
-      <input id="proj-search" type="text" placeholder="검색..." oninput="filterProjects(this.value)"
+      <input id="proj-search" type="text" data-i18n-placeholder="search-ph" placeholder="검색..." oninput="filterProjects(this.value)"
         style="width:100%;height:32px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0 8px 0 28px;font-size:13px;font-family:inherit;color:var(--white);outline:none;"
         onfocus="this.style.borderColor='var(--lime)'" onblur="this.style.borderColor='var(--border)'">
     </div>
@@ -52,20 +52,20 @@
     <svg width="14" height="14" viewBox="0 0 11 11" fill="none">
       <path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
-    새 프로젝트
+    <span data-i18n="new-project">새 프로젝트</span>
   </button>
 
   <div style="height:1px;background:var(--border);margin:2px 8px 6px"></div>
 
   <div class="proj-list" id="proj-list">
-    <div style="padding:12px 14px;font-size:13px;color:var(--g500)">로딩 중...</div>
+    <div style="padding:12px 14px;font-size:13px;color:var(--g500)" data-i18n="loading">로딩 중...</div>
   </div>
 
   <button class="trash-btn" onclick="openTrash()">
     <svg width="14" height="14" viewBox="0 0 13 13" fill="none">
       <path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10.5 3.5l-.5 7a1 1 0 01-1 1h-5a1 1 0 01-1-1l-.5-7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
     </svg>
-    휴지통
+    <span data-i18n="trash">휴지통</span>
     <span class="trash-count" id="trash-count" style="display:none">0</span>
   </button>
 
@@ -77,17 +77,17 @@
     </div>
     <button class="ud-item" onclick="openSettings()">
       <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 1v1.2M6.5 10.8V12M1 6.5h1.2M10.8 6.5H12M2.6 2.6l.85.85M9.55 9.55l.85.85M2.6 10.4l.85-.85M9.55 3.45l.85-.85" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      설정
+      <span data-i18n="menu-settings">설정</span>
     </button>
     <div class="ud-sep"></div>
     <button class="ud-item" onclick="openSettings('billing')">
       <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M1.5 9.5l3-3 2 2 4-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      요금제 업그레이드
+      <span data-i18n="menu-upgrade">요금제 업그레이드</span>
     </button>
     <div class="ud-sep"></div>
     <button class="ud-item danger" onclick="logOut()">
       <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M5 1.5H2a1 1 0 00-1 1v8a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      로그아웃
+      <span data-i18n="menu-logout">로그아웃</span>
     </button>
   </div>
 
@@ -110,12 +110,12 @@
       </svg>
       <span class="proj-title" id="proj-title">—</span>
       <div class="proj-popover" id="proj-popover">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g500);margin-bottom:10px;font-family:var(--en)">프로젝트 정보</div>
-        <input class="fi" id="popover-name" style="margin-bottom:8px;font-size:14px;font-weight:600" placeholder="프로젝트명">
-        <textarea class="ft" id="popover-desc" rows="3" placeholder="배경 및 목표" style="font-size:14px;padding:9px 13px"></textarea>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g500);margin-bottom:10px;font-family:var(--en)" data-i18n="popover-title">프로젝트 정보</div>
+        <input class="fi" id="popover-name" style="margin-bottom:8px;font-size:14px;font-weight:600" data-i18n-placeholder="popover-name-ph" placeholder="프로젝트명">
+        <textarea class="ft" id="popover-desc" rows="3" data-i18n-placeholder="popover-desc-ph" placeholder="배경 및 목표" style="font-size:14px;padding:9px 13px"></textarea>
         <div style="display:flex;gap:7px;margin-top:10px">
-          <button class="btn-lime" style="height:30px;padding:0 14px;font-size:13px;flex:1" onclick="saveProjPopover(event)">저장</button>
-          <button class="btn-ghost" style="height:30px;padding:0 12px;font-size:13px" onclick="closeProjPopover(event)">취소</button>
+          <button class="btn-lime" style="height:30px;padding:0 14px;font-size:13px;flex:1" onclick="saveProjPopover(event)" data-i18n="popover-save">저장</button>
+          <button class="btn-ghost" style="height:30px;padding:0 12px;font-size:13px" onclick="closeProjPopover(event)" data-i18n="popover-cancel">취소</button>
         </div>
       </div>
     </div>
@@ -123,22 +123,22 @@
     <div class="stepper" id="stepper">
       <div class="step idle" id="s1" onclick="goStep(1)">
         <div class="step-circle" id="sc1">1</div>
-        <span class="step-label">프로젝트 생성</span>
+        <span class="step-label" data-i18n="step1">프로젝트 생성</span>
       </div>
       <div class="step-line" id="sl1"></div>
       <div class="step idle" id="s2" onclick="goStep(2)">
         <div class="step-circle" id="sc2">2</div>
-        <span class="step-label">팀 공유</span>
+        <span class="step-label" data-i18n="step2">팀 공유</span>
       </div>
       <div class="step-line" id="sl2"></div>
       <div class="step idle" id="s3" onclick="goStep(3)">
         <div class="step-circle" id="sc3">3</div>
-        <span class="step-label">AI 인터뷰</span>
+        <span class="step-label" data-i18n="step3">AI 인터뷰</span>
       </div>
       <div class="step-line" id="sl3"></div>
       <div class="step idle" id="s4" onclick="goStep(4)">
         <div class="step-circle" id="sc4">4</div>
-        <span class="step-label">PRD 결과</span>
+        <span class="step-label" data-i18n="step4">PRD 결과</span>
       </div>
     </div>
   </div>
@@ -156,11 +156,11 @@
           <circle cx="35" cy="9" r="5" fill="currentColor" opacity=".2"/>
           <path d="M35 7v4M33 9h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/>
         </svg>
-        <div class="empty-title">프로젝트를 선택하세요</div>
-        <div class="empty-desc">왼쪽에서 프로젝트를 선택하거나, 새 프로젝트를 만들어 AI 인터뷰를 시작하세요.</div>
+        <div class="empty-title" data-i18n="empty-title">프로젝트를 선택하세요</div>
+        <div class="empty-desc" data-i18n="empty-desc">왼쪽에서 프로젝트를 선택하거나, 새 프로젝트를 만들어 AI 인터뷰를 시작하세요.</div>
         <button class="btn-lime" style="margin-top:6px" onclick="startNewProject()">
           <svg width="14" height="14" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/></svg>
-          새 프로젝트 만들기
+          <span data-i18n="empty-new">새 프로젝트 만들기</span>
         </button>
       </div>
     </div>
@@ -169,31 +169,31 @@
     <div class="view" id="view-1">
       <div class="form-wrap">
         <div class="view-heading">
-          <h2>프로젝트 <em>생성</em></h2>
-          <p>기획하려는 제품 또는 기능의 기본 정보를 입력하세요. AI가 맞춤 인터뷰 질문을 생성합니다.</p>
+          <h2 data-i18n-html="v1-title">프로젝트 <em>생성</em></h2>
+          <p data-i18n="v1-desc">기획하려는 제품 또는 기능의 기본 정보를 입력하세요. AI가 맞춤 인터뷰 질문을 생성합니다.</p>
         </div>
         <div class="field">
-          <label class="fl">프로젝트명 <span class="req">*</span></label>
-          <input type="text" class="fi" id="pj-name" placeholder="예: 발주 관리 시스템">
+          <label class="fl"><span data-i18n="v1-name-label">프로젝트명</span> <span class="req">*</span></label>
+          <input type="text" class="fi" id="pj-name" data-i18n-placeholder="v1-name-ph" placeholder="예: 발주 관리 시스템">
         </div>
         <div class="field">
-          <label class="fl">배경 및 목표 <span class="req">*</span></label>
-          <textarea class="ft" id="pj-desc" rows="4" placeholder="어떤 문제를 해결하려 하나요?" style="padding:9px 13px"></textarea>
+          <label class="fl"><span data-i18n="v1-goal-label">배경 및 목표</span> <span class="req">*</span></label>
+          <textarea class="ft" id="pj-desc" rows="4" data-i18n-placeholder="v1-goal-ph" placeholder="어떤 문제를 해결하려 하나요?" style="padding:9px 13px"></textarea>
         </div>
         <div class="field">
-          <label class="fl">SI 프로젝트 문서 <span style="color:var(--g500);font-weight:400;text-transform:none;letter-spacing:0;font-size:12px">선택</span></label>
+          <label class="fl"><span data-i18n="v1-doc-label">SI 프로젝트 문서</span> <span style="color:var(--g500);font-weight:400;text-transform:none;letter-spacing:0;font-size:12px" data-i18n="optional">선택</span></label>
           <div class="upload-zone">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="margin:0 auto;color:var(--g400)">
               <path d="M11 14V4m0 0L7.5 7.5M11 4l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M3 16v1.5A1.5 1.5 0 004.5 19h13a1.5 1.5 0 001.5-1.5V16" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
             </svg>
-            <p>드래그하여 업로드 또는 <span>파일 선택</span></p>
-            <p style="font-size:12px;margin-top:3px;color:var(--g500)">PDF, DOCX, PPTX · 최대 20MB</p>
+            <p><span data-i18n="v1-upload-text">드래그하여 업로드 또는</span> <span data-i18n="v1-upload-link">파일 선택</span></p>
+            <p style="font-size:12px;margin-top:3px;color:var(--g500)" data-i18n="v1-upload-hint">PDF, DOCX, PPTX · 최대 20MB</p>
           </div>
         </div>
         <div class="btn-row">
-          <button class="btn-lime" id="btn-create" onclick="createProject()">프로젝트 생성</button>
-          <button class="btn-ghost">임시저장</button>
+          <button class="btn-lime" id="btn-create" onclick="createProject()" data-i18n="v1-create">프로젝트 생성</button>
+          <button class="btn-ghost" data-i18n="v1-draft">임시저장</button>
         </div>
       </div>
     </div>
@@ -202,22 +202,22 @@
     <div class="view" id="view-2">
       <div class="form-wrap" style="max-width:680px">
         <div class="view-heading" style="margin-bottom:20px">
-          <h2>인터뷰 <em>현황</em></h2>
-          <p>팀원들의 인터뷰가 완료되면 PRD를 생성할 수 있습니다.</p>
+          <h2 data-i18n-html="v2-title">인터뷰 <em>현황</em></h2>
+          <p data-i18n="v2-desc">팀원들의 인터뷰가 완료되면 PRD를 생성할 수 있습니다.</p>
         </div>
         <div class="field">
-          <label class="fl">초대 링크</label>
+          <label class="fl" data-i18n="v2-invite-label">초대 링크</label>
           <div class="link-box">
             <svg width="14" height="14" viewBox="0 0 13 13" fill="none" style="color:var(--g400);flex-shrink:0"><path d="M5 8l3-3M4.5 5.5l-.7.7a2 2 0 002.8 2.8l.7-.7M8.5 7.5l.7-.7a2 2 0 00-2.8-2.8l-.7.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            <span class="link-url" id="invite-link" data-url="">링크 생성 중...</span>
-            <button class="btn-copy" onclick="copyInviteLink()">링크 복사</button>
+            <span class="link-url" id="invite-link" data-url="" data-i18n="link-generating">링크 생성 중...</span>
+            <button class="btn-copy" onclick="copyInviteLink()" data-i18n="v2-copy">링크 복사</button>
           </div>
-          <div style="font-size:13px;color:var(--g500);margin-top:8px">링크가 있는 누구나 로그인 후 인터뷰에 참여할 수 있습니다.</div>
+          <div style="font-size:13px;color:var(--g500);margin-top:8px" data-i18n="v2-invite-hint">링크가 있는 누구나 로그인 후 인터뷰에 참여할 수 있습니다.</div>
         </div>
         <div class="field">
-          <label class="fl">완료된 인터뷰 <span id="interview-count-badge" style="font-weight:400;color:var(--g400);font-size:13px">0명</span></label>
+          <label class="fl"><span data-i18n="v2-interview-label">완료된 인터뷰</span> <span id="interview-count-badge" style="font-weight:400;color:var(--g400);font-size:13px">0명</span></label>
           <div id="interview-list" class="member-list">
-            <div style="padding:32px;text-align:center;color:var(--g500);font-size:14px">아직 완료된 인터뷰가 없습니다.</div>
+            <div style="padding:32px;text-align:center;color:var(--g500);font-size:14px" data-i18n="no-interviews">아직 완료된 인터뷰가 없습니다.</div>
           </div>
         </div>
         <div id="prd-version-info" style="display:none;margin-bottom:20px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border)">
@@ -226,7 +226,7 @@
               <span style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--lime);font-family:var(--en)">Current PRD</span>
               <div style="font-size:14px;color:var(--white);margin-top:3px" id="prd-version-label">v1 · 0개 인터뷰 기반</div>
             </div>
-            <button class="btn-ghost" style="height:32px;padding:0 14px;font-size:13px" onclick="goToPRD()">PRD 보기</button>
+            <button class="btn-ghost" style="height:32px;padding:0 14px;font-size:13px" onclick="goToPRD()" data-i18n="view-prd">PRD 보기</button>
           </div>
         </div>
         <div class="btn-row" id="dashboard-actions"></div>
@@ -237,41 +237,56 @@
     <div class="view" id="view-3">
       <div class="interview-hd">
         <div>
-          <div class="ivw-title">AI 인터뷰</div>
-          <div class="ivw-meta" id="ivw-meta">프로젝트를 선택해주세요</div>
+          <div class="ivw-title" data-i18n="v3-title">AI 인터뷰</div>
+          <div class="ivw-meta" id="ivw-meta" data-i18n="v3-select-project">프로젝트를 선택해주세요</div>
         </div>
         <div class="live-badge">
           <div class="live-dot"></div>
-          <span>진행 중</span>
+          <span data-i18n="v3-live">진행 중</span>
         </div>
       </div>
 
       <div id="role-selector" style="padding:20px 28px;border-bottom:1px solid var(--border)">
-        <div style="font-size:11px;color:var(--g500);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--en)">참여자 정보</div>
+        <div style="font-size:11px;color:var(--g500);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--en)" data-i18n="v3-participant-label">참여자 정보</div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <input type="text" id="pt-name" class="fi" placeholder="참여자 이름" style="max-width:200px;font-size:14px">
+          <input type="text" id="pt-name" class="fi" data-i18n-placeholder="v3-name-ph" placeholder="참여자 이름" style="max-width:200px;font-size:14px">
           <select id="role-select" class="fi" style="max-width:180px;font-size:14px;height:36px;padding:0 8px;background:var(--bg3);border:1px solid var(--border2);color:var(--white);outline:none;border-radius:var(--radius-sm)" onchange="selectedRole=this.value">
-            <option value="">역할 선택</option>
-            <option value="ceo">대표 / PM</option>
-            <option value="dev">개발자</option>
-            <option value="design">디자이너</option>
-            <option value="sales">영업 / CS</option>
-            <option value="user">실사용자</option>
-            <option value="other">기타</option>
+            <option value="" data-i18n="v3-role-default">역할 선택</option>
+            <option value="ceo" data-i18n="v3-role-ceo">대표 / PM</option>
+            <option value="dev" data-i18n="v3-role-dev">개발자</option>
+            <option value="design" data-i18n="v3-role-design">디자이너</option>
+            <option value="sales" data-i18n="v3-role-sales">영업 / CS</option>
+            <option value="user" data-i18n="v3-role-user">실사용자</option>
+            <option value="other" data-i18n="v3-role-other">기타</option>
           </select>
-          <button class="btn-lime" style="height:36px;padding:0 18px;font-size:14px" onclick="startChat(document.getElementById('pt-name').value.trim()||'참여자')">인터뷰 시작</button>
+          <button class="btn-lime" style="height:36px;padding:0 18px;font-size:14px" onclick="startChat(document.getElementById('pt-name').value.trim()||'참여자')" data-i18n="v3-start">인터뷰 시작</button>
         </div>
       </div>
 
-      <div class="finish-bar hidden" id="finish-bar" style="padding:8px 24px;background:var(--lime-bg);border-bottom:1px solid var(--lime-border);align-items:center;justify-content:space-between">
-        <span style="font-size:13px;color:var(--lime)">충분한 답변이 수집되었습니다.</span>
-        <button class="btn-lime" style="height:32px;padding:0 16px;font-size:13px" onclick="finishInterview()">인터뷰 완료</button>
+      <!-- 인터뷰 프로그레스 바 -->
+      <div id="interview-progress-wrap" style="display:none;padding:10px 28px 8px;border-bottom:1px solid var(--border);background:var(--bg2)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g500);font-family:var(--en)">INSIGHT LEVEL</span>
+          <span style="font-size:11px;font-family:var(--en);font-weight:700;color:var(--lime)" id="progress-pct">0%</span>
+        </div>
+        <div style="height:3px;background:var(--border2);border-radius:2px;overflow:hidden">
+          <div id="interview-progress-bar" style="height:100%;width:0%;background:var(--lime);border-radius:2px;transition:width .5s ease"></div>
+        </div>
+        <div style="font-size:11px;color:var(--g500);margin-top:5px" id="progress-hint" data-i18n="progress-hint">답변을 이어가면 AI가 인사이트를 수집합니다.</div>
+      </div>
+
+      <div class="finish-bar hidden" id="finish-bar" style="padding:10px 24px;background:var(--lime-bg);border-bottom:1px solid var(--lime-border);align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--lime)" stroke-width="1.3"/><path d="M4.5 7l2 2 3-3" stroke="var(--lime)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span style="font-size:13px;color:var(--lime);font-weight:600" data-i18n="v3-finish-text">충분한 인사이트가 수집되었습니다.</span>
+        </div>
+        <button class="btn-lime" style="height:32px;padding:0 16px;font-size:13px" onclick="finishInterview()" data-i18n="v3-finish-btn">인터뷰 완료</button>
       </div>
 
       <div class="chat-area" id="chatArea"></div>
       <div class="chat-in">
         <div class="chat-in-box">
-          <textarea class="chat-fi" placeholder="답변을 입력하세요..." id="chatInput" rows="2"></textarea>
+          <textarea class="chat-fi" data-i18n-placeholder="v3-input-ph" placeholder="답변을 입력하세요..." id="chatInput" rows="2"></textarea>
           <button class="send-btn" id="sendBtn">
             <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M8 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
@@ -283,7 +298,7 @@
     <div class="view" id="view-4">
       <div class="prd-wrap">
         <div class="prd-nav" id="prd-nav">
-          <div class="prd-nav-title">목차</div>
+          <div class="prd-nav-title" data-i18n="toc">목차</div>
         </div>
         <div class="prd-body" id="prdBody">
           <div class="prd-top">
@@ -293,8 +308,8 @@
               <div class="prd-doc-meta" id="prd-doc-meta"></div>
             </div>
             <div class="prd-actions">
-              <button class="btn-export">저장</button>
-              <button class="btn-export">공유</button>
+              <button class="btn-export" data-i18n="v4-save">저장</button>
+              <button class="btn-export" data-i18n="v4-share">공유</button>
               <button class="btn-export">
                 <svg width="13" height="13" viewBox="0 0 10 10" fill="none"><path d="M5 1v5.5M2.5 5l2.5 2.5L7.5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 7.5V8.5A.5.5 0 001.5 9h7a.5.5 0 00.5-.5v-1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                 PDF
@@ -309,45 +324,40 @@
     <!-- VIEW 5: SETTINGS -->
     <div class="view" id="view-5">
       <div class="settings-layout">
-
-        <!-- 좌측 네비 -->
         <div class="settings-nav">
           <div class="settings-nav-title">Settings</div>
           <button class="settings-nav-item active" data-panel="general" onclick="switchSettingsPanel('general')">
             <svg width="15" height="15" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 1v1.2M6.5 10.8V12M1 6.5h1.2M10.8 6.5H12M2.6 2.6l.85.85M9.55 9.55l.85.85M2.6 10.4l.85-.85M9.55 3.45l.85-.85" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            일반
+            <span data-i18n="nav-general">일반</span>
           </button>
           <button class="settings-nav-item" data-panel="account" onclick="switchSettingsPanel('account')">
             <svg width="15" height="15" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1.5 11.5c0-2.2 2.2-4 5-4s5 1.8 5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            계정
+            <span data-i18n="nav-account">계정</span>
           </button>
           <button class="settings-nav-item" data-panel="billing" onclick="switchSettingsPanel('billing')">
             <svg width="15" height="15" viewBox="0 0 13 13" fill="none"><rect x="1" y="3" width="11" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M1 6h11" stroke="currentColor" stroke-width="1.2"/></svg>
-            결제 / 플랜
+            <span data-i18n="nav-billing">결제 / 플랜</span>
           </button>
         </div>
 
-        <!-- 우측 콘텐츠 -->
         <div class="settings-body">
 
           <!-- GENERAL -->
           <div class="settings-panel active" id="sp-general">
             <div class="settings-section">
-              <div class="settings-section-title">일반</div>
-              <div class="settings-section-desc">앱 언어와 테마를 설정합니다.</div>
-
+              <div class="settings-section-title" data-i18n="sp-general-title">일반</div>
+              <div class="settings-section-desc" data-i18n="sp-general-desc">앱 언어와 테마를 설정합니다.</div>
               <div class="settings-block">
-                <div class="settings-block-title">언어 Language</div>
-                <div class="settings-block-desc">앱 내 주요 텍스트가 선택한 언어로 표시됩니다.</div>
+                <div class="settings-block-title" data-i18n="lang-title">언어 Language</div>
+                <div class="settings-block-desc" data-i18n="lang-desc">앱 내 주요 텍스트가 선택한 언어로 표시됩니다.</div>
                 <div style="display:flex;gap:10px">
                   <button id="lang-ko-btn" class="btn-lang active" onclick="setAppLang('ko')">한국어</button>
                   <button id="lang-en-btn" class="btn-lang" onclick="setAppLang('en')">English</button>
                 </div>
               </div>
-
               <div class="settings-block">
-                <div class="settings-block-title">테마 Theme</div>
-                <div class="settings-block-desc">화면 밝기를 선택합니다.</div>
+                <div class="settings-block-title" data-i18n="theme-title">테마 Theme</div>
+                <div class="settings-block-desc" data-i18n="theme-desc">화면 밝기를 선택합니다.</div>
                 <div style="display:flex;gap:10px">
                   <button id="theme-dark-btn" class="btn-lang active" onclick="setTheme('dark')">Dark</button>
                   <button id="theme-light-btn" class="btn-lang" onclick="setTheme('light')">Light</button>
@@ -359,24 +369,21 @@
           <!-- ACCOUNT -->
           <div class="settings-panel" id="sp-account">
             <div class="settings-section">
-              <div class="settings-section-title">계정</div>
-              <div class="settings-section-desc">로그인 계정 및 세션을 관리합니다.</div>
-
+              <div class="settings-section-title" data-i18n="sp-account-title">계정</div>
+              <div class="settings-section-desc" data-i18n="sp-account-desc">로그인 계정 및 세션을 관리합니다.</div>
               <div class="settings-block">
-                <div class="settings-block-title">로그인 계정</div>
+                <div class="settings-block-title" data-i18n="login-title">로그인 계정</div>
                 <div style="font-size:15px;color:var(--g300);margin-top:6px" id="settings-email">—</div>
               </div>
-
               <div class="settings-block">
-                <div class="settings-block-title">세션</div>
-                <div class="settings-block-desc">모든 기기에서 OnPlan 로그아웃합니다.</div>
-                <button class="btn-ghost" style="height:36px;padding:0 20px;font-size:14px" onclick="logOut()">모든 기기에서 로그아웃</button>
+                <div class="settings-block-title" data-i18n="session-title">세션</div>
+                <div class="settings-block-desc" data-i18n="session-desc">모든 기기에서 OnPlan 로그아웃합니다.</div>
+                <button class="btn-ghost" style="height:36px;padding:0 20px;font-size:14px" onclick="logOut()" data-i18n="session-btn">모든 기기에서 로그아웃</button>
               </div>
-
               <div class="settings-block" style="border-color:var(--conflict-border)">
-                <div class="settings-block-title" style="color:var(--conflict)">위험 구역</div>
-                <div class="settings-block-desc">계정을 삭제하면 모든 프로젝트와 데이터가 영구 삭제됩니다.</div>
-                <button class="btn-ghost" style="height:36px;padding:0 20px;font-size:14px;border-color:var(--conflict);color:var(--conflict)" onclick="confirmDeleteAccount()">계정 삭제</button>
+                <div class="settings-block-title" style="color:var(--conflict)" data-i18n="danger-title">위험 구역</div>
+                <div class="settings-block-desc" data-i18n="danger-desc">계정을 삭제하면 모든 프로젝트와 데이터가 영구 삭제됩니다.</div>
+                <button class="btn-ghost" style="height:36px;padding:0 20px;font-size:14px;border-color:var(--conflict);color:var(--conflict)" onclick="confirmDeleteAccount()" data-i18n="danger-btn">계정 삭제</button>
               </div>
             </div>
           </div>
@@ -384,11 +391,9 @@
           <!-- BILLING -->
           <div class="settings-panel" id="sp-billing">
             <div class="settings-section">
-              <div class="settings-section-title">결제 / 플랜</div>
-              <div class="settings-section-desc">현재 구독 플랜과 결제 정보를 확인합니다.</div>
-              <div id="billing-content">
-                <!-- renderSettingsBilling() 으로 채워짐 -->
-              </div>
+              <div class="settings-section-title" data-i18n="sp-billing-title">결제 / 플랜</div>
+              <div class="settings-section-desc" data-i18n="sp-billing-desc">현재 구독 플랜과 결제 정보를 확인합니다.</div>
+              <div id="billing-content"></div>
             </div>
           </div>
 
@@ -402,10 +407,10 @@
         <div class="trash-section">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
             <div>
-              <div style="font-family:var(--en);font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--white);margin-bottom:4px">휴지통</div>
-              <div style="font-size:13px;color:var(--g400)">30일 후 자동으로 완전 삭제됩니다.</div>
+              <div style="font-family:var(--en);font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--white);margin-bottom:4px" data-i18n="trash-title">휴지통</div>
+              <div style="font-size:13px;color:var(--g400)" data-i18n="trash-desc">30일 후 자동으로 완전 삭제됩니다.</div>
             </div>
-            <button class="btn-ghost" style="height:32px;padding:0 14px;font-size:13px" onclick="showView(0)">← 돌아가기</button>
+            <button class="btn-ghost" style="height:32px;padding:0 14px;font-size:13px" onclick="showView(0)" data-i18n="trash-back">← 돌아가기</button>
           </div>
           <div id="trash-list"></div>
         </div>
