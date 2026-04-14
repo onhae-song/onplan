@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OnPlan</title>
-  <link rel="icon" href="/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/app.css">
@@ -85,6 +84,14 @@
       <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M1.5 9.5l3-3 2 2 4-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span data-i18n="menu-upgrade">요금제 업그레이드</span>
     </button>
+    <div class="ud-sep"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px">
+      <span style="font-size:12px;color:var(--g400)">Language</span>
+      <div style="display:flex;gap:4px">
+        <button id="lang-ko-btn" class="btn-lang" onclick="setAppLang('ko')" style="height:24px;padding:0 10px;font-size:11px">KO</button>
+        <button id="lang-en-btn" class="btn-lang" onclick="setAppLang('en')" style="height:24px;padding:0 10px;font-size:11px">EN</button>
+      </div>
+    </div>
     <div class="ud-sep"></div>
     <button class="ud-item danger" onclick="logOut()">
       <svg width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M5 1.5H2a1 1 0 00-1 1v8a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
