@@ -256,6 +256,8 @@ function setAppLang(lang) {
 function updateLangBtns(lang) {
   document.getElementById('lang-ko-btn')?.classList.toggle('active', lang === 'ko');
   document.getElementById('lang-en-btn')?.classList.toggle('active', lang === 'en');
+  document.getElementById('dd-lang-ko-btn')?.classList.toggle('active', lang === 'ko');
+  document.getElementById('dd-lang-en-btn')?.classList.toggle('active', lang === 'en');
 }
 
 // 앱 시작 시 저장된 언어 적용
