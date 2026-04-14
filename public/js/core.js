@@ -42,6 +42,7 @@ async function setUser(u) {
   currentUser = u;
   const initials = (u.user_metadata?.full_name || u.email || '?').substring(0, 2).toUpperCase();
   document.getElementById('user-avatar-txt').textContent = initials;
+  document.getElementById('mini-avatar-txt').textContent = initials;
   document.getElementById('user-name-txt').textContent = u.user_metadata?.full_name || u.email || '';
   document.getElementById('panel-ft').style.display = 'flex';
 
