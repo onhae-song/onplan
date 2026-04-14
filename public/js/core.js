@@ -147,6 +147,8 @@ function updateMiniSidebar() {
     const isLive = item.querySelector('.badge-on') !== null;
     const id = item.dataset.id;
     const letter = name.charAt(0).toUpperCase();
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'width:100%;display:flex;justify-content:center';
     const div = document.createElement('div');
     div.className = 'mini-badge ' + (isLive ? 'mini-badge-live' : 'mini-badge-done');
     div.textContent = letter;
@@ -155,7 +157,8 @@ function updateMiniSidebar() {
       item.click();
       if (document.getElementById('panel').classList.contains('collapsed')) togglePanel();
     };
-    badges.appendChild(div);
+    wrapper.appendChild(div);
+    badges.appendChild(wrapper);
   });
 }
 
