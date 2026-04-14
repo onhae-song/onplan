@@ -297,7 +297,7 @@ function renderPRDSections(prdData, container) {
         <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
           <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><rect x="3" y="8" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 8V5.5a3 3 0 116 0V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
           <span style="font-size:13px;color:var(--g400)">Pro 플랜에서 열람 가능합니다</span>
-          <a href="https://onhae.studio/#pricing" style="font-size:13px;color:var(--lime);text-decoration:none;font-weight:600">업그레이드 →</a>
+          <a href="#" onclick="openSettings('billing')" style="font-size:13px;color:var(--lime);text-decoration:none;font-weight:600">업그레이드 →</a>
         </div>
       </div>`;
     } else {
@@ -336,7 +336,7 @@ function renderPRDSections(prdData, container) {
     banner.style.cssText = 'margin-top:20px;padding:28px;border:1px solid var(--lime-border);background:var(--lime-bg);text-align:center';
     banner.innerHTML = `<div style="font-size:14px;font-weight:600;color:var(--lime);margin-bottom:6px">나머지 ${sections.length - FREE_LIMIT}개 섹션이 잠겨 있습니다</div>
       <div style="font-size:13px;color:var(--g400);margin-bottom:14px">Pro로 업그레이드하면 전체 PRD, 역할별 문서, 충돌 분석을 확인할 수 있습니다.</div>
-      <a href="https://onhae.studio/#pricing" style="display:inline-block;padding:10px 24px;background:var(--lime);color:#0a0a0a;font-weight:700;font-size:13px;text-decoration:none">Upgrade to Pro →</a>`;
+      <a href="#" onclick="openSettings('billing')" style="display:inline-block;padding:10px 24px;background:var(--lime);color:#0a0a0a;font-weight:700;font-size:13px;text-decoration:none">Upgrade to Pro →</a>`;
     container.appendChild(banner);
   }
 
