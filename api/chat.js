@@ -1,3 +1,46 @@
+const PLAN_LIMITS = {
+  free:     { interview: 10 },
+  pro:      { interview: 100 },
+  max:      { interview: -1 },
+  lifetime: { interview: -1 },
+};
+const SUPABASE_URL = 'https://dtwgrxsepotwbpaqssgm.supabase.co';
+
+async function checkInterviewLimit(userId) {
+  const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+  if (!userId || !supabaseKey) return { ok: true };
+
+  try {
+    const planResp = await fetch(`${SUPABASE_URL}/rest/v1/user_plans?user_id=eq.${userId}&select=plan`, {
+      headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` }
+    });
+    const planData = await planResp.json();
+    const plan = planData?.[0]?.plan || 'free';
+    const limit = PLAN_LIMITS[plan]?.interview ?? 0;
+    if (limit === -1) return { ok: true, plan };
+
+    const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+    const usageResp = await fetch(
+      `${SUPABASE_URL}/rest/v1/usage_logs?user_id=eq.${userId}&action_type=eq.interview&created_at=gte.${monthStart}&select=id`,
+      { headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}`, Prefer: 'count=exact' } }
+    );
+    const used = parseInt((usageResp.headers.get('content-range') || '0').split('/')[1] || '0', 10);
+    return { ok: used < limit, used, limit, plan };
+  } catch (e) { return { ok: true }; }
+}
+
+async function logInterviewUsage(userId) {
+  const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+  if (!userId || !supabaseKey) return;
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/usage_logs`, {
+      method: 'POST',
+      headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ user_id: userId, action_type: 'interview' })
+    });
+  } catch (e) {}
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -14,9 +57,9 @@ module.exports = async function handler(req, res) {
   }
   if (!body || typeof body !== 'object') return res.status(400).json({ error: 'no_body' });
 
-  const { role, projectName, projectDesc, projectPhase, projectDoc, messages, lang, mode, conflictContext } = body;
+  const { role, projectName, projectDesc, projectPhase, projectDoc, messages, lang, mode, conflictContext, userId } = body;
 
-  // ── CONFLICT MODE ──────────────────────────────────────────
+  // ── CONFLICT MODE (사용량 체크 안 함) ──────────────────────
   if (mode === 'conflict') {
     if (!Array.isArray(messages) || messages.length === 0)
       return res.status(400).json({ error: 'validation' });
@@ -62,6 +105,25 @@ ${conflictContext || ''}
   if (!process.env.ANTHROPIC_API_KEY)
     return res.status(500).json({ error: 'no_api_key' });
 
+  // ─── 사용량 체크 (인터뷰 시작 시점에만, 즉 user 메시지가 1개일 때) ───
+  const userMsgCount = messages.filter(m => m.role === 'user').length;
+  if (userMsgCount === 1 && userId) {
+    const usage = await checkInterviewLimit(userId);
+    if (!usage.ok) {
+      return res.status(402).json({
+        error: 'usage_limit_exceeded',
+        plan: usage.plan,
+        used: usage.used,
+        limit: usage.limit,
+        message: usage.plan === 'free'
+          ? `Free 플랜은 월 ${usage.limit}회까지 인터뷰를 진행할 수 있습니다.`
+          : `이번 달 인터뷰 한도(${usage.limit}회)를 초과했습니다.`
+      });
+    }
+    // 인터뷰 시작 1회만 카운트
+    logInterviewUsage(userId);
+  }
+
   const rc = {
     ceo:    { ko: 'CEO/대표',    en: 'CEO/Founder' },
     dev:    { ko: '개발자',      en: 'Engineer' },
@@ -73,7 +135,6 @@ ${conflictContext || ''}
   const isKo = lang === 'ko';
   const roleLabel = (rc[role] || rc.other)[isKo ? 'ko' : 'en'];
   const phase = projectPhase || (isKo ? '구상 중' : 'ideation');
-  const userMsgCount = messages.filter(m => m.role === 'user').length;
 
   // ===== ROLE GUIDES =====
   const roleGuideKo = {
@@ -256,11 +317,9 @@ ${completionGuide}`;
     const data = await response.json();
     let text = data.content?.[0]?.text || (isKo ? '다시 한번 말씀해주시겠어요?' : 'Could you say that again?');
 
-    // [COMPLETE] 파싱
     const isComplete = text.includes('[COMPLETE]');
     text = text.replace('[COMPLETE]', '').trim();
 
-    // [PROGRESS:XX] 파싱
     let progress = 0;
     const progressMatch = text.match(/\[PROGRESS:(\d+)\]/);
     if (progressMatch) {
