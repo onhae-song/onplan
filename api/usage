@@ -1,0 +1,66 @@
+// ═══════════════════════════════════════
+// Usage Limit Helper (Edge runtime compatible)
+// ═══════════════════════════════════════
+const PLAN_LIMITS = {
+  free:     { prd_generate: 3,  interview: 10,   role_docs: 0 },
+  pro:      { prd_generate: 30, interview: 100,  role_docs: 30 },
+  max:      { prd_generate: -1, interview: -1,   role_docs: -1 },  // -1 = unlimited
+  lifetime: { prd_generate: -1, interview: -1,   role_docs: -1 },
+};
+
+const SUPABASE_URL = 'https://dtwgrxsepotwbpaqssgm.supabase.co';
+
+/**
+ * 사용량 체크 (월간 카운트)
+ * @returns { ok: boolean, used: number, limit: number, plan: string }
+ */
+export async function checkUsage(userId, actionType, supabaseKey) {
+  if (!userId) return { ok: false, used: 0, limit: 0, plan: 'free', error: 'no_user_id' };
+
+  // 1. plan 조회
+  const planResp = await fetch(`${SUPABASE_URL}/rest/v1/user_plans?user_id=eq.${userId}&select=plan`, {
+    headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` }
+  });
+  const planData = await planResp.json();
+  const plan = planData?.[0]?.plan || 'free';
+  const limits = PLAN_LIMITS[plan] || PLAN_LIMITS.free;
+  const limit = limits[actionType] ?? 0;
+
+  // unlimited
+  if (limit === -1) return { ok: true, used: 0, limit: -1, plan };
+
+  // 0 = 차단
+  if (limit === 0) return { ok: false, used: 0, limit: 0, plan };
+
+  // 이번 달 시작일
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+  const usageResp = await fetch(
+    `${SUPABASE_URL}/rest/v1/usage_logs?user_id=eq.${userId}&action_type=eq.${actionType}&created_at=gte.${monthStart}&select=id`,
+    { headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}`, Prefer: 'count=exact' } }
+  );
+  const contentRange = usageResp.headers.get('content-range') || '0';
+  const used = parseInt(contentRange.split('/')[1] || '0', 10);
+
+  return { ok: used < limit, used, limit, plan };
+}
+
+/**
+ * 사용량 로그 기록
+ */
+export async function logUsage(userId, actionType, supabaseKey) {
+  if (!userId) return;
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/usage_logs`, {
+      method: 'POST',
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ user_id: userId, action_type: actionType })
+    });
+  } catch (e) { /* fire-and-forget */ }
+}
