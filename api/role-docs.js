@@ -1,3 +1,5 @@
+import { checkUsage, logUsage } from './_usage.js';
+
 export const config = { runtime: 'edge' };
 
 export default async function handler(req) {
@@ -15,11 +17,28 @@ export default async function handler(req) {
     return new Response(JSON.stringify({ error: 'parse_fail' }), { status: 400, headers: { ...headers, 'Content-Type': 'application/json' } });
   }
 
-  const { projectName, projectDesc, interviewLog, prdSummary, lang } = body || {};
+  const { projectName, projectDesc, interviewLog, prdSummary, lang, userId } = body || {};
   if (!projectName || !interviewLog)
     return new Response(JSON.stringify({ error: 'missing_fields' }), { status: 400, headers: { ...headers, 'Content-Type': 'application/json' } });
   if (!process.env.ANTHROPIC_API_KEY)
     return new Response(JSON.stringify({ error: 'no_api_key' }), { status: 500, headers: { ...headers, 'Content-Type': 'application/json' } });
+
+  // ─── 사용량 체크 (Free 플랜은 role_docs 차단) ───
+  const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+  if (userId && supabaseKey) {
+    const usage = await checkUsage(userId, 'role_docs', supabaseKey);
+    if (!usage.ok) {
+      return new Response(JSON.stringify({
+        error: 'usage_limit_exceeded',
+        plan: usage.plan,
+        used: usage.used,
+        limit: usage.limit,
+        message: usage.plan === 'free'
+          ? '역할별 문서는 Pro 플랜부터 사용할 수 있습니다.'
+          : `이번 달 역할별 문서 한도(${usage.limit}회)를 초과했습니다.`
+      }), { status: 402, headers: { ...headers, 'Content-Type': 'application/json' } });
+    }
+  }
 
   const isKo = lang === 'ko';
 
@@ -125,6 +144,10 @@ Rules: HTML only (h3,p,table,tr,th,td,strong), English, JSON only.`;
       status: 502,
       headers: { ...headers, 'Content-Type': 'application/json' }
     });
+  }
+
+  if (userId && supabaseKey) {
+    logUsage(userId, 'role_docs', supabaseKey);
   }
 
   const encoder = new TextEncoder();
