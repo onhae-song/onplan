@@ -48,7 +48,17 @@ async function setUser(u) {
 
   try {
     const { data } = await sb.from('user_plans').select('plan').eq('user_id', u.id).single();
-    userPlan = data?.plan || 'free';
+    if (data) {
+      userPlan = data.plan || 'free';
+    } else {
+      // 첫 로그인 시 자동으로 free 플랜 생성
+      await sb.from('user_plans').insert({
+        user_id: u.id,
+        plan: 'free',
+        lemon_customer_email: u.email
+      });
+      userPlan = 'free';
+    }
   } catch(e) { userPlan = 'free'; }
 
   const udEmail = document.getElementById('ud-email');
@@ -146,7 +156,6 @@ function updateMiniSidebar() {
   document.querySelectorAll('#proj-list .proj-item').forEach(item => {
     const name = item.querySelector('.proj-name')?.textContent || '';
     const isLive = item.querySelector('.badge-on') !== null;
-    const id = item.dataset.id;
     const letter = name.charAt(0).toUpperCase();
     const wrapper = document.createElement('div');
     wrapper.style.cssText = 'width:100%;display:flex;justify-content:center';
