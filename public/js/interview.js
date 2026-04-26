@@ -60,9 +60,36 @@ async function sendChat() {
   try {
     const resp = await fetch('/api/chat', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ role: selectedRole, projectName: currentProject?.name || '', projectDesc: '', messages: chatHistory, lang: getLang() })
+      body: JSON.stringify({
+        role: selectedRole,
+        projectName: currentProject?.name || '',
+        projectDesc: '',
+        messages: chatHistory,
+        lang: getLang(),
+        userId: currentUser?.id
+      })
     });
     removeTypingIndicator();
+
+    // 사용량 초과
+    if (resp.status === 402) {
+      const errData = await resp.json();
+      const isEn = getLang() === 'en';
+      chatHistory.pop();
+      const area = document.getElementById('chatArea');
+      const userMsgs = area?.querySelectorAll('.msg.user');
+      const lastUserMsg = userMsgs?.[userMsgs.length - 1];
+      if (lastUserMsg) lastUserMsg.remove();
+
+      if (typeof showUsageLimitModal === 'function') {
+        showUsageLimitModal(errData.message || (isEn ? 'Usage limit exceeded.' : '사용 한도를 초과했습니다.'));
+      } else {
+        alert(errData.message || (isEn ? 'Usage limit exceeded.' : '사용 한도를 초과했습니다.'));
+      }
+      isSending = false; inp.disabled = false; inp.focus();
+      return;
+    }
+
     if (resp.ok) {
       const data = await resp.json();
       chatHistory.push({ role: 'assistant', content: data.reply });
