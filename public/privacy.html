@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인정보처리방침 — OnPlan</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --lime: #d4f53c; --bg: #0a0a0a; --bg2: #111; --white: #f0f0f0; --g200: #bbb; --g300: #999; --g400: #777; --g500: #555; --border: rgba(255,255,255,.08); --en: 'Outfit', sans-serif; --kr: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--kr); background: var(--bg); color: var(--g200); font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+.nav { position: sticky; top: 0; height: 56px; padding: 0 32px; background: rgba(10,10,10,.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+.nav-logo { font-family: var(--en); font-size: 20px; font-weight: 900; letter-spacing: -0.5px; text-decoration: none; }
+.nav-logo .lime { color: var(--lime); }
+.nav-logo .white { color: var(--white); font-weight: 500; }
+.nav-back { font-size: 13px; color: var(--g400); text-decoration: none; transition: color .15s; }
+.nav-back:hover { color: var(--white); }
+.lang-switch { display: flex; gap: 4px; }
+.lang-btn { padding: 4px 10px; font-size: 11px; font-family: var(--en); font-weight: 700; background: transparent; border: 1px solid var(--border); color: var(--g500); text-decoration: none; transition: all .15s; }
+.lang-btn.active { background: rgba(212,245,60,.08); border-color: rgba(212,245,60,.22); color: var(--lime); }
+.lang-btn:hover { color: var(--white); }
+main { max-width: 760px; margin: 0 auto; padding: 64px 32px 96px; }
+h1 { font-family: var(--en); font-size: 36px; font-weight: 800; letter-spacing: -1px; color: var(--white); margin-bottom: 8px; line-height: 1.15; }
+.subtitle { font-size: 14px; color: var(--g500); margin-bottom: 48px; font-family: var(--en); letter-spacing: .04em; }
+h2 { font-size: 18px; font-weight: 700; color: var(--white); margin: 40px 0 12px; padding-top: 8px; }
+h3 { font-size: 15px; font-weight: 600; color: var(--white); margin: 24px 0 8px; }
+p { margin-bottom: 12px; color: var(--g300); }
+ul, ol { margin: 0 0 16px 24px; }
+li { margin-bottom: 6px; color: var(--g300); }
+strong { color: var(--white); font-weight: 600; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--g500); font-weight: 600; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; background: var(--bg2); }
+td { color: var(--g300); }
+.info-box { margin: 32px 0; padding: 20px 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; }
+.info-box-title { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--lime); font-family: var(--en); margin-bottom: 12px; }
+.info-row { display: flex; padding: 6px 0; font-size: 13px; }
+.info-label { width: 140px; color: var(--g500); flex-shrink: 0; }
+.info-value { color: var(--g200); }
+.footer { margin-top: 80px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 12px; color: var(--g500); display: flex; justify-content: space-between; align-items: center; }
+.footer a { color: var(--g400); text-decoration: none; margin-right: 16px; }
+.footer a:hover { color: var(--white); }
+@media (max-width: 600px) { main { padding: 40px 20px 64px; } h1 { font-size: 28px; } .nav { padding: 0 20px; } .info-row { flex-direction: column; gap: 2px; } .info-label { width: auto; } table { font-size: 13px; } th, td { padding: 8px 10px; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/onplan.html" class="nav-logo"><span class="lime">ON</span><span class="white">plan</span></a>
+  <div style="display:flex;align-items:center;gap:20px">
+    <div class="lang-switch">
+      <a href="/privacy.html" class="lang-btn active">KO</a>
+      <a href="/privacy-en.html" class="lang-btn">EN</a>
+    </div>
+    <a href="/onplan.html" class="nav-back">← 홈으로</a>
+  </div>
+</nav>
+
+<main>
+  <h1>개인정보처리방침</h1>
+  <div class="subtitle">최종 업데이트: 2026년 5월 3일</div>
+
+  <p>송온해(이하 "회사")는 「개인정보 보호법」 등 관련 법령상의 개인정보 보호 규정을 준수하며, 이용자의 개인정보 보호 및 권익을 보호하기 위해 다음과 같은 처리방침을 두고 있습니다.</p>
+
+  <h2>1. 개인정보의 수집 항목 및 방법</h2>
+  <p>회사는 다음과 같은 개인정보를 수집합니다.</p>
+  <table>
+    <thead>
+      <tr><th>구분</th><th>수집 항목</th><th>수집 방법</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>회원가입</td><td>이메일, 이름, 프로필 이미지</td><td>Google OAuth</td></tr>
+      <tr><td>결제</td><td>결제 카드 정보 일부 (브랜드, 마지막 4자리), 결제 이메일</td><td>Lemon Squeezy 연동</td></tr>
+      <tr><td>서비스 이용</td><td>프로젝트 정보, 인터뷰 내용, PRD 결과물</td><td>이용자 직접 입력</td></tr>
+      <tr><td>자동 수집</td><td>접속 IP, 쿠키, 서비스 이용 기록</td><td>자동 수집</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. 개인정보의 수집 및 이용 목적</h2>
+  <ul>
+    <li><strong>회원 식별 및 인증</strong> — 서비스 제공을 위한 회원 식별</li>
+    <li><strong>서비스 제공</strong> — AI 인터뷰, PRD 생성, 역할별 문서 생성</li>
+    <li><strong>결제 처리</strong> — 구독 관리, 결제 내역 확인</li>
+    <li><strong>고객 지원</strong> — 문의 응대, 환불 처리</li>
+    <li><strong>서비스 개선</strong> — 비식별화된 데이터를 통한 통계 분석 및 품질 향상</li>
+    <li><strong>법적 의무 이행</strong> — 관련 법령에 따른 의무 이행</li>
+  </ul>
+
+  <h2>3. 개인정보의 보유 및 이용 기간</h2>
+  <ul>
+    <li>회원 정보: 회원 탈퇴 시까지</li>
+    <li>결제 기록: 「전자상거래법」에 따라 5년</li>
+    <li>접속 기록: 「통신비밀보호법」에 따라 3개월</li>
+    <li>프로젝트 및 인터뷰 데이터: 회원 탈퇴 시까지 또는 이용자 삭제 요청 시</li>
+  </ul>
+
+  <h2>4. 제3자 제공</h2>
+  <p>회사는 이용자의 개인정보를 외부에 제공하지 않으며, 다음과 같은 서비스 제공을 위해 처리 위탁만 하고 있습니다.</p>
+
+  <h2>5. 개인정보 처리 위탁</h2>
+  <table>
+    <thead>
+      <tr><th>위탁업체</th><th>위탁 업무</th><th>보유 기간</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Supabase Inc.</td><td>회원 인증, 데이터베이스 운영</td><td>회원 탈퇴 시까지</td></tr>
+      <tr><td>Anthropic, PBC</td><td>AI 인터뷰 및 PRD 생성</td><td>처리 직후 폐기</td></tr>
+      <tr><td>Lemon Squeezy</td><td>결제 처리</td><td>위탁업체 정책에 따름</td></tr>
+      <tr><td>Vercel Inc.</td><td>웹 호스팅 및 콘텐츠 전송</td><td>회원 탈퇴 시까지</td></tr>
+      <tr><td>Google LLC</td><td>OAuth 인증</td><td>회원 탈퇴 시까지</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. 정보주체의 권리 및 행사 방법</h2>
+  <p>이용자는 언제든지 다음과 같은 권리를 행사할 수 있습니다.</p>
+  <ol>
+    <li>개인정보 열람 요청</li>
+    <li>오류 정정 요청</li>
+    <li>삭제 요청</li>
+    <li>처리 정지 요청</li>
+  </ol>
+  <p>위 권리 행사는 onhaesong@gmail.com으로 요청하시면 영업일 기준 3일 이내 처리됩니다.</p>
+
+  <h2>7. 개인정보의 파기</h2>
+  <ul>
+    <li><strong>전자적 파일</strong>: 복구 불가능한 방법으로 영구 삭제</li>
+    <li><strong>출력물</strong>: 분쇄 또는 소각</li>
+  </ul>
+
+  <h2>8. 쿠키의 사용</h2>
+  <p>회사는 이용자의 로그인 세션 유지 및 사용 환경 저장을 위해 쿠키를 사용합니다. 이용자는 브라우저 설정을 통해 쿠키를 거부할 수 있으나, 이 경우 일부 서비스 이용이 제한될 수 있습니다.</p>
+
+  <h2>9. 개인정보의 안전성 확보 조치</h2>
+  <ul>
+    <li>HTTPS를 통한 모든 통신의 암호화</li>
+    <li>비밀번호 저장 없음 (Google OAuth 사용)</li>
+    <li>결제 정보 직접 보관 없음 (Lemon Squeezy 위탁)</li>
+    <li>접근 권한 관리 (Supabase RLS 정책)</li>
+  </ul>
+
+  <h2>10. 만 14세 미만 아동의 개인정보 보호</h2>
+  <p>회사는 만 14세 미만 아동의 회원가입을 받지 않습니다. 만 14세 미만 아동의 개인정보가 수집된 사실이 확인되는 경우 즉시 삭제 조치합니다.</p>
+
+  <h2>11. 개인정보보호 책임자</h2>
+  <div class="info-box">
+    <div class="info-box-title">Privacy Officer</div>
+    <div class="info-row"><span class="info-label">성명</span><span class="info-value">송윤지</span></div>
+    <div class="info-row"><span class="info-label">소속</span><span class="info-value">송온해</span></div>
+    <div class="info-row"><span class="info-label">이메일</span><span class="info-value">onhaesong@gmail.com</span></div>
+    <div class="info-row"><span class="info-label">연락처</span><span class="info-value">+82 10-5741-3556</span></div>
+  </div>
+
+  <h2>12. 정보주체의 권익 침해에 대한 구제 방법</h2>
+  <p>개인정보 관련 분쟁 발생 시 다음 기관에 문의하실 수 있습니다.</p>
+  <ul>
+    <li><strong>개인정보분쟁조정위원회</strong>: 1833-6972 (privacy.go.kr)</li>
+    <li><strong>개인정보침해신고센터</strong>: 118 (privacy.kisa.or.kr)</li>
+    <li><strong>대검찰청 사이버수사과</strong>: 1301 (spo.go.kr)</li>
+    <li><strong>경찰청 사이버수사국</strong>: 182 (ecrm.cyber.go.kr)</li>
+  </ul>
+
+  <h2>13. 처리방침의 변경</h2>
+  <p>본 처리방침은 법령, 정책 변경에 따라 수정될 수 있으며, 변경 시 서비스 내 공지를 통해 효력이 발생합니다.</p>
+
+  <div class="footer">
+    <div>© 2026 송온해. All rights reserved.</div>
+    <div>
+      <a href="/terms.html">이용약관</a>
+      <a href="/privacy.html">개인정보처리방침</a>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

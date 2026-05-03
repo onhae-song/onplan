@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이용약관 — OnPlan</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lime: #d4f53c;
+  --bg: #0a0a0a;
+  --bg2: #111;
+  --white: #f0f0f0;
+  --g200: #bbb;
+  --g300: #999;
+  --g400: #777;
+  --g500: #555;
+  --border: rgba(255,255,255,.08);
+  --en: 'Outfit', sans-serif;
+  --kr: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--kr);
+  background: var(--bg);
+  color: var(--g200);
+  font-size: 15px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+.nav {
+  position: sticky; top: 0;
+  height: 56px; padding: 0 32px;
+  background: rgba(10,10,10,.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 10;
+}
+.nav-logo { font-family: var(--en); font-size: 20px; font-weight: 900; letter-spacing: -0.5px; text-decoration: none; }
+.nav-logo .lime { color: var(--lime); }
+.nav-logo .white { color: var(--white); font-weight: 500; }
+.nav-back { font-size: 13px; color: var(--g400); text-decoration: none; transition: color .15s; }
+.nav-back:hover { color: var(--white); }
+.lang-switch { display: flex; gap: 4px; }
+.lang-btn {
+  padding: 4px 10px; font-size: 11px; font-family: var(--en); font-weight: 700;
+  background: transparent; border: 1px solid var(--border); color: var(--g500);
+  text-decoration: none; transition: all .15s;
+}
+.lang-btn.active { background: rgba(212,245,60,.08); border-color: rgba(212,245,60,.22); color: var(--lime); }
+.lang-btn:hover { color: var(--white); }
+main {
+  max-width: 760px; margin: 0 auto; padding: 64px 32px 96px;
+}
+h1 {
+  font-family: var(--en);
+  font-size: 36px; font-weight: 800; letter-spacing: -1px;
+  color: var(--white); margin-bottom: 8px; line-height: 1.15;
+}
+.subtitle { font-size: 14px; color: var(--g500); margin-bottom: 48px; font-family: var(--en); letter-spacing: .04em; }
+h2 {
+  font-size: 18px; font-weight: 700; color: var(--white);
+  margin: 40px 0 12px; padding-top: 8px;
+}
+h3 { font-size: 15px; font-weight: 600; color: var(--white); margin: 24px 0 8px; }
+p { margin-bottom: 12px; color: var(--g300); }
+ul, ol { margin: 0 0 16px 24px; }
+li { margin-bottom: 6px; color: var(--g300); }
+strong { color: var(--white); font-weight: 600; }
+.info-box {
+  margin: 32px 0;
+  padding: 20px 24px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.info-box-title {
+  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--lime); font-family: var(--en); margin-bottom: 12px;
+}
+.info-row { display: flex; padding: 6px 0; font-size: 13px; }
+.info-label { width: 140px; color: var(--g500); flex-shrink: 0; }
+.info-value { color: var(--g200); }
+.footer {
+  margin-top: 80px; padding-top: 32px;
+  border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--g500);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer a { color: var(--g400); text-decoration: none; margin-right: 16px; }
+.footer a:hover { color: var(--white); }
+@media (max-width: 600px) {
+  main { padding: 40px 20px 64px; }
+  h1 { font-size: 28px; }
+  .nav { padding: 0 20px; }
+  .info-row { flex-direction: column; gap: 2px; }
+  .info-label { width: auto; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/onplan.html" class="nav-logo">
+    <span class="lime">ON</span><span class="white">plan</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:20px">
+    <div class="lang-switch">
+      <a href="/terms.html" class="lang-btn active">KO</a>
+      <a href="/terms-en.html" class="lang-btn">EN</a>
+    </div>
+    <a href="/onplan.html" class="nav-back">← 홈으로</a>
+  </div>
+</nav>
+
+<main>
+  <h1>이용약관</h1>
+  <div class="subtitle">최종 업데이트: 2026년 5월 3일</div>
+
+  <p>본 약관은 송온해(이하 "회사")가 제공하는 OnPlan 서비스(이하 "서비스")의 이용과 관련하여 회사와 이용자 사이의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+
+  <h2>제1조 (목적)</h2>
+  <p>본 약관은 OnPlan 서비스를 이용함에 있어 회사와 이용자 간의 권리, 의무, 책임사항, 이용조건 및 절차 등 기본적인 사항을 규정함을 목적으로 합니다.</p>
+
+  <h2>제2조 (용어의 정의)</h2>
+  <ol>
+    <li><strong>"서비스"</strong>란 회사가 제공하는 AI 기반 PRD 생성 도구 및 관련 부가 서비스를 의미합니다.</li>
+    <li><strong>"이용자"</strong>란 본 약관에 따라 회사가 제공하는 서비스를 이용하는 회원 및 비회원을 말합니다.</li>
+    <li><strong>"회원"</strong>이란 Google 계정을 통해 회사와 서비스 이용계약을 체결한 자를 의미합니다.</li>
+    <li><strong>"콘텐츠"</strong>란 이용자가 서비스를 통해 입력한 인터뷰 내용, 프로젝트 정보 및 회사가 생성한 PRD 결과물을 의미합니다.</li>
+  </ol>
+
+  <h2>제3조 (약관의 효력 및 변경)</h2>
+  <ol>
+    <li>본 약관은 서비스 화면에 게시함으로써 효력이 발생합니다.</li>
+    <li>회사는 관련 법령을 위반하지 않는 범위에서 본 약관을 변경할 수 있으며, 변경된 약관은 서비스 내 공지를 통해 효력이 발생합니다.</li>
+    <li>이용자가 변경된 약관에 동의하지 않는 경우 서비스 이용을 중단하고 회원 탈퇴를 요청할 수 있습니다.</li>
+  </ol>
+
+  <h2>제4조 (회원가입)</h2>
+  <ol>
+    <li>회원가입은 Google OAuth를 통한 인증으로 이루어집니다.</li>
+    <li>다음 각 호에 해당하는 신청에 대해서는 회사가 가입을 거절하거나 사후 회원자격을 상실시킬 수 있습니다.
+      <ul>
+        <li>타인의 정보를 도용한 경우</li>
+        <li>관계 법령을 위반하거나 사회의 안녕질서, 미풍양속을 저해할 목적으로 신청한 경우</li>
+        <li>서비스의 정상적인 운영을 방해할 우려가 있는 경우</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>제5조 (서비스의 제공 및 변경)</h2>
+  <ol>
+    <li>회사는 다음과 같은 서비스를 제공합니다.
+      <ul>
+        <li>역할 기반 AI 인터뷰</li>
+        <li>PRD(제품 요구사항 문서) 자동 생성</li>
+        <li>역할별 맞춤 문서 생성</li>
+        <li>충돌 분석 및 의사결정 지원 기능</li>
+      </ul>
+    </li>
+    <li>회사는 서비스의 품질 향상 및 정책 변경을 위해 서비스의 내용을 변경할 수 있으며, 변경 시 사전에 공지합니다.</li>
+    <li>회사는 시스템 점검, 천재지변, 기타 부득이한 사유가 있는 경우 일시적으로 서비스 제공을 중단할 수 있습니다.</li>
+  </ol>
+
+  <h2>제6조 (요금제 및 결제)</h2>
+  <ol>
+    <li>회사는 다음과 같은 요금제를 제공합니다.
+      <ul>
+        <li><strong>Free</strong> — 무료, 기능 제한 있음</li>
+        <li><strong>Pro</strong> — 월 $29 또는 연 $279</li>
+        <li><strong>Max</strong> — 월 $79 또는 연 $759</li>
+        <li><strong>Early Bird Lifetime</strong> — $79 1회성 결제 (한정 수량)</li>
+      </ul>
+    </li>
+    <li>결제는 Lemon Squeezy를 통해 처리되며, 회사는 결제 정보를 직접 보관하지 않습니다.</li>
+    <li>구독은 자동 갱신되며, 이용자는 언제든지 구독을 취소할 수 있습니다. 취소 시 다음 결제일부터 갱신이 중단됩니다.</li>
+  </ol>
+
+  <h2>제7조 (환불 정책)</h2>
+  <ol>
+    <li>이용자는 결제일로부터 7일 이내, 서비스를 실질적으로 사용하지 않은 경우 전액 환불을 요청할 수 있습니다.</li>
+    <li>"실질적 사용"의 기준은 다음과 같습니다.
+      <ul>
+        <li>PRD 생성 1회 이상</li>
+        <li>역할별 문서 생성 1회 이상</li>
+      </ul>
+    </li>
+    <li>Lifetime 플랜의 경우 결제일로부터 14일 이내 환불이 가능하며, 동일한 사용 기준이 적용됩니다.</li>
+    <li>환불 요청은 onhaesong@gmail.com으로 보내주시면 영업일 기준 3일 이내 처리됩니다.</li>
+  </ol>
+
+  <h2>제8조 (이용자의 의무)</h2>
+  <ol>
+    <li>이용자는 다음 행위를 해서는 안 됩니다.
+      <ul>
+        <li>타인의 정보 도용</li>
+        <li>회사가 게시한 정보의 무단 변경</li>
+        <li>회사 및 제3자의 저작권 등 지식재산권 침해</li>
+        <li>서비스의 정상적인 운영을 방해하는 행위</li>
+        <li>외설적이거나 폭력적인 정보 등 공서양속에 반하는 정보를 서비스에 공개하는 행위</li>
+      </ul>
+    </li>
+    <li>이용자는 본인의 계정 관리에 대한 책임이 있으며, 계정 도용 시 즉시 회사에 통지해야 합니다.</li>
+  </ol>
+
+  <h2>제9조 (콘텐츠의 권리)</h2>
+  <ol>
+    <li>이용자가 서비스에 입력한 인터뷰 내용 및 프로젝트 정보의 권리는 이용자에게 있습니다.</li>
+    <li>회사는 서비스 제공, 품질 개선, 통계 분석 목적으로 이용자의 콘텐츠를 비식별화하여 활용할 수 있습니다.</li>
+    <li>회사가 생성한 PRD 결과물의 사용권은 이용자에게 부여됩니다. 단, 회사는 동일한 또는 유사한 결과물을 다른 이용자에게도 제공할 수 있습니다.</li>
+  </ol>
+
+  <h2>제10조 (서비스 이용 제한)</h2>
+  <p>회사는 이용자가 본 약관을 위반하거나 서비스의 정상적인 운영을 방해한 경우 사전 통지 없이 서비스 이용을 제한하거나 회원자격을 상실시킬 수 있습니다.</p>
+
+  <h2>제11조 (면책조항)</h2>
+  <ol>
+    <li>회사는 천재지변, 전쟁, 기간통신사업자의 서비스 중지 등 불가항력적 사유로 서비스를 제공할 수 없는 경우 책임이 면제됩니다.</li>
+    <li>회사가 생성한 PRD는 AI에 기반한 결과물로, 이용자의 비즈니스 의사결정에 대한 책임은 이용자에게 있습니다.</li>
+    <li>회사는 이용자가 서비스를 이용하여 기대하는 수익을 얻지 못하거나 손실이 발생한 경우 책임지지 않습니다.</li>
+  </ol>
+
+  <h2>제12조 (분쟁 해결)</h2>
+  <ol>
+    <li>본 약관에 관하여 분쟁이 발생한 경우 회사와 이용자는 분쟁 해결을 위해 성실히 협의합니다.</li>
+    <li>협의가 이루어지지 않을 경우 대한민국 법령을 준거법으로 하며, 관할 법원은 민사소송법상의 관할법원으로 합니다.</li>
+  </ol>
+
+  <h2>제13조 (운영자 정보)</h2>
+  <div class="info-box">
+    <div class="info-box-title">Service Provider</div>
+    <div class="info-row"><span class="info-label">상호</span><span class="info-value">송온해</span></div>
+    <div class="info-row"><span class="info-label">사업자등록번호</span><span class="info-value">598-49-00919</span></div>
+    <div class="info-row"><span class="info-label">대표</span><span class="info-value">송윤지</span></div>
+    <div class="info-row"><span class="info-label">이메일</span><span class="info-value">onhaesong@gmail.com</span></div>
+    <div class="info-row"><span class="info-label">연락처</span><span class="info-value">+82 10-5741-3556</span></div>
+  </div>
+
+  <div class="footer">
+    <div>© 2026 송온해. All rights reserved.</div>
+    <div>
+      <a href="/terms.html">이용약관</a>
+      <a href="/privacy.html">개인정보처리방침</a>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

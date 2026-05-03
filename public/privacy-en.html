@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — OnPlan</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Pretendard+Variable:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --lime: #d4f53c; --bg: #0a0a0a; --bg2: #111; --white: #f0f0f0; --g200: #bbb; --g300: #999; --g400: #777; --g500: #555; --border: rgba(255,255,255,.08); --en: 'Outfit', sans-serif; --kr: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--kr); background: var(--bg); color: var(--g200); font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+.nav { position: sticky; top: 0; height: 56px; padding: 0 32px; background: rgba(10,10,10,.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+.nav-logo { font-family: var(--en); font-size: 20px; font-weight: 900; letter-spacing: -0.5px; text-decoration: none; }
+.nav-logo .lime { color: var(--lime); }
+.nav-logo .white { color: var(--white); font-weight: 500; }
+.nav-back { font-size: 13px; color: var(--g400); text-decoration: none; transition: color .15s; }
+.nav-back:hover { color: var(--white); }
+.lang-switch { display: flex; gap: 4px; }
+.lang-btn { padding: 4px 10px; font-size: 11px; font-family: var(--en); font-weight: 700; background: transparent; border: 1px solid var(--border); color: var(--g500); text-decoration: none; transition: all .15s; }
+.lang-btn.active { background: rgba(212,245,60,.08); border-color: rgba(212,245,60,.22); color: var(--lime); }
+.lang-btn:hover { color: var(--white); }
+main { max-width: 760px; margin: 0 auto; padding: 64px 32px 96px; }
+h1 { font-family: var(--en); font-size: 36px; font-weight: 800; letter-spacing: -1px; color: var(--white); margin-bottom: 8px; line-height: 1.15; }
+.subtitle { font-size: 14px; color: var(--g500); margin-bottom: 48px; font-family: var(--en); letter-spacing: .04em; }
+h2 { font-size: 18px; font-weight: 700; color: var(--white); margin: 40px 0 12px; padding-top: 8px; }
+h3 { font-size: 15px; font-weight: 600; color: var(--white); margin: 24px 0 8px; }
+p { margin-bottom: 12px; color: var(--g300); }
+ul, ol { margin: 0 0 16px 24px; }
+li { margin-bottom: 6px; color: var(--g300); }
+strong { color: var(--white); font-weight: 600; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--g500); font-weight: 600; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; background: var(--bg2); }
+td { color: var(--g300); }
+.info-box { margin: 32px 0; padding: 20px 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; }
+.info-box-title { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--lime); font-family: var(--en); margin-bottom: 12px; }
+.info-row { display: flex; padding: 6px 0; font-size: 13px; }
+.info-label { width: 140px; color: var(--g500); flex-shrink: 0; }
+.info-value { color: var(--g200); }
+.footer { margin-top: 80px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 12px; color: var(--g500); display: flex; justify-content: space-between; align-items: center; }
+.footer a { color: var(--g400); text-decoration: none; margin-right: 16px; }
+.footer a:hover { color: var(--white); }
+@media (max-width: 600px) { main { padding: 40px 20px 64px; } h1 { font-size: 28px; } .nav { padding: 0 20px; } .info-row { flex-direction: column; gap: 2px; } .info-label { width: auto; } table { font-size: 13px; } th, td { padding: 8px 10px; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/onplan.html" class="nav-logo"><span class="lime">ON</span><span class="white">plan</span></a>
+  <div style="display:flex;align-items:center;gap:20px">
+    <div class="lang-switch">
+      <a href="/privacy.html" class="lang-btn">KO</a>
+      <a href="/privacy-en.html" class="lang-btn active">EN</a>
+    </div>
+    <a href="/onplan.html" class="nav-back">← Home</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Privacy Policy</h1>
+  <div class="subtitle">Last updated: May 3, 2026</div>
+
+  <p>Songonhae ("Company") complies with the Personal Information Protection Act and related regulations of the Republic of Korea. This Privacy Policy explains how we collect, use, store, and protect Users' personal information.</p>
+
+  <h2>1. Information We Collect</h2>
+  <table>
+    <thead>
+      <tr><th>Category</th><th>Items</th><th>Method</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sign Up</td><td>Email, name, profile image</td><td>Google OAuth</td></tr>
+      <tr><td>Payment</td><td>Card brand, last 4 digits, payment email</td><td>Lemon Squeezy</td></tr>
+      <tr><td>Service Usage</td><td>Project info, interviews, PRD outputs</td><td>User input</td></tr>
+      <tr><td>Auto Collection</td><td>IP address, cookies, usage logs</td><td>Automatic</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Purpose of Collection and Use</h2>
+  <ul>
+    <li><strong>Member identification and authentication</strong> — for Service access</li>
+    <li><strong>Service provision</strong> — AI interviews, PRD generation, role-based documents</li>
+    <li><strong>Payment processing</strong> — subscription management, transaction history</li>
+    <li><strong>Customer support</strong> — handling inquiries and refunds</li>
+    <li><strong>Service improvement</strong> — statistical analysis using de-identified data</li>
+    <li><strong>Legal compliance</strong> — fulfilling legal obligations</li>
+  </ul>
+
+  <h2>3. Retention Period</h2>
+  <ul>
+    <li>Member information: until account deletion</li>
+    <li>Payment records: 5 years (per E-Commerce Act)</li>
+    <li>Access logs: 3 months (per Communications Privacy Act)</li>
+    <li>Project and interview data: until account deletion or User-requested removal</li>
+  </ul>
+
+  <h2>4. Third-Party Sharing</h2>
+  <p>The Company does not share personal information with third parties. The following are processing partners only.</p>
+
+  <h2>5. Processing Partners</h2>
+  <table>
+    <thead>
+      <tr><th>Partner</th><th>Purpose</th><th>Retention</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Supabase Inc.</td><td>Authentication, database hosting</td><td>Until account deletion</td></tr>
+      <tr><td>Anthropic, PBC</td><td>AI interview and PRD generation</td><td>Discarded after processing</td></tr>
+      <tr><td>Lemon Squeezy</td><td>Payment processing</td><td>Per partner policy</td></tr>
+      <tr><td>Vercel Inc.</td><td>Web hosting and CDN</td><td>Until account deletion</td></tr>
+      <tr><td>Google LLC</td><td>OAuth authentication</td><td>Until account deletion</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. User Rights</h2>
+  <p>Users may exercise the following rights at any time:</p>
+  <ol>
+    <li>Right to access personal information</li>
+    <li>Right to correct errors</li>
+    <li>Right to deletion</li>
+    <li>Right to restrict processing</li>
+  </ol>
+  <p>Send requests to onhaesong@gmail.com. Requests are processed within 3 business days.</p>
+
+  <h2>7. Data Disposal</h2>
+  <ul>
+    <li><strong>Electronic files</strong>: permanently deleted using non-recoverable methods</li>
+    <li><strong>Printed materials</strong>: shredded or incinerated</li>
+  </ul>
+
+  <h2>8. Cookies</h2>
+  <p>The Company uses cookies to maintain login sessions and store user preferences. Users may refuse cookies through browser settings, but some Service features may be limited as a result.</p>
+
+  <h2>9. Security Measures</h2>
+  <ul>
+    <li>HTTPS encryption for all communications</li>
+    <li>No password storage (Google OAuth only)</li>
+    <li>No direct storage of payment information (Lemon Squeezy handles payments)</li>
+    <li>Access control via Supabase RLS policies</li>
+  </ul>
+
+  <h2>10. Children's Privacy</h2>
+  <p>The Company does not allow registration by children under 14. If we become aware of personal information collected from a child under 14, it will be deleted immediately.</p>
+
+  <h2>11. Privacy Officer</h2>
+  <div class="info-box">
+    <div class="info-box-title">Privacy Officer</div>
+    <div class="info-row"><span class="info-label">Name</span><span class="info-value">YounJee Song</span></div>
+    <div class="info-row"><span class="info-label">Affiliation</span><span class="info-value">Songonhae</span></div>
+    <div class="info-row"><span class="info-label">Email</span><span class="info-value">onhaesong@gmail.com</span></div>
+    <div class="info-row"><span class="info-label">Phone</span><span class="info-value">+82 10-5741-3556</span></div>
+  </div>
+
+  <h2>12. Remedies for Privacy Infringements</h2>
+  <p>For privacy-related disputes, you may contact:</p>
+  <ul>
+    <li><strong>Personal Information Dispute Mediation Committee</strong>: 1833-6972 (privacy.go.kr)</li>
+    <li><strong>Korea Internet & Security Agency Privacy Center</strong>: 118 (privacy.kisa.or.kr)</li>
+    <li><strong>Supreme Prosecutors' Office Cyber Investigation</strong>: 1301 (spo.go.kr)</li>
+    <li><strong>National Police Agency Cyber Bureau</strong>: 182 (ecrm.cyber.go.kr)</li>
+  </ul>
+
+  <h2>13. Changes to This Policy</h2>
+  <p>This Privacy Policy may be updated to reflect changes in laws or company policies. Updates take effect when posted within the Service.</p>
+
+  <div class="footer">
+    <div>© 2026 Songonhae. All rights reserved.</div>
+    <div>
+      <a href="/terms-en.html">Terms</a>
+      <a href="/privacy-en.html">Privacy</a>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
